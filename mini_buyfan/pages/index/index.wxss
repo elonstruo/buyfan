@@ -1,0 +1,76 @@
+/**index.wxss**/
+
+swiper image {
+    max-width: 100%;
+    width: 100%;
+    height: 354rpx;
+}
+
+swiper {
+    height: 354rpx;
+}
+
+swiper-item {
+    text-align: center;
+}
+
+.swiper-container {
+    position: relative;
+    margin: 0 10rpx;
+}
+
+.swiper-container .dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 14rpx;
+    display: flex;
+    justify-content: center;
+}
+
+.swiper-container .dots .dot {
+    margin: 0 14rpx;
+    width: 16rpx;
+    height: 16rpx;
+    background: #fff;
+    border-radius: 50rpx;
+    transition: all 0.6s;
+}
+
+.swiper-container .dots .dot.active {
+    background-color: #000;
+}
+
+.clm-top {
+     margin: 10rpx 5rpx; 
+    display: flex;
+	justify-content: space-around
+}
+.clm-bottom {
+     margin: 10rpx 5rpx; 
+     display: flex;
+	 align-items: stretch;
+	 justify-content: space-around
+}
+.clms {
+}
+.litem {
+	 /* flex: 3;  */
+     width: 484rpx;  
+    height: 236rpx;
+	/* margin: 0 5rpx; */
+    background: rgba(248, 216, 127, 1);
+}
+
+.sitem {
+	 /* flex: 1;  */
+    width: 236rpx;  
+    height: 236rpx;
+	/* margin: 0 5rpx; */
+    background: rgba(245, 196, 76, 1);
+}
+.hitem {
+    width: 236rpx;  
+    height: 482rpx;
+    background: rgba(245, 196, 76, 1);
+}
