@@ -42,35 +42,108 @@ swiper-item {
 }
 
 .clm-top {
-     margin: 10rpx 5rpx; 
+    margin: 10rpx 5rpx;
     display: flex;
-	justify-content: space-around
+    justify-content: space-around;
 }
+
 .clm-bottom {
-     margin: 10rpx 5rpx; 
-     display: flex;
-	 align-items: stretch;
-	 justify-content: space-around
+    margin: 10rpx 5rpx;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
 }
+
 .clms {
+    width: 484rpx;
+    /* display: flex;
+    align-items: stretch;
+    justify-content: space-around; */
 }
+
+.clms .litem {
+    width: 100%;
+    margin-bottom: 10rpx;
+}
+
+.clms .litem:last-child {
+    margin-bottom: 0;
+}
+
 .litem {
-	 /* flex: 3;  */
-     width: 484rpx;  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 484rpx;
     height: 236rpx;
-	/* margin: 0 5rpx; */
     background: rgba(248, 216, 127, 1);
 }
 
 .sitem {
-	 /* flex: 1;  */
-    width: 236rpx;  
+    /* flex: 1;  */
+    width: 236rpx;
     height: 236rpx;
-	/* margin: 0 5rpx; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* margin: 0 5rpx; */
     background: rgba(245, 196, 76, 1);
 }
+
 .hitem {
-    width: 236rpx;  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 236rpx;
     height: 482rpx;
     background: rgba(245, 196, 76, 1);
+}
+
+.flex-wrapper {
+    text-align: center;
+}
+
+.icon-index {
+    width: 100rpx;
+    height: 100rpx;
+}
+
+.menu-title {
+    margin-top: 10rpx;
+    font-size: 30rpx;
+    color: #323232;
+}
+
+.location {
+	display: flex; 
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	padding: 0 26rpx;
+	box-sizing: border-box;
+    width: 245rpx;
+    height: 50rpx;
+	top: 20rpx;
+	left: 50%;
+	margin-left: -120rpx;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 25rpx;
+	font-size: 30rpx;
+	color: #fff;
+	z-index: 1
+}
+
+.icon-index_location {
+	width: 36rpx;
+	height: 36rpx;
+	margin-right: 10rpx;
+	margin-top: 5rpx;
+}
+.location .name {
+	width: 148rpx;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+	line-height: 50rpx;
+	text-align: center;
 }

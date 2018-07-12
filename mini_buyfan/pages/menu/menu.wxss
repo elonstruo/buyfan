@@ -1,1 +1,123 @@
 /* pages/menu/menu.wxss */
+
+page {
+	background:rgba(247,248,250,1);
+}
+
+.sign {
+    display: flex;
+    justify-content: space-between;
+    padding: 20rpx;
+    height: 180rpx;
+    box-sizing: border-box;
+    background-color: #333;
+}
+
+.sign .left {
+    display: flex;
+    align-items: center;
+    font-size: 24rpx;
+    color: #fff;
+}
+
+.sign-info {
+    margin-left: 20rpx;
+}
+
+.sign-ln {
+    display: flex;
+}
+
+.sign-ln view {
+    padding: 0 8rpx;
+}
+
+.sign-ln view:first-child {
+    padding-left: 0;
+}
+
+.mimo {
+    padding-top: 10rpx;
+    padding-bottom: 10rpx;
+}
+
+.left .image-box, .logo {
+    width: 140rpx;
+    height: 140rpx;
+}
+
+.changeshop {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 180rpx;
+    height: 48rpx;
+    border: 1rpx solid #fff;
+    border-radius: 10rpx;
+    font-size: 28rpx;
+    color: #fff;
+}
+
+.change-text {
+    line-height: 48rpx;
+}
+
+.icon-change {
+    width: 31rpx;
+    height: 31rpx;
+    margin-right: 10rpx;
+    vertical-align: middle;
+}
+
+.tabbar {
+    display: flex;
+    position: relative;
+    border-bottom: 1rpx solid #dcdcdc;
+	background: #fff;
+}
+
+.tabbar .title {
+    width: 160rpx;
+    text-align: center;
+    color: #909090;
+    font-size: 30rpx;
+}
+
+.tabbar .title .text {
+    display: block;
+    width: 60rpx;
+    height: 80rpx;
+    margin: 0 auto;
+    line-height: 80rpx;
+    border-bottom: 4rpx solid transparent;
+}
+.tabbar .title.on .text {
+     border-bottom: 4rpx solid #ff5c00; 
+}
+.category {
+	float:left;
+	width:160rpx;
+}
+.category .classes {
+	width:100%;
+	height:90rpx;
+	line-height:90rpx;
+	text-align: center;
+	font-size: 26rpx;
+	color: #666666;
+}
+.category .classes.on {
+	color: #323232;
+	background:rgba(255,255,255,1);
+}
+.tabitem .items {
+	width: 590rpx;
+	box-sizing:border-box;
+	float:right;
+	background-color:#fff;
+}
+.img-shop {
+	width: 150rpx;
+	height: 150rpx;
+	overflow: hidden;
+}

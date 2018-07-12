@@ -12,6 +12,14 @@
   </view>
 </view> -->
 <view class="swiper-container">
+    <view class='location'>
+        <view class='image-box'>
+            <image class='icon-index_location' src='../../images/index_location@2x.png'></image>
+        </view>
+        <view class='name'>
+            {{street}}
+        </view>
+    </view>
     <swiper class="swiper_box" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" bindchange="swiperchange">
         <block wx:for="{{bannerUrls}}">
             <swiper-item>
@@ -26,13 +34,42 @@
     </view>
 </view>
 <view class='clm-top'>
-    <view class='litem'></view>
-    <view class='sitem'></view>
+    <view class='litem'>
+        <view class='flex-wrapper '>
+            <view class='image-box'>
+                <image src='../../images/index_taemilk@2x.png' class='icon-index'></image>
+                <view class='menu-title'>美食外賣</view>
+            </view>
+        </view>
+    </view>
+    <view class='sitem'>
+        <view class='flex-wrapper '>
+            <view class='image-box'>
+                <image src='../../images/order@2x.png' class='icon-index'></image>
+                <view class='menu-title'>到店下单</view>
+            </view>
+        </view>
+    </view>
 </view>
 <view class='clm-bottom'>
-    <view class='hitem'></view>
-     <view class='clms'> 
-        <view class='litem'></view>
-        <view class='litem'></view>
-     </view> 
+    <view class='hitem'>
+        <view class='flex-wrapper '>
+            <image src='../../images/gift@2x.png' class='icon-index'></image>
+            <view class='menu-title'>优惠活动</view>
+        </view>
+    </view>
+    <view class='clms'>
+        <view class='litem'>
+            <view class='flex-wrapper '>
+                <image src='../../images/index_coupon@2x.png' class='icon-index'></image>
+                <view class='menu-title'>美食外卖</view>
+            </view>
+        </view>
+        <view class='litem'>
+            <view class='flex-wrapper '>
+                <image src='../../images/index_vip@2x.png' class='icon-index'></image>
+                <view class='menu-title'>会员专区</view>
+            </view>
+        </view>
+    </view>
 </view>

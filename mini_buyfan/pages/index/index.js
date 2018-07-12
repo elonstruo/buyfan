@@ -1,7 +1,8 @@
 //index.js
 //获取应用实例
 const app = getApp()
-
+var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js');
+var qqmapsdk;
 Page({
     data: {
         motto: 'Hello World',
@@ -33,6 +34,9 @@ Page({
         })
     },
     onLoad: function() {
+		var that = this;
+
+
         if (app.globalData.userInfo) {
             this.setData({
                 userInfo: app.globalData.userInfo,
@@ -60,6 +64,43 @@ Page({
             })
         }
     },
+	onShow: function () {
+		var that = this;
+
+		// 实例化API核心类
+		var qqmapsdk = new QQMapWX({
+			key: 'CT2BZ-I57RV-HIGP7-UMN64-ORLUV-LRB22'
+		});
+		wx.getLocation({
+			type: 'wgs84',
+			success: function (res) {
+				console.log(res)
+				var latitude = res.latitude
+				var longitude = res.longitude
+				var speed = res.speed
+				var accuracy = res.accuracy
+				// 调用接口
+				qqmapsdk.reverseGeocoder({
+					location: {
+						latitude: latitude,
+						longitude: longitude
+					},
+					success: function (res) {
+						console.log(res);
+						that.setData({
+							street: res.result.address_component.street
+						})
+					},
+					fail: function (res) {
+						console.log(res);
+					},
+					complete: function (res) {
+						console.log(res);
+					}
+				});
+			}
+		})
+	},
     getUserInfo: function(e) {
         console.log(e)
         app.globalData.userInfo = e.detail.userInfo

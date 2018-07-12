@@ -1,3 +1,62 @@
 <!--pages/menu/menu.wxml-->
 <view class='sign'>
+    <view class='left'>
+        <!-- <view class='image-box'> -->
+        <image class='logo' src='../../images/logo@2x.png'></image>
+        <!-- </view> -->
+        <view class='sign-info'>
+            <view class='sign-ln'>
+                <view class='name'>佰分新兴店</view>|
+                <view class='km'>1.9km</view>|
+                <view class='time'>19分钟</view>
+            </view>
+            <view class='mimo'>公告：本店推出新产品</view>
+            <view class=''>近期售出1323份</view>
+        </view>
+    </view>
+    <view class='right'>
+        <view class='changeshop'>
+            <view class='image-box'>
+                <image class='icon-change' src='../../images/switch_white@2x.png'></image>
+            </view>
+            <view class='change-text'>切换分店</view>
+        </view>
+    </view>
+</view>
+<view class='tabbar'>
+    <view data-id="1" bindtap='tabClick' class='title {{selectedId == 1 ? "on" :"" }}'>
+        <text class='text'>点餐</text>
+    </view>
+    <view data-id="2" bindtap='tabClick' class='title {{selectedId == 2 ? "on" :"" }}'>
+        <text class='text'>评价</text>
+    </view>
+    <view data-id="3" bindtap='tabClick' class='title {{selectedId == 3 ? "on" :"" }}'>
+        <text class='text'>商家</text>
+    </view>
+</view>
+<view class='tabbarDetails'>
+    <view class='tabitem' wx:if="{{selectedId == 1}}">
+        <view class='category'>
+            <view wx:for-items="{{type_sort}}" wx:key="index" class='type-box'>
+                <view data-id="{{index}}" class="classes {{activeCategoryId == index ? 'on' : ''}}" bindtap='categoryClick'>{{item}}</view>
+            </view>
+        </view>
+        <view class='items'>
+            <view class='item' bindtap='select_bycondi' hover-class='on' wx:for-items="{{list}}" wx:key="{{index}}" data-id="{{index}}">{{item}}</view>
+			<view class='item'>
+				<view class='img-shop'>
+					<image mode='aspectFill' class='img-shop' src='../../images/shopimg.jpg'></image>
+				</view>
+				<view class='info-shop'>
+					<view class='name'>樱花碧根果奶缇</view>
+					<view class='detation'>营养极高的碧根果牛奶搭配淡淡香气的营养极高的碧根果牛奶搭配淡淡香气的</view>
+					<view class='sale'>月售 444</view>
+					<view class='price'></view>
+				</view>
+				<view class='choose'>
+					<view>选规格</view>
+				</view>
+			</view>
+        </view>
+    </view>
 </view>
