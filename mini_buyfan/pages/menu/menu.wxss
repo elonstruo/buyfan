@@ -1,7 +1,7 @@
 /* pages/menu/menu.wxss */
 
 page {
-	background:rgba(247,248,250,1);
+    background: rgba(247, 248, 250, 1);
 }
 
 .sign {
@@ -73,7 +73,7 @@ page {
     display: flex;
     position: relative;
     border-bottom: 1rpx solid #dcdcdc;
-	background: #fff;
+    background: #fff;
 }
 
 .tabbar .title {
@@ -91,33 +91,151 @@ page {
     line-height: 80rpx;
     border-bottom: 4rpx solid transparent;
 }
+
 .tabbar .title.on .text {
-     border-bottom: 4rpx solid #ff5c00; 
+    border-bottom: 4rpx solid #ff5c00;
 }
+
 .category {
-	float:left;
-	width:160rpx;
+    float: left;
+    width: 160rpx;
 }
+
 .category .classes {
-	width:100%;
-	height:90rpx;
-	line-height:90rpx;
-	text-align: center;
-	font-size: 26rpx;
-	color: #666666;
+    width: 100%;
+    height: 90rpx;
+    line-height: 90rpx;
+    text-align: center;
+    font-size: 26rpx;
+    color: #666;
 }
+
 .category .classes.on {
-	color: #323232;
-	background:rgba(255,255,255,1);
+    font-weight: bold;
+    color: #323232;
+    background: rgba(255, 255, 255, 1);
 }
+
 .tabitem .items {
-	width: 590rpx;
-	box-sizing:border-box;
-	float:right;
-	background-color:#fff;
+    width: 590rpx;
+    padding-bottom: 47rpx;
+    box-sizing: border-box;
+    float: right;
+    background-color: #fff;
 }
+
 .img-shop {
-	width: 150rpx;
-	height: 150rpx;
-	overflow: hidden;
+    width: 150rpx;
+    height: 150rpx;
+    margin-right: 20rpx;
+}
+
+.tag {
+    margin-top: 28rpx;
+    margin-left: 20rpx;
+    color: #323232;
+    font-size: 26rpx;
+}
+
+.tabitem .items .item {
+    position: relative;
+    margin-top: 47rpx;
+    display: flex;
+    padding: 0 20rpx;
+}
+
+.choose {
+    position: absolute;
+    bottom: 0;
+    right: 20rpx;
+    width: 100rpx;
+    height: 48rpx;
+    line-height: 48rpx;
+    background: rgba(250, 209, 119, 1);
+    border-radius: 24rpx;
+    font-size: 24rpx;
+    color: #323232;
+    text-align: center;
+}
+
+.choose-num {
+    position: absolute;
+    top: -12rpx;
+    right: -12rpx;
+    min-width: 30rpx;
+    height: 30rpx;
+    line-height: 30rpx;
+    text-align: center;
+    font-size: 24rpx;
+    color: #fff;
+    background: rgba(255, 0, 0, 1);
+    border-radius: 50rpx;
+}
+
+.item .name {
+    width: 354rpx;
+    margin-top: -5rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 30rpx;
+    color: #000;
+    font-weight: bold;
+}
+
+.item .description {
+    width: 354rpx;
+    margin-top: 11rpx;
+    margin-bottom: 9rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 20rpx;
+    color: #666;
+}
+
+.item .sale {
+    margin-bottom: 9rpx;
+    color: #666;
+    font-size: 20rpx;
+}
+
+.item .price {
+    font-size: 30rpx;
+    color: #fb873d;
+    font-weight: bold;
+}
+
+.tabbarDetails {
+    overflow: hidden;
+}
+
+.cart-count-box {
+    width: 156rpx;
+    display: flex;
+    justify-content: space-around;
+    position: absolute;
+    bottom: 0;
+    right: 20rpx;
+}
+
+.cart-count-wrap {
+    width: 48rpx;
+    height: 48rpx;
+    border-radius: 50%;
+    text-align: center;
+
+}
+.cart-count-add {
+    line-height: 48rpx;
+    background: rgba(250, 209, 119, 1);
+    color: #323232;
+}
+.cart-count-down {
+    line-height: 40rpx;
+    border: 1rpx solid #CCCCCC;
+    color: #CCCCCC;
+}
+.cart-count-num {
+    width: 60rpx;
 }
