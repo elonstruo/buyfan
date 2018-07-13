@@ -1,40 +1,41 @@
 {
-	"pages": [
-		"pages/menu/menu",
-		"pages/index/index",
-		"pages/logs/logs",
-		"pages/user/user"
-	],
-	"window": {
-		"backgroundTextStyle": "light",
-		"navigationBarBackgroundColor": "#fff",
-		"navigationBarTitleText": "WeChat",
-		"navigationBarTextStyle": "black"
-	},
-	"tabBar": {
-		"backgroundColor": "#f7f7f7",
-		"color": "#686868",
-		"selectedColor": "#fb873c",
-		"borderStyle": "white",
-		"list": [
-			{
-				"pagePath": "pages/index/index",
-				"text": "首页",
-				"iconPath": "images/tab_inter@2x.png",
-				"selectedIconPath": "images/tab_inter_click@2x.png"
-			},
-			{
-				"pagePath": "pages/menu/menu",
-				"text": "跑腿",
-				"iconPath": "images/tab_run@2x.png",
-				"selectedIconPath": "images/run_click@2x.png"
-			},
-			{
-				"pagePath": "pages/user/user",
-				"text": "我的",
-				"iconPath": "images/tab_user@2x.png",
-				"selectedIconPath": "images/tab_user_click@2x.png"
-			}
-		]
-	}
+    "pages": [
+        "pages/takeOut/takeOut",
+        "pages/user/user",
+        "pages/menu/menu",
+        "pages/index/index",
+        "pages/logs/logs"
+    ],
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTitleText": "佰分",
+        "navigationBarTextStyle": "black"
+    },
+    "tabBar": {
+        "backgroundColor": "#f7f7f7",
+        "color": "#686868",
+        "selectedColor": "#fb873c",
+        "borderStyle": "white",
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "text": "首页",
+                "iconPath": "images/tab_inter@2x.png",
+                "selectedIconPath": "images/tab_inter_click@2x.png"
+            },
+            {
+                "pagePath": "pages/takeOut/takeOut",
+                "text": "跑腿",
+                "iconPath": "images/tab_run@2x.png",
+                "selectedIconPath": "images/run_click@2x.png"
+            },
+            {
+                "pagePath": "pages/user/user",
+                "text": "我的",
+                "iconPath": "images/tab_user@2x.png",
+                "selectedIconPath": "images/tab_user_click@2x.png"
+            }
+        ]
+    }
 }

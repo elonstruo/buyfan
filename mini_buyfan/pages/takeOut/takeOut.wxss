@@ -1,0 +1,23 @@
+/* pages/takeOut/takeOut.wxss */
+
+.img-order {
+    width: 180rpx;
+    height: 180rpx;
+}
+
+.none-title {
+    color: #323232;
+    font-size: 30rpx;
+    text-align: center;
+}
+
+.take-order {
+    width: 213rpx;
+    height: 68rpx;
+    line-height: 68rpx;
+	text-align: center;
+	color: #FF6816;
+	font-size:30rpx;
+    border: 1rpx solid rgba(255, 104, 22, 1);
+    border-radius: 34rpx;
+}

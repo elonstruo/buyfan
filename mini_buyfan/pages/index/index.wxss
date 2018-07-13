@@ -78,6 +78,9 @@ swiper-item {
     height: 236rpx;
     background: rgba(248, 216, 127, 1);
 }
+.litemt {
+	background: #FBEBBB;
+}
 
 .sitem {
     /* flex: 1;  */

@@ -1,1 +1,170 @@
 /* pages/user/user.wxss */
+
+page {
+    position: relative;
+    min-height: 100vh;
+    height: 100vh;
+    background-color: #efefef;
+    /* padding-bottom: 100rpx; */
+}
+
+.user-card {
+    height: 300rpx;
+    background: rgba(244, 189, 65, 1);
+    padding-top: 20rpx;
+    box-sizing: border-box;
+    /* border-bottom-left-radius: 100rpx; *//* border-bottom-right-radius: 100rpx; */
+}
+
+.header-box {
+    margin: 0 auto;
+    border: 1rpx solid #fff;
+}
+
+.header-box, .header {
+    width: 140rpx;
+    height: 140rpx;
+    border-radius: 50%;
+}
+
+.user-name {
+    margin-top: 30rpx;
+    font-size: 30rpx;
+    color: #fff;
+    text-align: center;
+}
+
+.user-info {
+    margin-top: -20rpx;
+    margin-bottom: 20rpx;
+    height: 160rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+}
+
+.line {
+    width: 1rpx;
+    height: 60rpx;
+    background: rgba(240, 240, 240, 1);
+}
+
+.user-info .item {
+    flex: 1;
+    text-align: center;
+}
+
+.user-info .num {
+    font-size: 36rpx;
+    color: #f4bd41;
+    font-weight: bold;
+}
+
+.user-info .title {
+    margin-top: 20rpx;
+    font-size: 24rpx;
+    color: #888;
+}
+
+.order {
+    height: 220rpx;
+    background-color: #fff;
+}
+
+.order-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24rpx;
+    padding-right: 20rpx;
+}
+
+.order-title .title {
+    font-size: 28rpx;
+    color: #323232;
+}
+
+.order-title .to-order {
+    font-size: 20rpx;
+    color: #bfbfbf;
+}
+
+.order .items {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.order .item {
+    flex: 1;
+    font-size: 24rpx;
+    color: #323232;
+}
+
+.icon-order {
+    width: 44rpx;
+    height: 44rpx;
+    margin-bottom: 18rpx;
+}
+
+.right-arrow {
+    width: 15rpx;
+    height: 26rpx;
+    margin-left: 10rpx;
+    vertical-align: middle;
+}
+
+.toolbar .right-arrow {
+    position: absolute;
+    top: 50%;
+    margin-top: -13rpx;
+    right: 0;
+}
+
+.toolbar {
+    padding: 0 20rpx;
+    margin: 20rpx 0;
+    background-color: #fff;
+}
+
+.toolbar .item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100rpx;
+    line-height: 100rpx;
+    border-bottom: 1rpx solid rgba(220, 220, 220, 1);
+    font-size: 30rpx;
+    color: #323232;
+}
+
+.toolbar .item:last-child {
+    border-bottom: none;
+}
+
+.icon-toolbar {
+    width: 40rpx;
+    height: 40rpx;
+    margin-right: 20rpx;
+}
+
+.getUserInfo {
+    position: absolute;
+    width: 100%;
+    height: 80rpx;
+    line-height: 80rpx;
+    box-sizing: border-box;
+    border-radius: 0;
+    border-top: 1rpx solid #dcdcdc;
+    border-bottom: 1rpx solid #dcdcdc;
+    background: rgba(255, 255, 255, 1);
+    font-size: 30rpx;
+    text-align: center;
+    color: #888;
+}
+
+.getUserInfo::after {
+    border-radius: none;
+    border: none;
+}

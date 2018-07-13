@@ -59,7 +59,7 @@
         </view>
     </view>
     <view class='clms'>
-        <view class='litem'>
+        <view class='litem litemt'>
             <view class='flex-wrapper '>
                 <image src='../../images/index_coupon@2x.png' class='icon-index'></image>
                 <view class='menu-title'>美食外卖</view>
