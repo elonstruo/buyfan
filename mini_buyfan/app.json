@@ -1,5 +1,6 @@
 {
     "pages": [
+        "pages/orders/orders",
         "pages/takeOut/takeOut",
         "pages/user/user",
         "pages/menu/menu",

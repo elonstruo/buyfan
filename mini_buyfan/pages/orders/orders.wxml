@@ -1,0 +1,42 @@
+<!--pages/orders/orders.wxml-->
+<view class='order-tab'>
+    <view data-id="0" class='item {{activeId == 0 ? "on" : "" }}' bindtap='orderTab'>
+        <text>全部</text>
+    </view>
+    <view data-id="1" class='item {{activeId == 1 ? "on" : "" }}' bindtap='orderTab'>
+        <text>处理中</text>
+    </view>
+    <view data-id="2" class='item {{activeId == 2 ? "on" : "" }}' bindtap='orderTab'>
+        <text>配送中</text>
+    </view>
+    <view data-id="3" class='item {{activeId == 3 ? "on" : "" }}' bindtap='orderTab'>
+        <text>已完成</text>
+    </view>
+    <view data-id="4" class='item {{activeId == 4 ? "on" : "" }}' bindtap='orderTab'>
+        <text>已退款</text>
+    </view>
+</view>
+<view class='order-details'>
+    <view class='item'>
+        <view class='tit'>
+            <view class='left'>
+                <image src='' class='icon-store'></image>
+                <view class='store-name'>佰分江南店</view>
+            </view>
+            <view class='state'>处理中</view>
+        </view>
+        <view class='goods-list'>
+            <view class='goods'>
+                <view class='name'>樱花碧根果奶缇</view>
+                <view class='num'>x1</view>
+            </view>
+            <view class='goods'>
+                <view class='name'>樱花碧根果奶缇</view>
+                <view class='num'>x1</view>
+            </view>
+			<view class='settle'>共1件商品,实付<text class='price'>¥16.00</text></view>
+        </view>
+		<view class='handle'>申请退款</view>
+    </view>
+
+</view>

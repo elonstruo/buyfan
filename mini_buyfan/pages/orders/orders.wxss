@@ -1,0 +1,90 @@
+/* pages/orders/orders.wxss */
+
+.order-tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20rpx;
+    background: rgba(255, 255, 255, 1);
+}
+
+.order-tab .item {
+    flex: 1;
+    text-align: center;
+    font-size: 28rpx;
+    color: #686868;
+}
+
+.order-tab .item text {
+    display: block;
+    padding: 25rpx 0;
+}
+
+.order-tab .item.on text {
+    border-bottom: 4rpx solid #ff6816;
+}
+
+.icon-store {
+    width: 40rpx;
+    height: 40rpx;
+    margin-right: 20rpx;
+}
+
+.order-details .item {
+    padding-left: 30rpx;
+    padding-right: 20rpx;
+    margin-bottom: 20rpx;
+    color: #686868;
+    font-size: 28rpx;
+}
+
+.order-details .item .tit {
+    padding: 20rpx 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-details .item .tit .left {
+    display: flex;
+}
+
+.goods {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30rpx;
+}
+
+.order-details .item .tit .store-name {
+    font-size: 36rpx;
+    color: #323232;
+    font-weight: bold;
+}
+
+.goods-list {
+    padding-left: 60rpx;
+    padding-top: 30rpx;
+    border-top: 1rpx solid rgba(220, 220, 220, 1);
+    border-bottom: 1rpx solid rgba(220, 220, 220, 1);
+}
+
+.settle {
+    text-align: right;
+    margin-bottom: 20rpx;
+}
+
+.settle .price {
+    color: #323232;
+    font-weight: bold;
+}
+
+.handle {
+	/* display: inline-block; */
+    margin: 20rpx 0;
+    width: 174rpx;
+    height: 72rpx;
+    line-height: 72rpx;
+	text-align: center;
+    color: #F4BD41;
+	border: 1rpx solid #F4BD41;
+    border-radius: 4rpx;
+}
