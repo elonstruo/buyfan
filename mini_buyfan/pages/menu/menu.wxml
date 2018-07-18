@@ -42,21 +42,27 @@
             </view>
         </view>
         <view class='items'>
-            <view class='item' bindtap='select_bycondi' hover-class='on' wx:for-items="{{list}}" wx:key="{{index}}" data-id="{{index}}">{{item}}</view>
-			<view class='item'>
-				<view class='img-shop'>
-					<image mode='aspectFill' class='img-shop' src='../../images/shopimg.jpg'></image>
-				</view>
-				<view class='info-shop'>
-					<view class='name'>樱花碧根果奶缇</view>
-					<view class='detation'>营养极高的碧根果牛奶搭配淡淡香气的营养极高的碧根果牛奶搭配淡淡香气的</view>
-					<view class='sale'>月售 444</view>
-					<view class='price'></view>
-				</view>
-				<view class='choose'>
-					<view>选规格</view>
-				</view>
-			</view>
+            <view class='tag'>热销</view>
+            <view class='item' bindtap='select_bycondi' hover-class='on' wx:for-items="{{list}}" wx:key="{{index}}" data-id="{{index}}">
+                <view class='img-shop'>
+                    <image mode='aspectFill' class='img-shop' src='{{item.img}}'></image>
+                </view>
+                <view class='info-shop'>
+                    <view class='name'>{{item.name}}</view>
+                    <view class='description'>{{item.description}}</view>
+                    <view class='sale'>月售{{item.sale}}</view>
+                    <view class='price'>¥{{item.price}}</view>
+                </view>
+                <!-- <view class='choose'>
+                    <view class='choose-num'>1</view>
+                    <view>选规格</view>
+                </view> -->
+                <view class="cart-count-box">
+                    <text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-obj="{{obj}}" data-index="{{index}}">-</text>
+                    <text class="cart-count-num">{{item.num}}</text>
+                    <text class="cart-count-wrap cart-count-add" bindtap="addCount" data-index="{{index}}">+</text>
+                </view>
+            </view>
         </view>
     </view>
 </view>

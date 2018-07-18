@@ -34,22 +34,22 @@
     </view>
 </view>
 <view class='clm-top'>
-    <view class='litem'>
+    <navigator url='../../pages/menu/menu' class='litem'>
         <view class='flex-wrapper '>
             <view class='image-box'>
                 <image src='../../images/index_taemilk@2x.png' class='icon-index'></image>
                 <view class='menu-title'>美食外賣</view>
             </view>
         </view>
-    </view>
-    <view class='sitem'>
+    </navigator>
+    <navigator url='../../pages/menu/menu' class='sitem'>
         <view class='flex-wrapper '>
             <view class='image-box'>
                 <image src='../../images/order@2x.png' class='icon-index'></image>
                 <view class='menu-title'>到店下单</view>
             </view>
         </view>
-    </view>
+    </navigator>
 </view>
 <view class='clm-bottom'>
     <view class='hitem'>

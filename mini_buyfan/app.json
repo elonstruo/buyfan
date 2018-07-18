@@ -1,14 +1,14 @@
 {
     "pages": [
         "pages/order-details/order-details",
+        "pages/index/index",
+        "pages/menu/menu",
         "pages/orders/orders",
         "pages/vip/vip",
-        "pages/index/index",
         "pages/edtiAddress/edtiAddress",
         "pages/address/address",
         "pages/user/user",
         "pages/takeOut/takeOut",
-        "pages/menu/menu",
         "pages/logs/logs",
         "pages/appraise/appraise"
     ],
