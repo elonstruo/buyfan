@@ -1,11 +1,12 @@
-// pages/user/user.js
+// pages/address/address.js
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
-
+		isAddress: false,
+		toAddress: true,
     },
 
     /**
@@ -15,11 +16,10 @@ Page({
 
     },
 	toAddress: function () {
-		wx.navigateTo({
-			url: '../../pages/address/address',
-			success: function(res) {},
-			fail: function(res) {},
-			complete: function(res) {},
+		var that = this;
+		that.setData({
+			isAddress: false,
+			toAddress: true,
 		})
 	},
     /**

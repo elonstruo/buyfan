@@ -20,7 +20,7 @@
     <view class='item'>
         <view class='tit'>
             <view class='left'>
-                <image src='' class='icon-store'></image>
+                <image src='../../images/store@2x.png' class='icon-store'></image>
                 <view class='store-name'>佰分江南店</view>
             </view>
             <view class='state'>处理中</view>
@@ -36,7 +36,10 @@
             </view>
 			<view class='settle'>共1件商品,实付<text class='price'>¥16.00</text></view>
         </view>
-		<view class='handle'>申请退款</view>
+		<view class='handle-box'>
+			<view class='delete handle'>删除订单</view>
+			<view class='refund handle'>申请退款</view>
+			<view class='appraise handle'>评价</view>
+		</view>
     </view>
-
 </view>

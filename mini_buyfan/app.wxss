@@ -8,3 +8,30 @@
   padding: 200rpx 0;
   box-sizing: border-box;
 } 
+
+.handle {
+	display: inline-block; 
+    margin: 20rpx 0;
+	margin-left: 10rpx;
+    width: 174rpx;
+    height: 72rpx;
+    line-height: 72rpx;
+	text-align: center;
+    border-radius: 4rpx;
+}
+.handle-box {
+	text-align: right;
+	font-size: 28rpx;
+}
+.delete {
+	color: #AAAAAA;
+	border: 1rpx solid #AAAAAA;
+}
+.refund {
+    color: #F4BD41;
+	border: 1rpx solid #F4BD41;
+}
+.appraise {
+	color: #FF6816;
+	border: 1rpx solid #FF6816;
+}

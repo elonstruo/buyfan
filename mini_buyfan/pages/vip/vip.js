@@ -1,11 +1,12 @@
-// pages/user/user.js
+// pages/vip/vip.js
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
-
+		isVIPNo: true,
+		isVIPYes: true,
     },
 
     /**
@@ -14,14 +15,7 @@ Page({
     onLoad: function(options) {
 
     },
-	toAddress: function () {
-		wx.navigateTo({
-			url: '../../pages/address/address',
-			success: function(res) {},
-			fail: function(res) {},
-			complete: function(res) {},
-		})
-	},
+
     /**
      * 生命周期函数--监听页面初次渲染完成
      */

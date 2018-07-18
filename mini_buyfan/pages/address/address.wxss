@@ -1,0 +1,85 @@
+/* pages/address/address.wxss */
+@import "../takeOut/takeOut.wxss";
+
+.none-title {
+    margin-top: 37rpx;
+    color: #aaa;
+}
+
+.img-order {
+    width: 240rpx;
+    height: 240rpx;
+}
+
+.take-order {
+    width: 240rpx;
+    height: 72rpx;
+    /* background: rgba(251, 134, 30, 1); */
+    background: #fff;
+    border-radius: 10rpx;
+}
+
+.take-order-hover {
+    background: rgba(255, 104, 22, 1);
+    color: #fff;
+}
+
+.icon-edti {
+    width: 40rpx;
+    height: 40rpx;
+}
+
+.toAddress {
+	/* min-height: 100vh; */
+    padding: 0 30rpx;
+}
+
+.toAddress .item {
+    padding: 30rpx 0;
+    border-bottom: 1rpx solid #dcdcdc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.toAddress .item:last-child {
+    border-bottom: none;
+}
+
+.address-title {
+    margin-bottom: 24rpx;
+    font-size: 24rpx;
+    color: #323232;
+}
+
+.name {
+    margin-right: 40rpx;
+    font-size: 30rpx;
+    color: #323232;
+    font-weight: bold;
+}
+
+.number {
+    font-size: 30rpx;
+    color: #323232;
+}
+
+.address-info {
+    display: flex;
+}
+
+.addressButton {
+	/* position: absolute;
+	bottom: 10rpx; */
+    width: 640rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+	/* left: 50%;
+	margin-left: -320rpx; */
+	margin: 10rpx auto;
+	color: #fff;
+	text-align: center;
+    background: rgba(251, 135, 60, 1);
+    border-radius: 50rpx;
+	font-size: 30rpx; 
+}

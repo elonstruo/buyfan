@@ -1,0 +1,138 @@
+/* pages/order-details/order-details.wxss */
+page {
+	background:rgba(247,247,247,1);
+}
+.wrapper {
+	padding: 20rpx;
+}
+.tit {
+	padding: 0 20rpx;
+	justify-content: space-between;
+	align-items: center;
+	height: 90rpx;
+	background: #fff;
+}
+.tit .right {
+	color: #686868;
+	font-size: 28rpx;
+}
+.tit .left {
+	color: #323232;
+	font-size: 36rpx;
+	font-weight: bold;
+}
+.tit, .tit .left {
+	display: flex;
+}
+.goods-list .item {
+	display: flex;
+	padding: 20rpx;
+	border-bottom: 10rpx solid #fff;
+}
+.goods-list .item:last-child {
+	border-bottom: none;
+}
+.goods-list .item .top {
+	display: flex;
+	justify-content: space-between;
+}
+.img-goods {
+    width: 109rpx;
+    height: 110rpx;
+	margin-right: 20rpx;
+}
+.icon-store {
+	width: 40rpx;
+	height: 40rpx;
+	margin-right: 20rpx;
+}
+.item .name {
+	font-size: 30rpx;
+	color: #323232;
+}
+.item .price {
+	color: #323232;
+	font-size: 28rpx;
+}
+.item .num {
+	margin-top: 10rpx;
+	font-size: 24rpx;
+	color: #AAAAAA;
+}
+.item .right {
+	width: 560rpx;
+}
+.add {
+	height: 80rpx;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 28rpx;
+	color: #323232;
+	background-color: #fff;
+	border-bottom: 1rpx dashed #DCDCDC;
+}
+.alladd {
+	height: 100rpx;
+	line-height: 100rpx;
+	text-align: right;
+	border-bottom: 1rpx dashed #DCDCDC;
+	background-color: #fff;
+	color: #686868;
+	font-size: 28rpx;
+}
+.alladd text {
+	color: #FF6816;
+	font-weight: bold;
+}
+.handle-box {
+	padding: 16rpx 0;
+	background-color: #fff;
+}
+.tool-box {
+	padding: 0 20rpx;
+	background-color: #fff;
+}
+.order-box {
+	margin-bottom: 20rpx;
+}
+.take-out {
+	background-color: #fff;
+}
+.take-out .item {
+	min-height: 90rpx;
+	display: flex;
+	align-items: center;
+	margin: 0 30rpx;
+}
+.take-out .item:first-child {
+	padding: 14rpx 0;
+}
+.take-out .item:first-child {
+	font-size: 28rpx
+
+}
+.take-out .item:nth-of-type(2) {
+	border-top: 1rpx dashed #DCDCDC;
+	border-bottom: 1rpx dashed #DCDCDC;
+}
+.take-out .address {
+	font-size: 24rpx;
+}
+.take-out .item .right .info {
+	display: flex;
+	margin-bottom: 8rpx;
+}
+.take-out .item .right .info .name {
+	margin-right: 10rpx;
+}
+.take-out .item .left {
+	width: 140rpx;
+	color: #aaa;
+	font-size: 24rpx;
+}
+
+.take-out .item .right {
+	color: #323232;
+	font-size: 28rpx;
+}

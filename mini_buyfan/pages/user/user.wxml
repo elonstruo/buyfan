@@ -1,75 +1,78 @@
 <!--pages/user/user.wxml-->
 <view class='user-card'>
-	<view class='header-box'>
-		<image class='header' src=''></image>
-	</view>
-	<view class='user-name'>秋名山车神你个头</view>
+    <view class='header-box'>
+        <image class='header' src=''></image>
+    </view>
+    <view class='user-name'>秋名山车神你个头</view>
 </view>
 <view class='user-info'>
-	<view class='item'>
-		<view class='num'>0</view>
-		<view class='title'>优惠券</view>
-	</view>
-	<view class='line'></view>
-	<view class='item'>
-		<view class='num'>0.00</view>
-		<view class='title'>余额</view>
-	</view>
-	<view class='line'></view>
-	<view class='item'>
-		<view class='num'>0</view>
-		<view class='title'>积分</view>
-	</view>
+    <view class='item'>
+        <view class='num'>0</view>
+        <view class='title'>优惠券</view>
+    </view>
+    <view class='line'></view>
+    <view class='item'>
+        <view class='num'>0.00</view>
+        <view class='title'>余额</view>
+    </view>
+    <view class='line'></view>
+    <view class='item'>
+        <view class='num'>0</view>
+        <view class='title'>积分</view>
+    </view>
 </view>
 <view class='order'>
-	<view class='order-title'>
-		<view class='title'>我的订单</view>
-		<navigator class='to-order'>
-			查看全部订单
-		<image class='right-arrow' src='../../images/in@2x.png'></image>
-			
-		</navigator>
-	</view>
-	<view class='items'>
-		<view class='item'>
-			<view class='img-box'>
-				<image class='icon-order' src='../../images/user_deal@2x.png'></image>
-			</view>	
-			<view>待处理</view>
-		</view>
-		<view class='item'>
-			<view class='img-box'>
-				<image class='icon-order' src='../../images/user_distribution@2x.png'></image>
-			</view>	
-			<view>配送制作中</view>
-		</view>
-		<view class='item'>
-			<view class='img-box'>
-				<image class='icon-order' src='../../images/user_complete@2x.png'></image>
-			</view>	
-			<view>已完成</view>
-		</view>
-		<view class='item'>
-			<view class='img-box'>
-				<image class='icon-order' src='../../images/user_refund@2x.png'></image>
-			</view>	
-			<view>已退款</view>
-		</view>
-	</view>
+    <view class='order-title'>
+        <view class='title'>我的订单</view>
+        <navigator class='to-order' url='../../pages/orders/orders'>
+            查看全部订单
+            <image class='right-arrow' src='../../images/in@2x.png'></image>
+        </navigator>
+    </view>
+    <view class='items'>
+        <view class='item'>
+            <view class='img-box'>
+                <text class='number'>1</text>
+                <image class='icon-order' src='../../images/user_deal@2x.png'></image>
+            </view>
+            <view>待处理</view>
+        </view>
+        <view class='item'>
+            <view class='img-box'>
+                <text class='number'>1</text>
+                <image class='icon-order' src='../../images/user_distribution@2x.png'></image>
+            </view>
+            <view>配送制作中</view>
+        </view>
+        <view class='item'>
+            <view class='img-box'>
+                <text class='number'>1</text>
+                <image class='icon-order' src='../../images/user_complete@2x.png'></image>
+            </view>
+            <view>已完成</view>
+        </view>
+        <view class='item'>
+            <view class='img-box'>
+                <text class='number'>1</text>
+                <image class='icon-order' src='../../images/user_refund@2x.png'></image>
+            </view>
+            <view>已退款</view>
+        </view>
+    </view>
 </view>
 <view class='toolbar'>
-	<view class='item'>
-		<image class='icon-toolbar' src='../../images/user_adress@2x.png'></image>
-		<view class='title'>我的收货地址</view>
-		<image class='right-arrow' src='../../images/in@2x.png'></image>
-	</view>
-	<view class='item'>
-		<image class='icon-toolbar' src='../../images/user_phone@2x.png'></image>
-		<view class='title'>联系电话：15500000000</view>
-	</view>
-	<view class='item'>
-		<image class='icon-toolbar' src='../../images/user_open@2x.png'></image>
-		<view class='title'>配送时间：10:30—22:30</view>
-	</view>
+    <view class='item' bindtap='toAddress'>
+        <image class='icon-toolbar' src='../../images/user_adress@2x.png'></image>
+        <view class='title'>我的收货地址</view>
+        <image class='right-arrow' src='../../images/in@2x.png'></image>
+    </view>
+    <view class='item'>
+        <image class='icon-toolbar' src='../../images/user_phone@2x.png'></image>
+        <view class='title'>联系电话：15500000000</view>
+    </view>
+    <view class='item'>
+        <image class='icon-toolbar' src='../../images/user_open@2x.png'></image>
+        <view class='title'>配送时间：10:30—22:30</view>
+    </view>
 </view>
 <button class='getUserInfo' open-type='getUserInfo'>重新授权</button>

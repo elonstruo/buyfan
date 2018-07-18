@@ -65,11 +65,11 @@
                 <view class='menu-title'>美食外卖</view>
             </view>
         </view>
-        <view class='litem'>
-            <view class='flex-wrapper '>
+        <navigator class='litem' url='../../pages/vip/vip'>
+            <view class='flex-wrapper'>
                 <image src='../../images/index_vip@2x.png' class='icon-index'></image>
                 <view class='menu-title'>会员专区</view>
             </view>
-        </view>
+        </navigator>
     </view>
 </view>

@@ -101,11 +101,27 @@ page {
     font-size: 24rpx;
     color: #323232;
 }
-
+.order .item .img-box {
+	position: relative;
+}
+.order .item .img-box .number {
+	position: absolute;
+	top: 23rpx;
+	right: 65rpx;
+	display: block;
+	width: 20rpx;
+	height: 20rpx;
+	line-height: 20rpx;
+	text-align: center;
+	color: #fff;
+	font-size: 18rpx;
+	background-color: #FF0000;
+	border-radius: 50rpx;
+}
 .icon-order {
     width: 44rpx;
     height: 44rpx;
-    margin-bottom: 18rpx;
+    margin-bottom: 16rpx;
 }
 
 .right-arrow {

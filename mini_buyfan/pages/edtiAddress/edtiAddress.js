@@ -1,11 +1,16 @@
-// pages/user/user.js
+// pages/edtiAddress/edtiAddress.js
+
+const app = getApp();
+
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
-
+		region: [],
+		customItem: '全部',
+		isRegion: true
     },
 
     /**
@@ -14,12 +19,16 @@ Page({
     onLoad: function(options) {
 
     },
-	toAddress: function () {
-		wx.navigateTo({
-			url: '../../pages/address/address',
-			success: function(res) {},
-			fail: function(res) {},
-			complete: function(res) {},
+	edtiAddress: function (e) {
+		console.log('form发生了submit事件，携带数据为：', e.detail.value);
+		app.loadingBox("保存中")
+	},
+	bindRegionChange: function (e) {
+		var that = this;
+		// console.log('picker发送选择改变，携带值为', e.detail.value)
+		that.setData({
+			region: e.detail.value,
+			isRegion: false,
 		})
 	},
     /**

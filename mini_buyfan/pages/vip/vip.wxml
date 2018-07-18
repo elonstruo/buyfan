@@ -1,0 +1,41 @@
+<!--pages/vip/vip.wxml-->
+<view class='vip-card vipno' wx:if="{{isVIPNo}}">
+	<image class='img-vip' src='../../images/vip_no@2x.png'></image>
+	<view class='open-vip'>开通会员</view>
+	<view class='vipno-title'>首次充值100元可自动激活会员卡功能</view>
+</view>
+<view class='vip-card vipno vipyes' wx:if="{{isVIPYes}}">
+	<image class='img-vip' src='../../images/vip_yes@2x.png'></image>
+</view>
+<view class='top-up'>
+	<view class='title'>会员充值</view>
+	<view class='items'>
+		<view class='item'>
+			<view>会员单次充值</view>
+			<view>充值<text>100</text>元,赠送<text>10</text>元</view>
+			<view class='button-topup' hover-class='button-topup-hover'>充值100</view>
+		</view>
+		<view class='item'>
+			<view>会员单次充值</view>
+			<view>充值<text>200</text>元,赠送<text>30</text>元</view>
+			<view class='button-topup' hover-class='button-topup-hover'>充值200</view>
+		</view>
+	</view>
+</view>
+<view class='top-up rights'>
+	<view class='title'>会员权益</view>
+	<view class='items'>
+		<view class='item'>
+			<image class='icon-rights' src='../../images/discount@2x.png'></image>
+			<view>购买优惠</view>
+		</view>
+		<view class='item'>
+			<image class='icon-rights' src='../../images/charge@2x.png'></image>
+			<view>充值优惠</view>
+		</view>
+		<view class='item'>
+			<image class='icon-rights' src='../../images/integral@2x.png'></image>
+			<view>积分福利</view>
+		</view>
+	</view>
+</view>

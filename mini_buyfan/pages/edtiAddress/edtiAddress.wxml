@@ -1,0 +1,26 @@
+<!--pages/edtiAddress/edtiAddress.wxml-->
+<form bindsubmit='edtiAddress'>
+    <view class='address-form'>
+        <view class='input-box'>
+            <view class='title'>联系人</view>
+            <input class='name' value='王小明' name="name"></input>
+        </view>
+        <view class='input-box'>
+            <view class='title'>手机号</view>
+            <input class='name' value='15602268325' name="phone"></input>
+        </view>
+        <view class='input-box'>
+            <view class='title'>所在地址</view>
+            <view class="section">
+                <picker name="region" mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+                    <view class='label' wx:if="{{isRegion}}">选择所在地区</view>
+                    <view class="picker">{{region[0]}} {{region[1]}} {{region[2]}}
+                    </view>
+                </picker>
+                <image class='right-arrow' src='../../images/in@2x.png'></image>
+            </view>
+        </view>
+        <textarea class='address-info' placeholder='请输入详细地址' placeholder-class='address-info-hover'></textarea>
+    </view>
+	<button formType='submit' class='addressButton'>保存</button>
+</form>

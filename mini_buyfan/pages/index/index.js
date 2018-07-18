@@ -33,6 +33,14 @@ Page({
             url: '../logs/logs'
         })
     },
+	toVIP: function () {
+		wx.navigateTo({
+			url: '../vip/vip',
+			success: function(res) {},
+			fail: function(res) {},
+			complete: function(res) {},
+		})
+	},
     onLoad: function() {
 		var that = this;
 
