@@ -1,6 +1,7 @@
 /* pages/menu/menu.wxss */
 
 page {
+    padding-bottom: 80rpx;
     background: rgba(247, 248, 250, 1);
 }
 
@@ -160,8 +161,8 @@ page {
 
 .choose-num {
     position: absolute;
-    top: -12rpx;
-    right: -12rpx;
+    top: -9rpx;
+    right: -9rpx;
     min-width: 30rpx;
     height: 30rpx;
     line-height: 30rpx;
@@ -172,7 +173,7 @@ page {
     border-radius: 50rpx;
 }
 
-.item .name {
+.info-shop .item .name {
     width: 354rpx;
     margin-top: -5rpx;
     overflow: hidden;
@@ -201,6 +202,7 @@ page {
 }
 
 .item .price {
+    margin-top: 14rpx;
     font-size: 30rpx;
     color: #fb873d;
     font-weight: bold;
@@ -224,18 +226,151 @@ page {
     height: 48rpx;
     border-radius: 50%;
     text-align: center;
-
 }
+
 .cart-count-add {
     line-height: 48rpx;
     background: rgba(250, 209, 119, 1);
     color: #323232;
 }
+
 .cart-count-down {
     line-height: 40rpx;
-    border: 1rpx solid #CCCCCC;
-    color: #CCCCCC;
+    border: 1rpx solid #ccc;
+    color: #ccc;
 }
+
 .cart-count-num {
     width: 60rpx;
+}
+
+.stores {
+    font-size: 28rpx;
+    color: #323232;
+}
+
+.stores .item {
+    margin-top: 20rpx;
+    background-color: #fff;
+}
+
+.stores .title {
+    position: relative;
+    margin-top: 20rpx;
+    padding-left: 50rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    border-bottom: 1rpx solid #dcdcdc;
+    background-color: #fff;
+}
+
+.stores .title text {
+    display: block;
+    position: absolute;
+    left: 20rpx;
+    top: 50%;
+    margin-top: -18rpx;
+    width: 4rpx;
+    height: 36rpx;
+    background: rgba(251, 135, 61, 1);
+}
+
+.icon-stores {
+    margin: 0 22rpx;
+    width: 40rpx;
+    height: 40rpx;
+}
+
+.stores-info {
+    display: flex;
+    align-items: center;
+    height: 90rpx;
+}
+
+.scroll-view_H {
+    white-space: nowrap;
+}
+
+.page-section-spacing {
+    padding-top: 20rpx;
+    padding-bottom: 42rpx;
+}
+
+.scroll-view-item_H {
+    margin-left: 20rpx;
+    display: inline-block;
+    width: 150rpx;
+    height: 150rpx;
+}
+
+.scroll-view-item_H:last-of-type {
+    margin-right: 20rpx;
+}
+
+.store-img {
+    width: 150rpx;
+    height: 150rpx;
+}
+
+.scroll-view-item_H.on, .scroll-view-item_H.on image {
+    display: block;
+    margin: 0 auto;
+    width: 690rpx;
+    height: 432rpx;
+}
+
+.appraises-titles {
+    display: flex;
+    margin: 20rpx 0;
+    height: 90rpx;
+    line-height: 90rpx;
+    background-color: #fff;
+}
+
+.appraises-title {
+    flex: 1;
+    font-size: 30rpx;
+    color: #909090;
+    text-align: center;
+}
+
+.appraises-title.on {
+    color: #ff5c00;
+}
+
+.appraisesTabDetails {
+	background-color: #fff;
+}
+.appraisesTabDetails .item {
+	display: flex;
+	padding: 0 30rpx;
+	padding-bottom: 30rpx;
+}
+.appraisesTabDetails .header {
+    width: 80rpx;
+    height: 80rpx;
+	margin-top: 20rpx;
+	margin-right: 20rpx;
+	border-radius: 50%;
+}
+.appraisesTabDetails .right {
+	width: 620rpx;
+}
+.appraisesTabDetails .top {
+	height: 125rpx;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.appraisesTabDetails .name {
+	color: #323232;
+	font-size: 30rpx;
+}
+.appraisesTabDetails .time {
+	color: #AAAAAA;
+	font-size: 24rpx;
+}
+.appraisesTabDetails .content {
+	font-size: 26rpx;
+	color: #323232;
 }

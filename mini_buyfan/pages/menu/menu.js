@@ -1,12 +1,18 @@
 // pages/menu/menu.js
+var order = ['red', 'yellow', 'blue', 'green', 'red']
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
+		storesImgList: [
+			"../../images/shopimg.jpg",
+			"../../images/shopimg.jpg",
+		],
+		selectA: "1",
         activeCategoryId: "0",
-        selectedId: "1",
+        selectedId: "2",
         type_sort: ["特价", "销量好评", "商家推荐"],
         list: [
             {
@@ -26,19 +32,28 @@ Page({
         ],
 
     },
-
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function(options) {
-
+		var that = this;
+		console.log(that.data.storesImgList.length)
     },
+	scroll: function (e) {
+		console.log(e)
+	},
     tabClick: function(e) {
         var that = this;
         that.setData({
             selectedId: e.currentTarget.dataset.id
         });
-    },
+	},
+	appraisesClick: function (e) {
+		var that = this;
+		that.setData({
+			selectA: e.currentTarget.dataset.id
+		});
+	},
     categoryClick: function(e) {
         var that = this;
         console.log(e)

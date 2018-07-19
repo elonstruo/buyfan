@@ -1,16 +1,17 @@
 {
     "pages": [
-        "pages/order-details/order-details",
-        "pages/index/index",
-        "pages/menu/menu",
-        "pages/orders/orders",
-        "pages/vip/vip",
+		"pages/menu/menu",
+		"pages/appraise/appraise",
+		"pages/index/index",
+        "pages/takeOut/takeOut",
         "pages/edtiAddress/edtiAddress",
+        "pages/order-details/order-details",
+        "pages/vip/vip",
+        "pages/orders/orders",
         "pages/address/address",
         "pages/user/user",
-        "pages/takeOut/takeOut",
-        "pages/logs/logs",
-        "pages/appraise/appraise"
+		"pages/tem/tem",
+        "pages/logs/logs"
     ],
     "window": {
         "backgroundTextStyle": "light",

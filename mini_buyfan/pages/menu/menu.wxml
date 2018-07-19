@@ -53,14 +53,59 @@
                     <view class='sale'>月售{{item.sale}}</view>
                     <view class='price'>¥{{item.price}}</view>
                 </view>
-                <!-- <view class='choose'>
+                <view class='choose'>
                     <view class='choose-num'>1</view>
                     <view>选规格</view>
-                </view> -->
-                <view class="cart-count-box">
+                </view>
+                <!-- <view class="cart-count-box">
                     <text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-obj="{{obj}}" data-index="{{index}}">-</text>
                     <text class="cart-count-num">{{item.num}}</text>
                     <text class="cart-count-wrap cart-count-add" bindtap="addCount" data-index="{{index}}">+</text>
+                </view> -->
+            </view>
+        </view>
+    </view>
+    <view class='tabitem' wx:if="{{selectedId == 2}}">
+        <view class='appraises'>
+            <view class='appraises-titles'>
+                <view data-id='1' bindtap='appraisesClick' class='appraises-title {{selectA == 1 ? "on":""}}'>最新</view>
+                <view data-id='2' bindtap='appraisesClick' class='appraises-title {{selectA == 2 ? "on":""}}'>最热</view>
+            </view>
+			<view class='appraisesTabDetails'>
+				<view class='item'>
+					<image class='header' src='../../images/shopimg.jpg'></image>
+					<view class='right'>
+						<view class='top'>
+							<view class='name'>天下最弱</view>
+							<view class='time'>17小时前</view>
+						</view>
+						<view class='content'>告辞</view>
+					</view>
+				</view>
+			</view>
+        </view>
+    </view>
+    <view class='tabitem' wx:if="{{selectedId == 3}}">
+        <view class='stores'>
+            <view class='item'>
+                <view class='title'>
+                    <text></text>佰分江南店</view>
+                <view class='stores-info'>
+                    <image class='icon-stores' src='../../images/location@2x.png'></image>
+                    <view>榕城区江南新城东一路卜蜂莲花车库入口正对面</view>
+                </view>
+                <view class='stores-info'>
+                    <image class='icon-stores' src='../../images/call@2x.png'></image>
+                    <view>0663-8484818</view>
+                </view>
+                <view class='stores-img'>
+                    <view class="page-section-spacing">
+                        <scroll-view class="scroll-view_H" scroll-x="true" bindscroll="scroll" style="width: 100%">
+                            <view class='scroll-view-item_H {{storesImgList.length == 1 ? "on" :"" }}' wx:for="{{storesImgList}}">
+                                <image class='store-img' src='{{item}}'></image>
+                            </view>
+                        </scroll-view>
+                    </view>
                 </view>
             </view>
         </view>
