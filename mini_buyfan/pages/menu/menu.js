@@ -6,13 +6,21 @@ Page({
      * 页面的初始数据
      */
     data: {
+		hasAddCart: false,
+		hasLike: false,
+		likeNum: "",
 		storesImgList: [
+			"../../images/shopimg.jpg",
+			"../../images/shopimg.jpg",
+		],
+		appraisesImgList: [
+			"../../images/shopimg.jpg",
 			"../../images/shopimg.jpg",
 			"../../images/shopimg.jpg",
 		],
 		selectA: "1",
         activeCategoryId: "0",
-        selectedId: "2",
+        selectedId: "1",
         type_sort: ["特价", "销量好评", "商家推荐"],
         list: [
             {
@@ -39,6 +47,20 @@ Page({
 		var that = this;
 		console.log(that.data.storesImgList.length)
     },
+	likeClick: function(e) {
+		var that = this;
+		if (that.data.hasLike == false) {
+			that.setData({
+				likeNum: that.data.likeNum + 1,
+				hasLike: true
+			})	
+		} else {
+			that.setData({
+				likeNum: that.data.likeNum - 1,
+				hasLike: false
+			})	
+		}
+	},
 	scroll: function (e) {
 		console.log(e)
 	},
@@ -65,15 +87,17 @@ Page({
      * 绑定加数量事件
      */
     addCount(e) {
-        const index = e.currentTarget.dataset.index;
-        let carts = this.data.carts;
-        let num = carts[index].num;
-        num = num + 1;
-        carts[index].num = num;
-        this.setData({
-            carts: carts
+		var that = this;
+        // const index = e.currentTarget.dataset.index;
+        // let carts = this.data.carts;
+        // let num = carts[index].num;
+        // num = num + 1;
+        // carts[index].num = num;
+        that.setData({
+            // carts: carts,
+			hasAddCart: true
         });
-        this.getTotalPrice();
+        // this.getTotalPrice();
     },
 
     /**

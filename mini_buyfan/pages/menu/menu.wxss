@@ -159,7 +159,7 @@ page {
     text-align: center;
 }
 
-.choose-num {
+.carts-num, .choose-num {
     position: absolute;
     top: -9rpx;
     right: -9rpx;
@@ -173,7 +173,7 @@ page {
     border-radius: 50rpx;
 }
 
-.info-shop .item .name {
+.info-shop .name {
     width: 354rpx;
     margin-top: -5rpx;
     overflow: hidden;
@@ -339,38 +339,166 @@ page {
 }
 
 .appraisesTabDetails {
-	background-color: #fff;
+    background-color: #fff;
 }
+
 .appraisesTabDetails .item {
-	display: flex;
-	padding: 0 30rpx;
-	padding-bottom: 30rpx;
+    display: flex;
+    padding: 0 30rpx;
+    padding-bottom: 30rpx;
+    border-bottom: 1rpx solid #dcdcdc;
 }
+
 .appraisesTabDetails .header {
     width: 80rpx;
     height: 80rpx;
-	margin-top: 20rpx;
-	margin-right: 20rpx;
-	border-radius: 50%;
+    margin-top: 20rpx;
+    margin-right: 20rpx;
+    border-radius: 50%;
 }
+
 .appraisesTabDetails .right {
-	width: 620rpx;
+    width: 620rpx;
 }
+
 .appraisesTabDetails .top {
-	height: 125rpx;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+    height: 125rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
+
 .appraisesTabDetails .name {
-	color: #323232;
-	font-size: 30rpx;
+    color: #323232;
+    font-size: 30rpx;
 }
+
 .appraisesTabDetails .time {
-	color: #AAAAAA;
-	font-size: 24rpx;
+    color: #aaa;
+    font-size: 24rpx;
 }
+
 .appraisesTabDetails .content {
-	font-size: 26rpx;
-	color: #323232;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: 26rpx;
+    color: #323232;
+}
+
+.appraises .line {
+    color: #ccc;
+}
+
+.appraises-imgList {
+    display: flex;
+    margin-top: 10rpx;
+}
+
+.appraises-imgList image {
+    width: 100%;
+    max-width: 100%;
+    height: 160rpx;
+}
+
+.appraises-imgList image:nth-of-type(2) {
+    margin-left: 20rpx;
+    margin-right: 20rpx;
+}
+
+.like {
+    display: flex;
+    align-items: center;
+    height: 100rpx;
+}
+
+.icon-like {
+    width: 30rpx;
+    height: 30rpx;
+    margin-right: 14rpx;
+}
+
+.like-text {
+    color: #5a5c88;
+    font-size: 24rpx;
+}
+
+.carts-bar {
+    position: relative;
+    width: 100%;
+    height: 100rpx;
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #333;
+}
+
+.carts-bar .addall {
+    width: 220rpx;
+    height: 100rpx;
+    line-height: 100rpx;
+    text-align: center;
+    font-size: 30rpx;
+    color: #fff;
+    background: rgba(255, 104, 22, 1);
+}
+
+.icon-car {
+    display: block;
+    width: 60rpx;
+    height: 40rpx;
+}
+
+.carts-bar .car {
+    position: absolute;
+    top: -10rpx;
+    left: 30rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90rpx;
+    height: 90rpx;
+    background: rgba(251, 135, 61, 1);
+    border-radius: 50%;
+}
+
+.carts-num {
+    top: -3rpx;
+    right: -3rpx;
+}
+
+.all-price {
+    margin-left: 140rpx;
+    font-size: 36rpx;
+    color: #fff;
+}
+.carts-list {
+	width: 100%;
+	position: absolute;
+	top: -100rpx;
+}
+.carts-list .top {
+	display: flex;
+	padding: 0 25rpx;
+	align-items: center;
+	justify-content: flex-end;
+    height: 70rpx;
+    background: rgba(244, 244, 244, 1);
+	color: #686868;
+	font-size: 28rpx;
+}
+.icon-trash {
+	width: 24rpx;
+	height: 22rpx;
+	margin-right: 10rpx;
+}
+.carts-list .item {
+	display: flex;
+	font-size: 30rpx;
+	color: #000000;
 }

@@ -1,37 +1,57 @@
 /**app.wxss**/
+
 .container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 200rpx 0;
-  box-sizing: border-box;
-} 
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 200rpx 0;
+    box-sizing: border-box;
+}
 
 .handle {
-	display: inline-block; 
+    display: inline-block;
     margin: 20rpx 0;
-	margin-left: 10rpx;
+    margin-left: 10rpx;
     width: 174rpx;
     height: 72rpx;
     line-height: 72rpx;
-	text-align: center;
+    text-align: center;
     border-radius: 4rpx;
 }
+
 .handle-box {
-	text-align: right;
-	font-size: 28rpx;
+    text-align: right;
+    font-size: 28rpx;
 }
+
 .delete {
-	color: #AAAAAA;
-	border: 1rpx solid #AAAAAA;
+    color: #aaa;
+    border: 1rpx solid #aaa;
 }
+
 .refund {
-    color: #F4BD41;
-	border: 1rpx solid #F4BD41;
+    color: #f4bd41;
+    border: 1rpx solid #f4bd41;
 }
+
 .appraise {
-	color: #FF6816;
-	border: 1rpx solid #FF6816;
+    color: #ff6816;
+    border: 1rpx solid #ff6816;
+}
+
+.payButton {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+    height: 100rpx;
+    line-height: 100rpx;
+    background: rgba(77, 170, 51, 1);
+	color: #fff;
+	font-size: 36rpx;
+	text-align: center;
+}
+.payButton text {
+	font-weight: bold;
 }

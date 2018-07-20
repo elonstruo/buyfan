@@ -1,8 +1,9 @@
 {
     "pages": [
-		"pages/menu/menu",
-		"pages/appraise/appraise",
-		"pages/index/index",
+		"pages/order-submit/order-submit",
+        "pages/menu/menu",
+        "pages/index/index",
+        "pages/appraise/appraise",
         "pages/takeOut/takeOut",
         "pages/edtiAddress/edtiAddress",
         "pages/order-details/order-details",
@@ -10,7 +11,7 @@
         "pages/orders/orders",
         "pages/address/address",
         "pages/user/user",
-		"pages/tem/tem",
+        "pages/tem/tem",
         "pages/logs/logs"
     ],
     "window": {
