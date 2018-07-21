@@ -43,7 +43,30 @@
         </view>
         <view class='items'>
             <view class='tag'>热销</view>
-            <view class='item' bindtap='select_bycondi' hover-class='on' wx:for-items="{{list}}" wx:key="{{index}}" data-id="{{index}}">
+            <view class='item' bindtap='select_bycondi' hover-class='on' wx:for-items="{{list}}" wx:key="{{index}}" data-id="{{item.id}}" data-num="{{item.goodsnum}}">
+                <view class='img-shop'>
+                    <image mode='aspectFill' class='img-shop' src='{{item.img}}'></image>
+                </view>
+                <view class='info-shop'>
+                    <view class='name'>{{item.name}}</view>
+                    <view class='description'>{{item.description}}</view>
+                    <view class='sale'>月售{{item.sale}}</view>
+                    <view class='price'>¥{{item.price}}</view>
+                </view>
+                 <view class="cart-count-box" bindtap='addOne'>
+                    <text class="cart-count-wrap cart-count-add" bindtap="addCount" data-index="{{index}}" data-id="{{item.id}}">+</text>
+                </view>
+                <view class="cart-count-box">
+                    <text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-obj="{{obj}}" data-index="{{index}}" data-id="{{item.id}}" data-goodsnum="{{item.goodsnum}}">-</text>
+                    <text class="cart-count-num">{{item.goodsnum}}</text>
+                    <text class="cart-count-wrap cart-count-add" bindtap="addCount" data-index="{{index}}" data-id="{{item.id}}"data-goodsnum="{{item.goodsnum}}">+</text>
+                </view> 
+				<!-- <view class='choose'>
+                    <view class='choose-num'>{{item.goodsnum}}</view>
+                    <view>选规格</view>
+                </view>   -->
+            </view>
+            <!-- <view class='item' bindtap='select_bycondi' hover-class='on' wx:for-items="{{list}}" wx:key="{{index}}" data-id="{{item.id}}">
                 <view class='img-shop'>
                     <image mode='aspectFill' class='img-shop' src='{{item.img}}'></image>
                 </view>
@@ -56,68 +79,63 @@
                  <view class='choose'>
                     <view class='choose-num'>1</view>
                     <view>选规格</view>
-                </view> 
-                 <!-- <view class="cart-count-box">
-                    <text wx:if="{{hasAddCart}}" class="cart-count-wrap cart-count-down" bindtap="minusCount" data-obj="{{obj}}" data-index="{{index}}">-</text>
-                    <text wx:if="{{hasAddCart}}" class="cart-count-num">{{item.num}}</text>
-                    <text class="cart-count-wrap cart-count-add" bindtap="addCount" data-index="{{index}}">+</text>
-                </view>  -->
-            </view>
-        </view>
-		<view class='carts-bar'>
-			<view class='carts-list'>
-				<view class='top'>
-					<image class='icon-trash' src='../../images/icon-trash.png'></image>
-					清空购物车
-				</view>
-				<view class='item'>
-					<view>樱花碧根果奶缇</view>
-					<view>¥16.00</view>
-					 <view class="cart-count-box">
-                    <text wx:if="{{hasAddCart}}" class="cart-count-wrap cart-count-down" bindtap="minusCount" data-obj="{{obj}}" data-index="{{index}}">-</text>
-                    <text wx:if="{{hasAddCart}}" class="cart-count-num">{{item.num}}</text>
-                    <text class="cart-count-wrap cart-count-add" bindtap="addCount" data-index="{{index}}">+</text>
                 </view>  
-				</view>
-			</view>
-			<view class='left'>
-				<view class='car'>
-					<image class='icon-car' src='../../images/run@2x.png'></image>
-					<text class='carts-num'>1</text>
-				</view>
-				<view class='all-price'>¥29</view>
-			</view>
-			<view class='addall'>去结算</view>
-		</view>
+            </view> -->
+        </view>
+        <view class='carts-bar'>
+            <view class='carts-list {{hasCart==true?"on":""}}' style='top: -{{cartHeight}}px'>
+                <view class='top'>
+                    <image class='icon-trash' src='../../images/icon-trash.png'></image>
+                    清空购物车
+                </view>
+                <!-- <view class='item'>
+                    <view class='name'>樱花碧根果奶缇</view>
+                    <view>¥16.00</view>
+                    <view class="cart-count-box">
+                        <text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-obj="{{obj}}" data-index="{{index}}">-</text>
+                        <text class="cart-count-num">{{item.num}}</text>
+                        <text class="cart-count-wrap cart-count-add" bindtap="addCount" data-index="{{index}}">+</text>
+                    </view>
+                </view> -->
+            </view>
+            <view class='left' bindtap='showCart'>
+                <view class='car'>
+                    <image class='icon-car' src='../../images/run@2x.png'></image>
+                    <text class='carts-num'>1</text>
+                </view>
+                <view class='all-price'>¥29</view>
+            </view>
+            <view class='addall'>去结算</view>
+        </view>
     </view>
     <view class='tabitem' wx:if="{{selectedId == 2}}">
         <view class='appraises'>
             <view class='appraises-titles'>
                 <view data-id='1' bindtap='appraisesClick' class='appraises-title {{selectA == 1 ? "on":""}}'>最新</view>
-				<view class='line'>|</view>
+                <view class='line'>|</view>
                 <view data-id='2' bindtap='appraisesClick' class='appraises-title {{selectA == 2 ? "on":""}}'>最热</view>
             </view>
-			<view class='appraisesTabDetails'>
-				<view class='item'>
-					<image class='header' src='../../images/shopimg.jpg'></image>
-					<view class='right'>
-						<view class='top'>
-							<view class='name'>天下最弱</view>
-							<view class='time'>17小时前</view>
-						</view>
-						<view class='content'>告辞</view>
-						<view class='appraises-imgList'>
-							<block wx:for="{{appraisesImgList}}">
-								<image mode="aspectFill" src="{{item}}"></image>
-							</block>
-						</view>
-						<view bindtap='likeClick' class='like'>
-							<image class='icon-like' src='../../images/icon-like.png'></image>
-							<view class='like-text'>{{likeNum}}人点赞</view>
-						</view>
-					</view>
-				</view>
-			</view>
+            <view class='appraisesTabDetails'>
+                <view class='item'>
+                    <image class='header' src='../../images/shopimg.jpg'></image>
+                    <view class='right'>
+                        <view class='top'>
+                            <view class='name'>天下最弱</view>
+                            <view class='time'>17小时前</view>
+                        </view>
+                        <view class='content'>告辞</view>
+                        <view class='appraises-imgList'>
+                            <block wx:for="{{appraisesImgList}}">
+                                <image mode="aspectFill" src="{{item}}"></image>
+                            </block>
+                        </view>
+                        <view bindtap='likeClick' class='like'>
+                            <image class='icon-like' src='../../images/icon-like.png'></image>
+                            <view class='like-text'>{{likeNum}}人点赞</view>
+                        </view>
+                    </view>
+                </view>
+            </view>
         </view>
     </view>
     <view class='tabitem' wx:if="{{selectedId == 3}}">

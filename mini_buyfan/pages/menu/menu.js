@@ -6,36 +6,41 @@ Page({
      * 页面的初始数据
      */
     data: {
-		hasAddCart: false,
-		hasLike: false,
-		likeNum: "",
-		storesImgList: [
-			"../../images/shopimg.jpg",
-			"../../images/shopimg.jpg",
-		],
-		appraisesImgList: [
-			"../../images/shopimg.jpg",
-			"../../images/shopimg.jpg",
-			"../../images/shopimg.jpg",
-		],
-		selectA: "1",
+		goodsnum: 1,
+        hasCart: false,
+        hasAddCart: false,
+        hasLike: false,
+        likeNum: "",
+        storesImgList: [
+            "../../images/shopimg.jpg",
+            "../../images/shopimg.jpg",
+        ],
+        appraisesImgList: [
+            "../../images/shopimg.jpg",
+            "../../images/shopimg.jpg",
+            "../../images/shopimg.jpg",
+        ],
+        selectA: "1",
         activeCategoryId: "0",
         selectedId: "1",
         type_sort: ["特价", "销量好评", "商家推荐"],
-        list: [
-            {
-                img:"../../images/shopimg.jpg",
-                name:"樱花碧根果奶缇樱花碧根果奶缇",
-                description:"营养极高的碧根果牛奶搭配淡淡香气的营养极高的碧根果牛奶搭配淡淡香气的",
-                sale:"444",
-                price:"16.60"
-            },
-            {
+        list: [{
+				id: "1",
                 img: "../../images/shopimg.jpg",
                 name: "樱花碧根果奶缇樱花碧根果奶缇",
-                description: "营养极高的碧根果牛奶搭配淡淡香气的营养极高的碧根果牛奶搭配淡淡香气的",
+                description: "营养极高的碧根果牛奶搭配淡淡香气的营养极高的碧根果",
                 sale: "444",
-                price: "16.60"
+                price: "16.60",
+				goodsnum: 1
+            },
+            {
+				id: "12"	,
+                img: "../../images/shopimg.jpg",
+                name: "樱花碧根果奶缇樱花碧根果奶缇",
+                description: "营养极高的碧根果牛奶搭配淡淡香气的营养极高的碧根果",
+                sale: "444",
+                price: "16.60",
+				goodsnum: 1
             }
         ],
 
@@ -44,38 +49,42 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function(options) {
-		var that = this;
-		console.log(that.data.storesImgList.length)
+        var that = this;
+        wx.createSelectorQuery().select('.carts-list').boundingClientRect(function(rect) {
+            that.setData({
+				cartHeight: rect.height // 节点的高度
+            })
+        }).exec()
     },
-	likeClick: function(e) {
-		var that = this;
-		if (that.data.hasLike == false) {
-			that.setData({
-				likeNum: that.data.likeNum + 1,
-				hasLike: true
-			})	
-		} else {
-			that.setData({
-				likeNum: that.data.likeNum - 1,
-				hasLike: false
-			})	
-		}
-	},
-	scroll: function (e) {
-		console.log(e)
-	},
+    likeClick: function(e) {
+        var that = this;
+        if (that.data.hasLike == false) {
+            that.setData({
+                likeNum: that.data.likeNum + 1,
+                hasLike: true
+            })
+        } else {
+            that.setData({
+                likeNum: that.data.likeNum - 1,
+                hasLike: false
+            })
+        }
+    },
+    scroll: function(e) {
+        console.log(e)
+    },
     tabClick: function(e) {
         var that = this;
         that.setData({
             selectedId: e.currentTarget.dataset.id
         });
-	},
-	appraisesClick: function (e) {
-		var that = this;
-		that.setData({
-			selectA: e.currentTarget.dataset.id
-		});
-	},
+    },
+    appraisesClick: function(e) {
+        var that = this;
+        that.setData({
+            selectA: e.currentTarget.dataset.id
+        });
+    },
     categoryClick: function(e) {
         var that = this;
         console.log(e)
@@ -87,15 +96,15 @@ Page({
      * 绑定加数量事件
      */
     addCount(e) {
-		var that = this;
-        // const index = e.currentTarget.dataset.index;
-        // let carts = this.data.carts;
-        // let num = carts[index].num;
-        // num = num + 1;
-        // carts[index].num = num;
+        var that = this;
+		var list = that.data.list;
+        const index = e.currentTarget.dataset.index;
+		var goodsnum = list[index].goodsnum;
+        goodsnum = goodsnum + 1;
+		list[index].goodsnum = goodsnum;
         that.setData({
-            // carts: carts,
-			hasAddCart: true
+			list: list,
+            hasAddCart: true
         });
         // this.getTotalPrice();
     },
@@ -103,21 +112,32 @@ Page({
     /**
      * 绑定减数量事件
      */
-    minusCount(e) {
-        console.log(e)
-        const index = e.currentTarget.dataset.index;
-        const obj = e.currentTarget.dataset.obj;
-        let carts = this.data.carts;
-        let num = carts[index].num;
-        if (num <= 1) {
-            return false;
+	minusCount(e) {
+		var that = this;
+		var list = that.data.list;
+		const index = e.currentTarget.dataset.index;
+		var goodsnum = list[index].goodsnum;
+		if (goodsnum <= 1) {
+			return false;
+		}
+		goodsnum = goodsnum - 1;
+		list[index].goodsnum = goodsnum;
+		that.setData({
+			list: list,
+			hasAddCart: true
+		});
+    },
+    showCart: function() {
+        var that = this;
+        if (that.data.hasCart == false) {
+            that.setData({
+                hasCart: true
+            })
+        } else {
+            that.setData({
+                hasCart: false
+            })
         }
-        num = num - 1;
-        carts[index].num = num;
-        this.setData({
-            carts: carts
-        });
-        this.getTotalPrice();
     },
     /**
      * 生命周期函数--监听页面初次渲染完成

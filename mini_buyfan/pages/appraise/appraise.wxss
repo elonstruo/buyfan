@@ -15,6 +15,7 @@ page {
 }
 .appraise-box {
 	padding-bottom: 80rpx;
+	overflow: hidden;
 	background-color: #fff;
 }
 .appraise-text {
@@ -32,19 +33,45 @@ page {
 .img-list{
 	overflow: hidden;
 }
-.img-item{
-	display: inline-block;
-	border: 1px solid #bfbfbf;
-	width: 70px;
-	height: 70px;
-	float: left;
-	margin: 0 5px 5px 0;
+.add-item {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px dashed #bfbfbf;
+	box-sizing: border-box;
+	width: 162rpx;
+	height: 162rpx;
+	margin-left: 20rpx;
+	font-size: 20rpx;
+	color: #aaa;
+	text-align: center;
 }
-.img-item image{
-	width: 100%;
-	height: 100%;
+.img-box {
+	display: flex;
+}
+.img-item {
+	margin-left: 20rpx;
+}
+.img-item image {
+	max-width: 100%;
 }
 .icon-add {
 	width: 56rpx;
 	height: 56rpx;
+}
+.img-item image {
+	width: 162rpx;
+	height: 162rpx;
+}
+
+.addressButton {
+    width: 640rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+	margin: 40rpx auto;
+	color: #fff;
+	text-align: center;
+    background: rgba(251, 135, 60, 1);
+    border-radius: 50rpx;
+	font-size: 30rpx; 
 }

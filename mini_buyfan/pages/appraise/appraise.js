@@ -1,4 +1,5 @@
 // pages/appraise/appraise.js
+const app = getApp()
 Page({
 
     /**
@@ -31,6 +32,11 @@ Page({
 				});
 			}
 		})
+	},
+
+	appraise: function (e) {
+		console.log('form发生了submit事件，携带数据为：', e.detail.value);
+		app.loadingBox("发布中")
 	},
     /**
      * 生命周期函数--监听页面初次渲染完成
