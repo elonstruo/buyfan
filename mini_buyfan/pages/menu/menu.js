@@ -6,6 +6,8 @@ Page({
      * 页面的初始数据
      */
     data: {
+        maskVisual: 'hidden',
+        cartData: {},
 		goodsnum: 1,
         hasCart: false,
         hasAddCart: false,
@@ -97,35 +99,103 @@ Page({
      */
     addCount(e) {
         var that = this;
-		var list = that.data.list;
-        const index = e.currentTarget.dataset.index;
-		var goodsnum = list[index].goodsnum;
-        goodsnum = goodsnum + 1;
-		list[index].goodsnum = goodsnum;
+        // 所点商品id
+        var foodId = e.currentTarget.dataset.id;
+        // console.log(foodId);
+        // 读取目前购物车数据
+        var cartData = that.data.cartData;
+        // 获取当前商品数量
+        var foodCount = cartData[foodId] ? cartData[foodId] : 0;
+        // 自增1后存回
+        cartData[foodId] = ++foodCount;
+        // 设值到data数据中
         that.setData({
-			list: list,
-            hasAddCart: true
+            cartData: cartData
         });
-        // this.getTotalPrice();
+        // 转换成购物车数据为数组
+        // that.cartToArray(foodId);
     },
 
     /**
      * 绑定减数量事件
      */
 	minusCount(e) {
-		var that = this;
-		var list = that.data.list;
-		const index = e.currentTarget.dataset.index;
-		var goodsnum = list[index].goodsnum;
-		if (goodsnum <= 1) {
-			return false;
-		}
-		goodsnum = goodsnum - 1;
-		list[index].goodsnum = goodsnum;
-		that.setData({
-			list: list,
-			hasAddCart: true
-		});
+        var that = this;
+        // 所点商品id
+        var foodId = e.currentTarget.dataset.id;
+        // 读取目前购物车数据
+        var cartData = that.data.cartData;
+        // 获取当前商品数量
+        var foodCount = cartData[foodId];
+        // 自减1
+        --foodCount;
+        // 减到零了就直接移除
+        if (foodCount == 0) {
+            delete cartData[foodId]
+        } else {
+            cartData[foodId] = foodCount;
+        }
+        // 设值到data数据中
+        that.setData({
+            cartData: cartData
+        });
+    },
+    cascadeToggle: function () {
+        var that = this;
+        //切换购物车开与关
+        // console.log(that.data.maskVisual);
+        if (that.data.maskVisual == 'show') {
+            that.cascadeDismiss();
+        } else {
+            that.cascadePopup();
+        }
+    },
+    cascadePopup: function () {
+        var that = this;
+        // 购物车打开动画
+        var animation = wx.createAnimation({
+            duration: 300,
+            timingFunction: 'ease-in-out',
+        });
+        that.animation = animation;
+        // scrollHeight为商品列表本身的高度
+        var scrollHeight = (that.data.cartObjects.length <= max_row_height ? that.data.cartObjects.length : max_row_height) * food_row_height;
+        // cartHeight为整个购物车的高度，也就是包含了标题栏与底部栏的高度
+        var cartHeight = scrollHeight + cart_offset;
+        animation.translateY(- cartHeight).step();
+        that.setData({
+            animationData: that.animation.export(),
+            maskVisual: 'show',
+            scrollHeight: scrollHeight,
+            cartHeight: cartHeight
+        });
+        // 遮罩渐变动画
+        var animationMask = wx.createAnimation({
+            duration: 150,
+            timingFunction: 'linear',
+        });
+        that.animationMask = animationMask;
+        animationMask.opacity(0.8).step();
+        that.setData({
+            animationMask: that.animationMask.export(),
+        });
+    },
+    cascadeDismiss: function () {
+        var that = this;
+        // 购物车关闭动画
+        that.animation.translateY(that.data.cartHeight).step();
+        that.setData({
+            animationData: that.animation.export()
+        });
+        // 遮罩渐变动画
+        that.animationMask.opacity(0).step();
+        that.setData({
+            animationMask: that.animationMask.export(),
+        });
+        // 隐藏遮罩层
+        that.setData({
+            maskVisual: 'hidden'
+        });
     },
     showCart: function() {
         var that = this;
