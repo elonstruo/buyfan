@@ -1,0 +1,19 @@
+<!--pages/coupon/coupon.wxml-->
+<view class='category'>
+    <view wx:for="{{type_sort}}" data-id="{{index}}" wx:key="index" class="item {{activeCategoryId == index ? 'on' : ''}}" bindtap='categoryClick'>
+        {{item}}
+    </view>
+</view>
+<view class='details'>
+    <view class='item'>
+		<view class='border-img-box border-img-left'></view>
+		<view class='border-img-box border-img-right'></view>
+	</view>
+</view>
+
+<!-- <view class='none' style='height: {{noneHeight}}px' wx:if="coupon.length>1">
+    <view>
+        <image class='icon-none' src='../../images/paper@2x.png'></image>
+        <view>还没有相关优惠卷</view>
+    </view>
+</view> -->

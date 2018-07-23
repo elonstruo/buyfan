@@ -1,9 +1,10 @@
 {
     "pages": [
-		"pages/menu/menu",
-		"pages/appraise/appraise",
-		"pages/order-submit/order-submit",
+		"pages/coupon/coupon",
         "pages/index/index",
+        "pages/menu/menu",
+        "pages/appraise/appraise",
+        "pages/order-submit/order-submit",
         "pages/takeOut/takeOut",
         "pages/edtiAddress/edtiAddress",
         "pages/order-details/order-details",

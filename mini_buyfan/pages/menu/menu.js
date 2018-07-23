@@ -1,12 +1,16 @@
 // pages/menu/menu.js
-var order = ['red', 'yellow', 'blue', 'green', 'red']
+
+var Bmob = require('../../utils/bmob.js');
+
+var cartsBarH = 100;
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
-        maskVisual: 'hidden',
+		maskVisual: 'hidden', 
+		cartObjects: [],
         cartData: {},
 		goodsnum: 1,
         hasCart: false,
@@ -25,7 +29,7 @@ Page({
         selectA: "1",
         activeCategoryId: "0",
         selectedId: "1",
-        type_sort: ["特价", "销量好评", "商家推荐"],
+		type_sort: ["特价", "销量好评", "商家推荐","特价", "销量好评", "商家推荐"],
         list: [{
 				id: "1",
                 img: "../../images/shopimg.jpg",
@@ -52,7 +56,7 @@ Page({
      */
     onLoad: function(options) {
         var that = this;
-        wx.createSelectorQuery().select('.carts-list').boundingClientRect(function(rect) {
+		wx.createSelectorQuery().select('.modal-content').boundingClientRect(function(rect) {
             that.setData({
 				cartHeight: rect.height // 节点的高度
             })
@@ -112,10 +116,48 @@ Page({
         that.setData({
             cartData: cartData
         });
+		console.log("that.data.cartData")
+		console.log(that.data.cartData)
         // 转换成购物车数据为数组
         // that.cartToArray(foodId);
     },
-
+	cartToArray: function (foodId) {
+		var that = this;
+		// 需要判断购物车数据中是否已经包含了原商品，从而决定新添加还是仅修改它的数量
+		var cartData = that.data.cartData;
+		var cartObjects = that.data.cartObjects;
+		var query = new Bmob.Query('Food');
+		// 查询对象
+		query.get(foodId).then(function (food) {
+			// 从数组找到该商品，并修改它的数量
+			for (var i = 0; i < cartObjects.length; i++) {
+				if (cartObjects[i].food.id == foodId) {
+					// 如果是undefined，那么就是通过点减号被删完了
+					if (cartData[foodId] == undefined) {
+						cartObjects.splice(i, 1);
+					} else {
+						cartObjects[i].quantity = cartData[foodId];
+					}
+					that.setData({
+						cartObjects: cartObjects
+					});
+					// 成功找到直接返回，不再执行添加
+					that.amount();
+					return;
+				}
+			}
+			// 添加商品到数组
+			var cart = {};
+			cart.food = food;
+			cart.quantity = cartData[foodId];
+			cartObjects.push(cart);
+			that.setData({
+				cartObjects: cartObjects
+			});
+			// 因为请求网络是异步的，因此汇总在此，上同
+			// that.amount();
+		});
+	},
     /**
      * 绑定减数量事件
      */
@@ -139,16 +181,14 @@ Page({
         that.setData({
             cartData: cartData
         });
+		console.log("that.data.cartData")
+		console.log(that.data.cartData)
     },
     cascadeToggle: function () {
         var that = this;
         //切换购物车开与关
-        // console.log(that.data.maskVisual);
-        if (that.data.maskVisual == 'show') {
-            that.cascadeDismiss();
-        } else {
-            that.cascadePopup();
-        }
+		that.cascadePopup();
+		
     },
     cascadePopup: function () {
         var that = this;
@@ -157,16 +197,12 @@ Page({
             duration: 300,
             timingFunction: 'ease-in-out',
         });
-        that.animation = animation;
-        // scrollHeight为商品列表本身的高度
-        var scrollHeight = (that.data.cartObjects.length <= max_row_height ? that.data.cartObjects.length : max_row_height) * food_row_height;
-        // cartHeight为整个购物车的高度，也就是包含了标题栏与底部栏的高度
-        var cartHeight = scrollHeight + cart_offset;
+        that.data.animation = animation;
+		var cartHeight = that.data.cartHeight + cartsBarH;
         animation.translateY(- cartHeight).step();
         that.setData({
-            animationData: that.animation.export(),
+            animationData: animation.export(),
             maskVisual: 'show',
-            scrollHeight: scrollHeight,
             cartHeight: cartHeight
         });
         // 遮罩渐变动画
@@ -175,17 +211,20 @@ Page({
             timingFunction: 'linear',
         });
         that.animationMask = animationMask;
-        animationMask.opacity(0.8).step();
+        animationMask.opacity(0.5).step();
         that.setData({
-            animationMask: that.animationMask.export(),
+            animationMask: animationMask.export(),
         });
     },
     cascadeDismiss: function () {
-        var that = this;
+		var that = this;
+		var animation = that.data.animation;
+		var cartHeight = that.data.cartHeight;
         // 购物车关闭动画
-        that.animation.translateY(that.data.cartHeight).step();
+        animation.translateY(cartHeight).step();
         that.setData({
-            animationData: that.animation.export()
+            animationData: animation.export(),
+			cartHeight: cartHeight - cartsBarH
         });
         // 遮罩渐变动画
         that.animationMask.opacity(0).step();
@@ -197,6 +236,14 @@ Page({
             maskVisual: 'hidden'
         });
     },
+	toTakeOut: function () {
+		wx.navigateTo({
+			url: '../../pages/order-submit/order-submit',
+			success: function(res) {},
+			fail: function(res) {},
+			complete: function(res) {},
+		})
+	},
     showCart: function() {
         var that = this;
         if (that.data.hasCart == false) {

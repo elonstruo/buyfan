@@ -38,7 +38,7 @@
         <view class='flex-wrapper '>
             <view class='image-box'>
                 <image src='../../images/index_taemilk@2x.png' class='icon-index'></image>
-                <view class='menu-title'>美食外賣</view>
+                <view class='menu-title'>美食外卖</view>
             </view>
         </view>
     </navigator>
@@ -62,7 +62,7 @@
         <view class='litem litemt'>
             <view class='flex-wrapper '>
                 <image src='../../images/index_coupon@2x.png' class='icon-index'></image>
-                <view class='menu-title'>美食外卖</view>
+                <view class='menu-title'>领劵中心</view>
             </view>
         </view>
         <navigator class='litem' url='../../pages/vip/vip'>
