@@ -6,7 +6,20 @@ Page({
      */
     data: {
         type_sort: ["最新","未使用","已使用","已过期"],
-		activeCategoryId: "0"
+		activeCategoryId: "0",
+		statusText: "立即使用",
+		coupon: [
+			{
+				fullNum: "100",
+				couponNum: "5.00",
+				time: "2018.05.19-2018.07.17"
+			},
+			{
+				fullNum: "100",
+				couponNum: "5.00",
+				time: "2018.05.19-2018.07.17"
+			}
+		]
     },
 
     /**
@@ -23,10 +36,32 @@ Page({
     },
 	categoryClick: function (e) {
 		var that = this;
-		console.log(e)
 		that.setData({
 			activeCategoryId: e.currentTarget.dataset.id
 		});
+		var activeCategoryId = that.data.activeCategoryId;
+		if (activeCategoryId == 0) {
+			that.setData({
+				statusText: "立刻获取",
+				isButton: true
+			})
+		} else if (activeCategoryId == 1) {
+			that.setData({
+				statusText: "立刻使用",
+				isButton: true
+			})
+		} else if (activeCategoryId == 2) {
+			that.setData({
+				statusText: "已使用",
+				isButton: false
+			})
+		} else if (activeCategoryId == 3) {
+			that.setData({
+				statusText: "已过期",
+				isButton: false
+			})
+		}
+		
 	},
     /**
      * 生命周期函数--监听页面初次渲染完成
@@ -39,7 +74,8 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function() {
-
+		var that = this;
+		var activeCategoryId =that.data.activeCategoryId;
     },
 
     /**

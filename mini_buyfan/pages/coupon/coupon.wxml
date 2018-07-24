@@ -5,8 +5,21 @@
     </view>
 </view>
 <view class='details'>
-    <view class='item'>
+    <view class='item' wx:for="{{coupon}}">
 		<view class='border-img-box border-img-left'></view>
+		<view class='box'>
+			<view class='top'>
+				<view class='left'>满{{item.fullNum}}元可使用</view>
+				<view class='right'><text>¥</text>{{item.couponNum}}</view>
+			</view>
+			<view class='bottom'>
+				<view>
+					<view class='text-top'>指定商品可用</view>
+					<view class='text-bottom'>{{item.time}}</view>
+				</view>
+				<view class='coupon-statu {{isButton == true ? "coupon-button" : ""}}'>{{statusText}}</view>
+			</view>
+		</view>
 		<view class='border-img-box border-img-right'></view>
 	</view>
 </view>

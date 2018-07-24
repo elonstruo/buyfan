@@ -9,10 +9,10 @@ Page({
      * 页面的初始数据
      */
     data: {
-		maskVisual: 'hidden', 
-		cartObjects: [],
+        maskVisual: 'hidden',
+        cartObjects: [],
         cartData: {},
-		goodsnum: 1,
+        goodsnum: 1,
         hasCart: false,
         hasAddCart: false,
         hasLike: false,
@@ -29,24 +29,24 @@ Page({
         selectA: "1",
         activeCategoryId: "0",
         selectedId: "1",
-		type_sort: ["特价", "销量好评", "商家推荐","特价", "销量好评", "商家推荐"],
+        type_sort: ["特价", "销量好评", "商家推荐", "特价", "销量好评", "商家推荐"],
         list: [{
-				id: "1",
+                id: "1",
                 img: "../../images/shopimg.jpg",
                 name: "樱花碧根果奶缇樱花碧根果奶缇",
                 description: "营养极高的碧根果牛奶搭配淡淡香气的营养极高的碧根果",
                 sale: "444",
                 price: "16.60",
-				goodsnum: 1
+                goodsnum: 1
             },
             {
-				id: "12"	,
+                id: "12",
                 img: "../../images/shopimg.jpg",
                 name: "樱花碧根果奶缇樱花碧根果奶缇",
                 description: "营养极高的碧根果牛奶搭配淡淡香气的营养极高的碧根果",
                 sale: "444",
                 price: "16.60",
-				goodsnum: 1
+                goodsnum: 1
             }
         ],
 
@@ -56,9 +56,9 @@ Page({
      */
     onLoad: function(options) {
         var that = this;
-		wx.createSelectorQuery().select('.modal-content').boundingClientRect(function(rect) {
+        wx.createSelectorQuery().select('.modal-content').boundingClientRect(function(rect) {
             that.setData({
-				cartHeight: rect.height // 节点的高度
+                cartHeight: rect.height // 节点的高度
             })
         }).exec()
     },
@@ -116,52 +116,52 @@ Page({
         that.setData({
             cartData: cartData
         });
-		console.log("that.data.cartData")
-		console.log(that.data.cartData)
+        console.log("that.data.cartData")
+        console.log(that.data.cartData)
         // 转换成购物车数据为数组
         // that.cartToArray(foodId);
     },
-	cartToArray: function (foodId) {
-		var that = this;
-		// 需要判断购物车数据中是否已经包含了原商品，从而决定新添加还是仅修改它的数量
-		var cartData = that.data.cartData;
-		var cartObjects = that.data.cartObjects;
-		var query = new Bmob.Query('Food');
-		// 查询对象
-		query.get(foodId).then(function (food) {
-			// 从数组找到该商品，并修改它的数量
-			for (var i = 0; i < cartObjects.length; i++) {
-				if (cartObjects[i].food.id == foodId) {
-					// 如果是undefined，那么就是通过点减号被删完了
-					if (cartData[foodId] == undefined) {
-						cartObjects.splice(i, 1);
-					} else {
-						cartObjects[i].quantity = cartData[foodId];
-					}
-					that.setData({
-						cartObjects: cartObjects
-					});
-					// 成功找到直接返回，不再执行添加
-					that.amount();
-					return;
-				}
-			}
-			// 添加商品到数组
-			var cart = {};
-			cart.food = food;
-			cart.quantity = cartData[foodId];
-			cartObjects.push(cart);
-			that.setData({
-				cartObjects: cartObjects
-			});
-			// 因为请求网络是异步的，因此汇总在此，上同
-			// that.amount();
-		});
-	},
+    cartToArray: function(foodId) {
+        var that = this;
+        // 需要判断购物车数据中是否已经包含了原商品，从而决定新添加还是仅修改它的数量
+        var cartData = that.data.cartData;
+        var cartObjects = that.data.cartObjects;
+        var query = new Bmob.Query('Food');
+        // 查询对象
+        query.get(foodId).then(function(food) {
+            // 从数组找到该商品，并修改它的数量
+            for (var i = 0; i < cartObjects.length; i++) {
+                if (cartObjects[i].food.id == foodId) {
+                    // 如果是undefined，那么就是通过点减号被删完了
+                    if (cartData[foodId] == undefined) {
+                        cartObjects.splice(i, 1);
+                    } else {
+                        cartObjects[i].quantity = cartData[foodId];
+                    }
+                    that.setData({
+                        cartObjects: cartObjects
+                    });
+                    // 成功找到直接返回，不再执行添加
+                    that.amount();
+                    return;
+                }
+            }
+            // 添加商品到数组
+            var cart = {};
+            cart.food = food;
+            cart.quantity = cartData[foodId];
+            cartObjects.push(cart);
+            that.setData({
+                cartObjects: cartObjects
+            });
+            // 因为请求网络是异步的，因此汇总在此，上同
+            // that.amount();
+        });
+    },
     /**
      * 绑定减数量事件
      */
-	minusCount(e) {
+    minusCount(e) {
         var that = this;
         // 所点商品id
         var foodId = e.currentTarget.dataset.id;
@@ -181,16 +181,16 @@ Page({
         that.setData({
             cartData: cartData
         });
-		console.log("that.data.cartData")
-		console.log(that.data.cartData)
+        console.log("that.data.cartData")
+        console.log(that.data.cartData)
     },
-    cascadeToggle: function () {
+    cascadeToggle: function() {
         var that = this;
         //切换购物车开与关
-		that.cascadePopup();
-		
+        that.cascadePopup();
+
     },
-    cascadePopup: function () {
+    cascadePopup: function() {
         var that = this;
         // 购物车打开动画
         var animation = wx.createAnimation({
@@ -198,8 +198,8 @@ Page({
             timingFunction: 'ease-in-out',
         });
         that.data.animation = animation;
-		var cartHeight = that.data.cartHeight + cartsBarH;
-        animation.translateY(- cartHeight).step();
+        var cartHeight = that.data.cartHeight + cartsBarH;
+        animation.translateY(-cartHeight).step();
         that.setData({
             animationData: animation.export(),
             maskVisual: 'show',
@@ -216,15 +216,15 @@ Page({
             animationMask: animationMask.export(),
         });
     },
-    cascadeDismiss: function () {
-		var that = this;
-		var animation = that.data.animation;
-		var cartHeight = that.data.cartHeight;
+    cascadeDismiss: function() {
+        var that = this;
+        var animation = that.data.animation;
+        var cartHeight = that.data.cartHeight;
         // 购物车关闭动画
         animation.translateY(cartHeight).step();
         that.setData({
             animationData: animation.export(),
-			cartHeight: cartHeight - cartsBarH
+            cartHeight: cartHeight - cartsBarH
         });
         // 遮罩渐变动画
         that.animationMask.opacity(0).step();
@@ -236,14 +236,14 @@ Page({
             maskVisual: 'hidden'
         });
     },
-	toTakeOut: function () {
-		wx.navigateTo({
-			url: '../../pages/order-submit/order-submit',
-			success: function(res) {},
-			fail: function(res) {},
-			complete: function(res) {},
-		})
-	},
+    toTakeOut: function() {
+        wx.navigateTo({
+            url: '../../pages/order-submit/order-submit',
+            success: function(res) {},
+            fail: function(res) {},
+            complete: function(res) {},
+        })
+    },
     showCart: function() {
         var that = this;
         if (that.data.hasCart == false) {
