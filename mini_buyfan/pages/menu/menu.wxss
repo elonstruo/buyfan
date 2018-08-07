@@ -103,14 +103,19 @@ page {
 }
 
 .category .classes {
+	padding: 0 30rpx;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
     width: 100%;
-    height: 90rpx;
-    line-height: 90rpx;
+    min-height: 90rpx;
     text-align: center;
     font-size: 26rpx;
     color: #666;
 }
-
+.category .classes text {
+	text-align: left
+}
 .category .classes.on {
     font-weight: bold;
     color: #323232;

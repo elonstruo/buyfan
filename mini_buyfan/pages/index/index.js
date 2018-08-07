@@ -9,11 +9,6 @@ Page({
         userInfo: {},
         hasUserInfo: false,
         canIUse: wx.canIUse('button.open-type.getUserInfo'),
-		bannerUrls: [
-			"../../images/banner.png",
-			"../../images/banner.png",
-			"../../images/banner.png"
-		],
 		indicatorDots: true,
 		swiperCurrent: 0,
 		selectCurrent: 0,
@@ -43,8 +38,20 @@ Page({
 	},
     onLoad: function() {
 		var that = this;
-
-
+		wx.request({
+			url: app.d.hostUrl,
+			data: { action: 'show' },
+			header: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			method: 'POST',
+			success: function (res) {
+				console.log(res)
+				that.setData({
+					appSlideshow: res.data.appSlideshow
+				})
+			},
+			fail: function (res) { },
+			complete: function (res) { },
+		})
         if (app.globalData.userInfo) {
             this.setData({
                 userInfo: app.globalData.userInfo,

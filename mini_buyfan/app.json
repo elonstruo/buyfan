@@ -1,8 +1,8 @@
 {
     "pages": [
-        "pages/menu/menu",
-		"pages/coupon/coupon",
         "pages/index/index",
+		"pages/menu/menu",
+		"pages/coupon/coupon",
         "pages/appraise/appraise",
         "pages/order-submit/order-submit",
         "pages/takeOut/takeOut",

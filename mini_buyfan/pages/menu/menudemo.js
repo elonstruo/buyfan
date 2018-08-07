@@ -1,7 +1,7 @@
 // pages/menu/menu.js
 
 var Bmob = require('../../utils/bmob.js');
-const app = getApp()
+
 var cartsBarH = 100;
 Page({
 
@@ -9,7 +9,7 @@ Page({
      * 页面的初始数据
      */
     data: {
-        isModal: false,
+		isModal: false,
         maskVisual: 'hidden',
         cartObjects: [],
         cartData: {},
@@ -62,24 +62,6 @@ Page({
                 // cartHeight: rect.height // 节点的高度
             })
         }).exec()
-
-
-		wx.request({
-			url: app.d.hostUrl,
-			data: { action: 'show' },
-			header: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			method: 'POST',
-			success: function (res) {
-				console.log(res)
-				that.setData({
-					type_sort: res.data.appClass,
-					appName: res.data.appName,
-					appPersonback: res.data.appPersonback,
-				})
-			},
-			fail: function (res) { },
-			complete: function (res) { },
-		})
     },
     likeClick: function(e) {
         var that = this;
@@ -275,12 +257,12 @@ Page({
             })
         }
     },
-    toastClode: function () {
-        var that = this;
-        that.setData({
-            isModal: true
-        })
-    },
+	toastClode: function () {
+		var that = this;
+		that.setData({
+			isModal: true
+		})
+	},
     /**
      * 生命周期函数--监听页面初次渲染完成
      */

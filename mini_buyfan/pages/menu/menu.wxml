@@ -2,11 +2,12 @@
 <view class='sign'>
     <view class='left'>
         <!-- <view class='image-box'> -->
-        <image class='logo' src='../../images/logo@2x.png'></image>
+        <!-- <image class='logo' src='../../images/logo@2x.png'></image> -->
+        <image class='logo' src='{{appPersonback}}'></image>
         <!-- </view> -->
         <view class='sign-info'>
             <view class='sign-ln'>
-                <view class='name'>佰分新兴店</view>|
+                <view class='name'>{{appName}}</view>|
                 <view class='km'>1.9km</view>|
                 <view class='time'>19分钟</view>
             </view>
@@ -38,7 +39,7 @@
     <view class='tabitem' wx:if="{{selectedId == 1}}">
         <view class='category'>
             <view wx:for-items="{{type_sort}}" wx:key="index" class='type-box'>
-                <view data-id="{{index}}" class="classes {{activeCategoryId == index ? 'on' : ''}}" bindtap='categoryClick'>{{item}}</view>
+                <view data-id="{{index}}" class="classes {{activeCategoryId == index ? 'on' : ''}}" bindtap='categoryClick'><text>{{item}}</text></view>
             </view>
         </view>
         <view class='items'>
@@ -53,15 +54,15 @@
                     <view class='sale'>月售{{item.sale}}</view>
                     <view class='price'>¥{{item.price}}</view>
                 </view>
-                <!-- <view class="cart-count-box">
+                <view class="cart-count-box">
                     <text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-id="{{item.id}}" wx:if="{{cartData[item.id]}}">-</text>
                     <text class="cart-count-num">{{cartData[item.id]}}</text>
                     <text class="cart-count-wrap cart-count-add" bindtap="addCount" data-id="{{item.id}}">+</text>
-                </view> -->
-                <view class='choose'>
+                </view>
+                <!-- <view class='choose'>
                     <view class='choose-num' wx:if="{{}}">{{item.goodsnum}}</view>
                     <view>选规格</view>
-                </view>
+                </view> -->
             </view>
             <!-- <view class='item' bindtap='select_bycondi' hover-class='on' wx:for-items="{{list}}" wx:key="{{index}}" data-id="{{item.id}}">
                 <view class='img-shop'>
@@ -95,7 +96,7 @@
             </view>
             <view class='addall' bindtap='toTakeOut'>去结算</view>
         </view>
-        <view class='modal'>
+        <view class='modal' wx:if="{{isModal}}">
             <view animation="{{animationMask}}" class="modal-mask {{maskVisual}}" bindtap="cascadeDismiss"></view>
             <!-- 购物车 -->
             <view class='toast'>
@@ -133,7 +134,7 @@
                             </view>
                         </view>
                     </view>
-                    <view class='toast-close'>
+                    <view class='toast-close' bindtap='toastClode'>
                         <image class='icon-close' src='../../images/icon-close.png'></image>
                     </view>
                 </view>
