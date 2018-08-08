@@ -9,8 +9,7 @@ App({
 	globalData: {
 		userInfo: null,
 		hostUrl: 'https://app.jywxkj.com/shop/baifen/request/shop.php',
-		paySuccess: true,
-		payFail: false,
+		actionData: null
 
 	},
 
@@ -33,32 +32,8 @@ App({
 
 		// 登录
 		that.commomLogin()
-
-
-		// 获取用户信息
-		// wx.getSetting({
-		//     success: res => {
-		//         if (res.authSetting['scope.userInfo']) {
-		//             // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-		//             wx.getUserInfo({
-		//                 success: res => {
-		//                     // console.log("---------app.js")
-		//                     // console.log(res)
-		//                     // 可以将 res 发送给后台解码出 unionId
-		//                     // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-		//                     // 所以此处加入 callback 以防止这种情况
-		//                     if (this.userInfoReadyCallback) {
-		//                         this.userInfoReadyCallback(res)
-		//                         // console.log("---------app.jsCallback")
-		//                         // console.log(res)
-		//                     }
-		//                 }
-		//             })
-		//         }
-		//     }
-		// })
-
-		// that.has_signup()
+		// actionrequest
+		that.actionrequest()
 	},
 
 	//通用后台登录方法
@@ -71,7 +46,25 @@ App({
 			that.has_login();
 		}
 	},
+	actionrequest: function () {
+		var that = this;
+		wx.request({
+			url: that.globalData.hostUrl,
+			data: { action: 'show' },
+			header: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			method: 'POST',
+			success: function (res) {
+				that.globalData.actionData = res.data
+				if (getCurrentPages().length != 0) {
+					getCurrentPages()[getCurrentPages().length - 1].onLoad()
 
+				}
+				
+			},
+			fail: function (res) { },
+			complete: function (res) { },
+		})
+	},
 	// 登录
 	has_login: function () {
 		var that = this;
@@ -81,7 +74,7 @@ App({
 				// 发送 res.code 到后台换取 openId, sessionKey, unionId
 				//发起网络请求
 				wx.request({
-					url: that.globalData.testUrl + 'Api/Login/wechatLogin',
+					url: that.globalData.hostUrl + 'Api/Login/wechatLogin',
 					method: 'POST',
 					data: {
 						code: res.code
@@ -97,13 +90,14 @@ App({
 							// console.log("______login")
 							// console.log(wx.getStorageSync("token"))
 							that.has_signup()
-						} else {
-							wx.showModal({
-								title: '提示',
-								content: '登录失败',
-								success: function (res) { }
-							})
-						}
+						} 
+						// else {
+						// 	wx.showModal({
+						// 		title: '提示',
+						// 		content: '登录失败',
+						// 		success: function (res) { }
+						// 	})
+						// }
 					},
 					fail: function (res) {
 						console.log("loginfail")
@@ -120,7 +114,7 @@ App({
 		var token = wx.getStorageSync('token');
 		if (token != '' && token != null && token != undefined) {
 			wx.request({
-				url: that.globalData.testUrl + 'Api/Login/tokenLogin',
+				url: that.globalData.hostUrl + 'Api/Login/tokenLogin',
 				method: 'POST',
 				data: {
 					token: token
@@ -146,7 +140,7 @@ App({
 		var token = wx.getStorageSync("token")
 		if (token) {
 			wx.request({
-				url: that.globalData.testUrl + 'Api/Index/has_signup',
+				url: that.globalData.hostUrl + 'Api/Index/has_signup',
 				data: {
 					token: token
 				},
@@ -171,7 +165,7 @@ App({
 	wxpay: function (token, order_sn) {
 		var that = this;
 		wx.request({
-			url: that.globalData.testUrl + 'Api/Wxpay/wxpay',
+			url: that.globalData.hostUrl + 'Api/Wxpay/wxpay',
 			data: {
 				token: token,
 				order_sn: order_sn
@@ -229,23 +223,6 @@ App({
 		})
 	},
 
-	// 获取省份
-	get_province: function () {
-		var that = this;
-		wx.request({
-			url: that.globalData.testUrl + 'Api/Index/get_province',
-			header: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			},
-			method: 'POST',
-			success: function (res) {
-				console.log(res)
-			},
-			fail: function (res) { },
-			complete: function (res) { },
-		})
-	},
-
 	// 保存用户微信授权信息
 	setInfo: function (info) {
 		var that = this;
@@ -254,7 +231,7 @@ App({
 		console.log("#######   info   ########");
 		console.log(info);
 		wx.request({
-			url: that.globalData.testUrl + 'Api/Login/setUserInfo',
+			url: that.globalData.hostUrl + 'Api/Login/setUserInfo',
 			method: 'POST',
 			data: {
 				'userInfo': infostr,

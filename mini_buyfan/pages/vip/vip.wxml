@@ -10,15 +10,10 @@
 <view class='top-up'>
 	<view class='title'>会员充值</view>
 	<view class='items'>
-		<view class='item'>
+		<view class='item' wx:for="{{recharge}}">
 			<view>会员单次充值</view>
-			<view>充值<text>100</text>元,赠送<text>10</text>元</view>
-			<view class='button-topup' hover-class='button-topup-hover'>充值100</view>
-		</view>
-		<view class='item'>
-			<view>会员单次充值</view>
-			<view>充值<text>200</text>元,赠送<text>30</text>元</view>
-			<view class='button-topup' hover-class='button-topup-hover'>充值200</view>
+			<view>充值<text>{{item.price}}</text>元,赠送<text>{{item.givemoney}}</text>元</view>
+			<view class='button-topup' hover-class='button-topup-hover'>充值{{item.price}}</view>
 		</view>
 	</view>
 </view>
@@ -27,14 +22,17 @@
 	<view class='items'>
 		<view class='item'>
 			<image class='icon-rights' src='../../images/discount@2x.png'></image>
+			<!-- <view>{{rights[0]}}</view> -->
 			<view>购买优惠</view>
 		</view>
 		<view class='item'>
 			<image class='icon-rights' src='../../images/charge@2x.png'></image>
+			<!-- <view>{{rights[1]}}</view> -->
 			<view>充值优惠</view>
 		</view>
 		<view class='item'>
 			<image class='icon-rights' src='../../images/integral@2x.png'></image>
+			<!-- <view>{{rights[2]}}</view> -->
 			<view>积分福利</view>
 		</view>
 	</view>

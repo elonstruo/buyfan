@@ -38,20 +38,17 @@ Page({
 	},
     onLoad: function() {
 		var that = this;
-		wx.request({
-			url: app.d.hostUrl,
-			data: { action: 'show' },
-			header: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			method: 'POST',
-			success: function (res) {
-				console.log(res)
-				that.setData({
-					appSlideshow: res.data.appSlideshow
-				})
-			},
-			fail: function (res) { },
-			complete: function (res) { },
-		})
+		
+		// banner
+		if (app.globalData.actionData) {
+			console.log("index.app.globalData.actionData")
+			console.log(app.globalData.actionData)
+			var appSlideshow = app.globalData.actionData.appSlideshow
+			that.setData({
+				appSlideshow: appSlideshow
+			})
+		}
+
         if (app.globalData.userInfo) {
             this.setData({
                 userInfo: app.globalData.userInfo,
@@ -89,7 +86,6 @@ Page({
 		wx.getLocation({
 			type: 'wgs84',
 			success: function (res) {
-				console.log(res)
 				var latitude = res.latitude
 				var longitude = res.longitude
 				var speed = res.speed
@@ -101,7 +97,6 @@ Page({
 						longitude: longitude
 					},
 					success: function (res) {
-						console.log(res);
 						that.setData({
 							street: res.result.address_component.street
 						})
@@ -110,7 +105,6 @@ Page({
 						console.log(res);
 					},
 					complete: function (res) {
-						console.log(res);
 					}
 				});
 			}

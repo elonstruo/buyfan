@@ -1,4 +1,5 @@
 // pages/vip/vip.js
+const app = getApp()
 Page({
 
     /**
@@ -13,7 +14,18 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function(options) {
-
+		var that = this;
+		if (app.globalData.actionData) {
+			console.log(app.globalData.actionData)
+			var actionData = app.globalData.actionData;
+			that.setData({
+				rights: actionData.member.rights,
+				charge: actionData.member.charge[0],
+				recharge: actionData.member.recharge,
+			})
+			console.log("that.data.rights")
+			console.log(that.data.rights)
+		}
     },
 
     /**

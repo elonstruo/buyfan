@@ -1,6 +1,5 @@
 // pages/menu/menu.js
 
-var Bmob = require('../../utils/bmob.js');
 const app = getApp()
 var cartsBarH = 100;
 Page({
@@ -37,8 +36,7 @@ Page({
                 name: "樱花碧根果奶缇樱花碧根果奶缇",
                 description: "营养极高的碧根果牛奶搭配淡淡香气的营养极高的碧根果",
                 sale: "444",
-                price: "16.60",
-                goodsnum: 1
+                price: "16.60"
             },
             {
                 id: "12",
@@ -46,8 +44,7 @@ Page({
                 name: "樱花碧根果奶缇樱花碧根果奶缇",
                 description: "营养极高的碧根果牛奶搭配淡淡香气的营养极高的碧根果",
                 sale: "444",
-                price: "16.60",
-                goodsnum: 1
+                price: "16.60"
             }
         ],
 
@@ -57,30 +54,23 @@ Page({
      */
     onLoad: function(options) {
         var that = this;
+        // 购物城高度
         wx.createSelectorQuery().select('.modal-content').boundingClientRect(function(rect) {
             that.setData({
                 // cartHeight: rect.height // 节点的高度
             })
         }).exec()
-
-
-		wx.request({
-			url: app.d.hostUrl,
-			data: { action: 'show' },
-			header: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			method: 'POST',
-			success: function (res) {
-				console.log(res)
-				that.setData({
-					type_sort: res.data.appClass,
-					appName: res.data.appName,
-					appPersonback: res.data.appPersonback,
-				})
-			},
-			fail: function (res) { },
-			complete: function (res) { },
-		})
+        // 分类赋值
+		if (app.globalData.actionData) {
+			var actionData = app.globalData.actionData
+			that.setData({
+				type_sort: actionData.appClass,
+				appName: actionData.appName,
+				appPersonback: actionData.appPersonback,
+			})
+		}
     },
+    // 点赞
     likeClick: function(e) {
         var that = this;
         if (that.data.hasLike == false) {
@@ -95,21 +85,21 @@ Page({
             })
         }
     },
-    scroll: function(e) {
-        console.log(e)
-    },
+    // tabbar触发
     tabClick: function(e) {
         var that = this;
         that.setData({
             selectedId: e.currentTarget.dataset.id
         });
     },
+    // 评价：最新/最热
     appraisesClick: function(e) {
         var that = this;
         that.setData({
             selectA: e.currentTarget.dataset.id
         });
     },
+    // 获取分类id
     categoryClick: function(e) {
         var that = this;
         console.log(e)
@@ -120,89 +110,78 @@ Page({
     /**
      * 绑定加数量事件
      */
-    addCount(e) {
-        var that = this;
-        // 所点商品id
-        var foodId = e.currentTarget.dataset.id;
-        // console.log(foodId);
-        // 读取目前购物车数据
-        var cartData = that.data.cartData;
-        // 获取当前商品数量
-        var foodCount = cartData[foodId] ? cartData[foodId] : 0;
-        // 自增1后存回
-        cartData[foodId] = ++foodCount;
-        // 设值到data数据中
-        that.setData({
-            cartData: cartData
-        });
-        console.log("that.data.cartData")
-        console.log(that.data.cartData)
-        // 转换成购物车数据为数组
-        // that.cartToArray(foodId);
-    },
-    cartToArray: function(foodId) {
-        var that = this;
-        // 需要判断购物车数据中是否已经包含了原商品，从而决定新添加还是仅修改它的数量
-        var cartData = that.data.cartData;
-        var cartObjects = that.data.cartObjects;
-        var query = new Bmob.Query('Food');
-        // 查询对象
-        query.get(foodId).then(function(food) {
-            // 从数组找到该商品，并修改它的数量
-            for (var i = 0; i < cartObjects.length; i++) {
-                if (cartObjects[i].food.id == foodId) {
-                    // 如果是undefined，那么就是通过点减号被删完了
-                    if (cartData[foodId] == undefined) {
-                        cartObjects.splice(i, 1);
-                    } else {
-                        cartObjects[i].quantity = cartData[foodId];
-                    }
-                    that.setData({
-                        cartObjects: cartObjects
-                    });
-                    // 成功找到直接返回，不再执行添加
-                    that.amount();
-                    return;
-                }
-            }
-            // 添加商品到数组
-            var cart = {};
-            cart.food = food;
-            cart.quantity = cartData[foodId];
-            cartObjects.push(cart);
-            that.setData({
-                cartObjects: cartObjects
-            });
-            // 因为请求网络是异步的，因此汇总在此，上同
-            // that.amount();
-        });
-    },
+	addCount: function (e) {
+		// console.log(e)
+		var that = this;
+		var foodId = e.currentTarget.dataset.foodId;
+		var cartData = that.data.cartData;
+		var foodCount = cartData[foodId] ? cartData[foodId] : 0;
+		cartData[foodId] = ++foodCount;
+		that.setData({
+			cartData: cartData,
+			foodId: foodId
+		})
+		that.cartToArray(foodId)
+
+	},
+    // 转换购物车数据
+	cartToArray: function (foodId) {
+		var that = this;
+		var list = that.data.list;
+		var cartData = that.data.cartData;
+		var cartObjects = that.data.cartObjects;
+		var cartFood;
+		var cart = {};
+		cart.quantity = cartData[foodId];
+		for (var i = 0; i < list.length; i++) {
+			if (list[i].id == foodId) {
+				cartFood = list[i];
+			}
+		}
+		for (var i = 0; i < cartObjects.length; i++) {
+			if (cartObjects[i].cartFood.id == foodId) {
+				// 如果是undefined，那么就是通过点减号被删完了
+				if (cartData[foodId] == undefined) {
+					cartObjects.splice(i, 1);
+				} else {
+					cartObjects[i].quantity = cartData[foodId];
+				}
+				that.setData({
+					cartObjects: cartObjects
+				});
+				console.log(that.data.cartObjects)
+				return
+			}
+		}
+		cart.cartFood = cartFood;
+		cart.quantity = cartData[foodId];
+		cartObjects.push(cart)
+		that.setData({
+			cartObjects: cartObjects,
+            quantity: cartData[foodId]
+		});
+	},
     /**
      * 绑定减数量事件
      */
-    minusCount(e) {
-        var that = this;
-        // 所点商品id
-        var foodId = e.currentTarget.dataset.id;
-        // 读取目前购物车数据
-        var cartData = that.data.cartData;
-        // 获取当前商品数量
-        var foodCount = cartData[foodId];
-        // 自减1
-        --foodCount;
-        // 减到零了就直接移除
-        if (foodCount == 0) {
-            delete cartData[foodId]
-        } else {
-            cartData[foodId] = foodCount;
-        }
-        // 设值到data数据中
-        that.setData({
-            cartData: cartData
-        });
-        console.log("that.data.cartData")
-        console.log(that.data.cartData)
-    },
+	minusCount: function (e) {
+		// console.log(e)
+		var that = this;
+		var foodId = e.currentTarget.dataset.foodId;
+		var cartData = that.data.cartData;
+		var foodCount = cartData[foodId];
+		--foodCount;
+		if (foodCount == 0) {
+			delete cartData[foodId]
+		} else {
+			cartData[foodId] = foodCount;
+		}
+		that.setData({
+			cartData: cartData
+		})
+		that.cartToArray(foodId)
+
+	},
     cascadeToggle: function() {
         var that = this;
         //切换购物车开与关
@@ -255,6 +234,7 @@ Page({
             maskVisual: 'hidden'
         });
     },
+    // 外卖
     toTakeOut: function() {
         wx.navigateTo({
             url: '../../pages/order-submit/order-submit',
@@ -263,6 +243,7 @@ Page({
             complete: function(res) {},
         })
     },
+    // 显示购物车
     showCart: function() {
         var that = this;
         if (that.data.hasCart == false) {
@@ -275,10 +256,26 @@ Page({
             })
         }
     },
+    // 显示规格选择
+    chooseMoal: function (e) {
+        var that = this;
+        that.setData({
+            isModal: true,
+            chooseFoodId: e.currentTarget.dataset.foodId
+        })
+    },
+	choosesty: function (e) {
+		var that = this;
+		console.log(e)
+		that.setData({
+			choosestyId: e.currentTarget.dataset.id
+		});
+	},
+    // 关闭蒙层
     toastClode: function () {
         var that = this;
         that.setData({
-            isModal: true
+            isModal: false
         })
     },
     /**
