@@ -44,52 +44,62 @@
 		<!-- sidebar点餐分类 -->
         <view class='category'>
             <view wx:for-items="{{type_sort}}" wx:key="index" class='type-box'>
-                <view data-id="{{index}}" class="classes {{activeCategoryId == index ? 'on' : ''}}" bindtap='categoryClick'><text>{{item}}</text></view>
+                <view data-goodsclass="{{item}}" data-id="{{index}}" class="classes {{activeCategoryId == index ? 'on' : ''}}" bindtap='categoryClick'><text>{{item}}</text></view>
             </view>
         </view>
 		<!-- 商品列表 -->
-        <view class='items'>
+        <!-- <view class='items'>
             <view class='tag'>热销</view>
             <view class='item' hover-class='on' wx:for-items="{{list}}" wx:key="{{index}}" data-id="{{item.id}}">
                 <view class='img-shop'>
-                    <image mode='aspectFill' class='img-shop' src='{{item.img}}'></image>
+                    <image mode='aspectFill' class='img-shop' src='{{item.goodsImage}}'></image>
                 </view>
                 <view class='info-shop'>
-                    <view class='name'>{{item.name}}</view>
-                    <view class='description'>{{item.description}}</view>
+                    <view class='name'>{{item.goodsName}}</view>
+                    <view class='description'>{{item.goodsIntro}}</view>
+                    <view class='sale'>月售{{item.sale}}</view>
+                    <view class='price'>¥{{item.price}}</view>
+                </view>
+                没有规格加减
+                <view class="cart-count-box">
+                    <text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-food-id="{{item.id}}" wx:if="{{cartData[item.id]}}">-</text>
+                    <text class="cart-count-num">{{cartData[item.id]}}</text>
+                    <text class="cart-count-wrap cart-count-add" bindtap="addCount" data-food-id="{{item.id}}">+</text>
+                </view>
+                选规格
+                <view class='choose' bindtap="chooseMoal" data-food-id="{{item.id}}">
+                    <view class='choose-num' wx:if="{{cartData[item.id]}}">{{cartData[item.id]}}</view>
+                    <view>选规格</view>
+                </view>
+            </view>
+        </view> -->
+		
+        <view class='items'>
+            <view class='tag'>热销</view>
+            <view class='item' hover-class='on' wx:for="{{goods}}">
+                <view class='img-shop'>
+                    <image mode='aspectFill' class='img-shop' src='{{item.goodsImage}}'></image>
+                </view>
+                <view class='info-shop'>
+                    <view class='name'>{{item.goodsName}}</view>
+                    <view class='description'>{{item.goodsIntro}}</view>
                     <view class='sale'>月售{{item.sale}}</view>
                     <view class='price'>¥{{item.price}}</view>
                 </view>
                 <!-- 没有规格加减 -->
-<!--                 <view class="cart-count-box">
+                <view class="cart-count-box">
                     <text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-food-id="{{item.id}}" wx:if="{{cartData[item.id]}}">-</text>
                     <text class="cart-count-num">{{cartData[item.id]}}</text>
                     <text class="cart-count-wrap cart-count-add" bindtap="addCount" data-food-id="{{item.id}}">+</text>
-                </view> -->
+                </view>
                 <!-- 选规格 -->
                 <view class='choose' bindtap="chooseMoal" data-food-id="{{item.id}}">
-                    <view class='choose-num' wx:if="{{cartData[item.id]}}">{{cartData[chooseFoodId]}}</view>
+                    <view class='choose-num' wx:if="{{cartData[item.id]}}">{{cartData[item.id]}}</view>
                     <view>选规格</view>
                 </view>
             </view>
-
-                    
-            <!-- <view class='item' bindtap='select_bycondi' hover-class='on' wx:for-items="{{list}}" wx:key="{{index}}" data-id="{{item.id}}">
-                <view class='img-shop'>
-                    <image mode='aspectFill' class='img-shop' src='{{item.img}}'></image>
-                </view>
-                <view class='info-shop'>
-                    <view class='name'>{{item.name}}</view>
-                    <view class='description'>{{item.description}}</view>
-                    <view class='sale'>月售{{item.sale}}</view>
-                    <view class='price'>¥{{item.price}}</view>
-                </view>
-                 <view class='choose'>
-                    <view class='choose-num'>1</view>
-                    <view>选规格</view>
-                </view>  
-            </view> -->
         </view>
+		<!-- 购物车工具栏 -->
         <view class='carts-bar'>
             <!-- <view class='carts-list {{hasCart==true?"on":""}}' style='top: -{{cartHeight}}px'>
                 <view class='top'>
@@ -100,31 +110,31 @@
             <view class='left' bindtap='cascadeToggle'>
                 <view class='car'>
                     <image class='icon-car' src='../../images/run@2x.png'></image>
-                    <text class='carts-num'>1</text>
+                    <text class='carts-num' wx:if="{{quantity}}">{{quantity}}</text>
                 </view>
-                <view class='all-price'>¥29</view>
+                <view class='all-price' wx:if="{{amount}}">¥{{amount}}</view>
             </view>
             <view class='addall' bindtap='toTakeOut'>去结算</view>
         </view>
         <!-- 规格详情 -->
-        <view class='modal' wx:if="{{isModal}}">
+        <view class='modal' wx:if="{{isModal}}" wx:for="{{chooseObjects}}">
             <view class='toast'>
                 <view class="modal-mask toast-mask"></view>
                 <view class='toast-wrapper'>
                     <view class='toast-body'>
-                        <view class='toast-title'>樱花碧根果奶缇</view>
+                        <view class='toast-title'>{{item.cartFood.goodsName}}</view>
                         <view class='choose-box'>
                             <view class='choose-list'>
                                 <view class='item-title'>冷热</view>
                                 <view class='chooses'>
-                                    <view data-id="0" bindtap="choosesty" class="choosesty">冷饮</view>
+                                    <view data-id="0" bindtap="choosesty" class="choosesty on">冷饮</view>
                                     <view data-id="1" bindtap="choosesty" class="choosesty">热饮</view>
                                 </view>
                             </view>
                             <view class='choose-list'>
                                 <view class='item-title'>甜度</view>
                                 <view class='chooses'>
-                                    <view data-id="2" bindtap="choosesty" class="choosesty">正常糖</view>
+                                    <view data-id="2" bindtap="choosesty" class="choosesty on">正常糖</view>
                                     <view data-id="3" bindtap="choosesty" class="choosesty">多糖</view>
                                     <view data-id="4" bindtap="choosesty" class="choosesty">少糖</view>
                                     <view data-id="5" bindtap="choosesty" class="choosesty">无糖</view>
@@ -133,7 +143,7 @@
                         </view>
                         <view class='toast-footer'>
                             <view class='left'>
-                                <view data-food-id="{{chooseFoodId}}" class='price'>¥ 7</view>
+                                <view data-food-id="{{chooseFoodId}}" class='price'>¥ {{item.cartFood.price}}</view>
                                 <view class='choose-text'>（冷饮，正常糖）</view>
                             </view>
                             <view class="cart-count-box">
@@ -150,19 +160,39 @@
             </view>
         </view>
         <!-- 购物车 -->
-        <view animation="{{animationData}}" class="modal-content carts-list" style="height: {{cartHeight}}px; bottom: -{{cartHeight}}px;">
-            <view class='top'>
-                <image class='icon-trash' src='../../images/icon-trash.png'></image>
-                清空购物车
-            </view>
-            <view class='item'>
-                <view class='name'>樱花碧根果奶缇</view>
-                <view>¥16.00</view>
-                <view class="cart-count-box">
-                    <text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-id="{{item.id}}" wx:if="{{cartData[item.id]}}">-</text>
-                    <text class="cart-count-num">{{cartData[item.id]}}</text>
-                    <text class="cart-count-wrap cart-count-add" bindtap="addCount" data-id="{{item.id}}">+</text>
+        <view class='modal'>
+            <view animation="{{animationMask}}" class="modal-mask {{maskVisual}}" bindtap="cascadeDismiss"></view>
+            <view animation="{{animationData}}" class="modal-content carts-list" style="height: {{cartHeight}}px; bottom: -{{cartHeight}}px;">
+                <view class='top'>
+                    <image class='icon-trash' src='../../images/icon-trash.png'></image>
+                    清空购物车
                 </view>
+				<!-- <view class='cartsitems'>
+					<view class='item' wx:for="{{cartObjects}}" wx:key="">
+						<view class='name'>{{item.cartFood.goodsName}}</view>
+						<view>¥{{item.cartFood.price}}</view>
+						<view class="cart-count-box">
+							<text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-id="{{item.id}}" wx:if="{{cartData[item.id]}}">-</text>
+							<text class="cart-count-num">{{cartData[item.id]}}</text>
+							<text class="cart-count-wrap cart-count-add" bindtap="addCount" data-id="{{item.id}}">+</text>
+						</view>
+					</view>
+				</view> -->
+				<scroll-view class="modal-body" scroll-y="true" style="height: {{scrollHeight}}px;">
+	    	<view class="item" wx:for="{{cartObjects}}" wx:key="">
+	    		<view class="title">{{item.cartFood.goodsName}}</view>
+	    		<view class="fee">¥{{item.cartFood.price * item.quantity}}</view>
+	    		<view class="cart-count-box">
+					<!-- 减号 -->
+					<text class="cart-count-wrap cart-count-down" bindtap="minusCount"  data-food-id="{{item.cartFood.id}}" wx:if="{{cartData[item.cartFood.id]}}">-</text>
+					<!-- 数量 -->
+					<!-- <view class="value">{{cartData[item.cartFood.id]}}</view> -->
+					<text class="cart-count-num">{{cartData[item.cartFood.id]}}</text>
+					<!-- 加号 -->
+					<text class="cart-count-wrap cart-count-add" bindtap="addCount" data-food-id="{{item.cartFood.id}}">+</text>
+				</view>
+	    	</view>
+    	</scroll-view>
             </view>
         </view>
     </view>

@@ -1,17 +1,25 @@
 // pages/menu/menu.js
 
 const app = getApp()
-var cartsBarH = 100;
+// 最大行数
+var max_row_height = 5;
+// 行高
+var cart_offset = 69;
+// 底部栏偏移量
+var food_row_height = 49;
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
+		goodsItems: [],
+		amount: 0,
         isModal: false,
         maskVisual: 'hidden',
         cartObjects: [],
-        cartData: {},
+		cartData: {}, 
+		chooseObjects: [],
         goodsnum: 1,
         hasCart: false,
         hasAddCart: false,
@@ -29,14 +37,14 @@ Page({
         selectA: "1",
         activeCategoryId: "0",
         selectedId: "1",
-        type_sort: ["特价", "销量好评", "商家推荐", "特价", "销量好评", "商家推荐"],
+        type_sort: [],
         list: [{
                 id: "1",
                 img: "../../images/shopimg.jpg",
-                name: "樱花碧根果奶缇樱花碧根果奶缇",
+                name: "zhenzhunaicha",
                 description: "营养极高的碧根果牛奶搭配淡淡香气的营养极高的碧根果",
                 sale: "444",
-                price: "16.60"
+                price: "15.00"
             },
             {
                 id: "12",
@@ -44,8 +52,56 @@ Page({
                 name: "樱花碧根果奶缇樱花碧根果奶缇",
                 description: "营养极高的碧根果牛奶搭配淡淡香气的营养极高的碧根果",
                 sale: "444",
-                price: "16.60"
-            }
+                price: "16.10"
+			},
+			{
+				id: "123",
+				img: "../../images/shopimg.jpg",
+				name: "樱花碧根果奶缇樱花碧根果奶缇",
+				description: "营养极高的碧根果牛奶搭配淡淡香气的营养极高的碧根果",
+				sale: "444",
+				price: "6"
+			},
+			{
+				id: "124",
+				img: "../../images/shopimg.jpg",
+				name: "樱花碧根果奶缇樱花碧根果奶缇",
+				description: "营养极高的碧根果牛奶搭配淡淡香气的营养极高的碧根果",
+				sale: "444",
+				price: "6"
+			},
+			{
+				id: "125",
+				img: "../../images/shopimg.jpg",
+				name: "樱花碧根果奶缇樱花碧根果奶缇",
+				description: "营养极高的碧根果牛奶搭配淡淡香气的营养极高的碧根果",
+				sale: "444",
+				price: "6"
+			},
+			{
+				id: "126",
+				img: "../../images/shopimg.jpg",
+				name: "樱花碧根果奶缇樱花碧根果奶缇",
+				description: "营养极高的碧根果牛奶搭配淡淡香气的营养极高的碧根果",
+				sale: "444",
+				price: "6"
+			},
+			{
+				id: "127",
+				img: "../../images/shopimg.jpg",
+				name: "樱花碧根果奶缇樱花碧根果奶缇",
+				description: "营养极高的碧根果牛奶搭配淡淡香气的营养极高的碧根果",
+				sale: "444",
+				price: "6"
+			},
+			{
+				id: "128",
+				img: "../../images/shopimg.jpg",
+				name: "樱花碧根果奶缇樱花碧根果奶缇",
+				description: "营养极高的碧根果牛奶搭配淡淡香气的营养极高的碧根果",
+				sale: "444",
+				price: "6"
+			}
         ],
 
     },
@@ -54,12 +110,6 @@ Page({
      */
     onLoad: function(options) {
         var that = this;
-        // 购物城高度
-        wx.createSelectorQuery().select('.modal-content').boundingClientRect(function(rect) {
-            that.setData({
-                // cartHeight: rect.height // 节点的高度
-            })
-        }).exec()
         // 分类赋值
 		if (app.globalData.actionData) {
 			var actionData = app.globalData.actionData
@@ -69,6 +119,37 @@ Page({
 				appPersonback: actionData.appPersonback,
 			})
 		}
+		wx.request({
+			url: 'https://app.jywxkj.com/shop/baifen/request/goodsmanage.php',
+			data: {
+				action: "xcxgoodsshow"
+			},
+			header: { 'Content-Type': 'application/x-www-form-urlencoded'},
+			method: 'POST',
+			success: function(res) {
+				console.log("xcxgoodsshow")
+				console.log(res.data.data)
+				var goods = res.data.data;
+				that.setData({
+					goods: res.data.data
+				})
+				// var type_sort = that.data.type_sort;
+				// for (var i = 0; i < type_sort.length; i++) {
+				// 	console.log(type_sort[i])
+				// 	for (var j = 0; j < goods.length; j++) {
+				// 		if (goods[i].goodsclass == type_sort[i]) {
+				// 			var goodsItem = goods[j]
+				// 			console.log("goodsItem")
+				// 			console.log(goodsItem)
+				// 		}
+				// 	}
+				// }
+				
+
+			},
+			fail: function(res) {},
+			complete: function(res) {},
+		})
     },
     // 点赞
     likeClick: function(e) {
@@ -104,7 +185,8 @@ Page({
         var that = this;
         console.log(e)
         that.setData({
-            activeCategoryId: e.currentTarget.dataset.id
+			goodsclass: e.currentTarget.dataset.goodsclass,
+			activeCategoryId: e.currentTarget.dataset.id
         });
     },
     /**
@@ -150,6 +232,7 @@ Page({
 					cartObjects: cartObjects
 				});
 				console.log(that.data.cartObjects)
+				that.amount();
 				return
 			}
 		}
@@ -158,8 +241,10 @@ Page({
 		cartObjects.push(cart)
 		that.setData({
 			cartObjects: cartObjects,
-            quantity: cartData[foodId]
 		});
+		that.amount();
+		console.log("cartToArray.that.data.cartObjects")
+		console.log(that.data.cartObjects)
 	},
     /**
      * 绑定减数量事件
@@ -185,55 +270,65 @@ Page({
     cascadeToggle: function() {
         var that = this;
         //切换购物车开与关
-        that.cascadePopup();
+        // that.cascadePopup();
+		if (that.data.maskVisual == 'show') {
+			that.cascadeDismiss();
+		} else {
+			that.cascadePopup();
+		}
 
     },
-    cascadePopup: function() {
-        var that = this;
-        // 购物车打开动画
-        var animation = wx.createAnimation({
-            duration: 300,
-            timingFunction: 'ease-in-out',
-        });
-        that.data.animation = animation;
-        var cartHeight = that.data.cartHeight + cartsBarH;
-        animation.translateY(-cartHeight).step();
-        that.setData({
-            animationData: animation.export(),
-            maskVisual: 'show',
-            cartHeight: cartHeight
-        });
-        // 遮罩渐变动画
-        var animationMask = wx.createAnimation({
-            duration: 150,
-            timingFunction: 'linear',
-        });
-        that.animationMask = animationMask;
-        animationMask.opacity(0.5).step();
-        that.setData({
-            animationMask: animationMask.export(),
-        });
-    },
-    cascadeDismiss: function() {
-        var that = this;
-        var animation = that.data.animation;
-        var cartHeight = that.data.cartHeight;
-        // 购物车关闭动画
-        animation.translateY(cartHeight).step();
-        that.setData({
-            animationData: animation.export(),
-            cartHeight: cartHeight - cartsBarH
-        });
-        // 遮罩渐变动画
-        that.animationMask.opacity(0).step();
-        that.setData({
-            animationMask: that.animationMask.export(),
-        });
-        // 隐藏遮罩层
-        that.setData({
-            maskVisual: 'hidden'
-        });
-    },
+
+	cascadePopup: function () {
+		var that = this;
+		// 购物车打开动画
+		var animation = wx.createAnimation({
+			duration: 300,
+			timingFunction: 'ease-in-out',
+		});
+		that.animation = animation;
+		// scrollHeight为商品列表本身的高度
+		var scrollHeight = (that.data.cartObjects.length <= max_row_height ? that.data.cartObjects.length : max_row_height) * food_row_height;
+		console.log("scrollHeight")
+		console.log(scrollHeight)
+		// cartHeight为整个购物车的高度，也就是包含了标题栏与底部栏的高度
+		var cartHeight = scrollHeight + cart_offset;
+		animation.translateY(- cartHeight).step();
+		that.setData({
+			animationData: that.animation.export(),
+			maskVisual: 'show',
+			scrollHeight: scrollHeight,
+			cartHeight: cartHeight
+		});
+		// 遮罩渐变动画
+		var animationMask = wx.createAnimation({
+			duration: 150,
+			timingFunction: 'linear',
+		});
+		that.animationMask = animationMask;
+		animationMask.opacity(0.5).step();
+		that.setData({
+			animationMask: that.animationMask.export(),
+		});
+	},
+	cascadeDismiss: function () {
+		var that = this;
+		// 购物车关闭动画
+		that.animation.translateY(that.data.cartHeight).step();
+		that.setData({
+			animationData: that.animation.export()
+		});
+		// 遮罩渐变动画
+		var animationMask = that.animationMask;
+		animationMask.opacity(0).step();
+		that.setData({
+			animationMask: that.animationMask.export(),
+		});
+		// 隐藏遮罩层
+		that.setData({
+			maskVisual: 'hidden'
+		});
+	},
     // 外卖
     toTakeOut: function() {
         wx.navigateTo({
@@ -256,14 +351,41 @@ Page({
             })
         }
     },
-    // 显示规格选择
-    chooseMoal: function (e) {
-        var that = this;
-        that.setData({
-            isModal: true,
-            chooseFoodId: e.currentTarget.dataset.foodId
-        })
-    },
+	chooseMoal: function (e) {
+		var that = this;
+		var cartData = that.data.cartData;
+		var chooseObjects = that.data.chooseObjects;
+		var list = that.data.list;
+		var cartFood;
+		var cart = {};
+		that.setData({
+			isModal: true,
+			// isChoose: true,
+			chooseFoodId: e.currentTarget.dataset.foodId
+		})
+		var chooseFoodId = that.data.chooseFoodId;
+		for (var i = 0; i < list.length; i++) {
+			if (list[i].id == chooseFoodId) {
+				cartFood = list[i];
+			}
+		}
+		for (var i = 0; i < chooseObjects.length; i++) {
+			if (chooseObjects[i].cartFood.id !== chooseFoodId || chooseObjects[i].cartFood.id == chooseFoodId) {
+				chooseObjects.splice(i, 1);
+			}
+			that.setData({
+				chooseObjects: chooseObjects,
+			});
+		}
+		cart.cartFood = cartFood;
+		chooseObjects.push(cart);
+
+		that.setData({
+			chooseObjects: chooseObjects,
+		});
+		// console.log("choose.that.data.chooseObjects")
+		// console.log(that.data.chooseObjects)
+	},
 	choosesty: function (e) {
 		var that = this;
 		console.log(e)
@@ -278,6 +400,20 @@ Page({
             isModal: false
         })
     },
+	amount: function () {
+		var that = this;
+		var cartObjects = that.data.cartObjects;
+		var amount = 0;
+		var quantity = 0;
+		cartObjects.forEach(function (item, index) {
+			amount += item.quantity * item.cartFood.price;
+			quantity += item.quantity;
+		});
+		that.setData({
+			amount: amount.toFixed(2),
+			quantity: quantity
+		});
+	},
     /**
      * 生命周期函数--监听页面初次渲染完成
      */

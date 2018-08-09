@@ -129,7 +129,20 @@ page {
     float: right;
     background-color: #fff;
 }
-
+.modal-body {
+	font-size: 14px;
+	max-height: 295px;
+}
+.modal-body .item .title {
+	width: 388rpx;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.modal-body .item .fee {
+	width: 120rpx;
+	text-align: center;
+}
 .img-shop {
     width: 150rpx;
     height: 150rpx;
@@ -528,15 +541,19 @@ page {
 }
 
 .carts-list .item {
+	box-sizing: border-box;
     display: flex;
     align-items: center;
+	justify-content: space-between;
     height: 120rpx;
     font-size: 30rpx;
     color: #000;
     margin: 0 30rpx;
     border-bottom: 1rpx solid #dcdcdc;
 }
-
+.cartsitems .item:last-child {
+	border-color: transparent;
+}
 .carts-list .item .name {
     width: 390rpx;
 }

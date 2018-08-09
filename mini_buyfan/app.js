@@ -54,6 +54,8 @@ App({
 			header: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			method: 'POST',
 			success: function (res) {
+				console.log("actionrequest")
+				console.log(res)
 				that.globalData.actionData = res.data
 				if (getCurrentPages().length != 0) {
 					getCurrentPages()[getCurrentPages().length - 1].onLoad()
