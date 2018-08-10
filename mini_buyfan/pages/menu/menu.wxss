@@ -103,7 +103,7 @@ page {
 }
 
 .category .classes {
-	padding: 0 30rpx;
+	padding: 0 15rpx;
 	box-sizing: border-box;
 	display: flex;
 	align-items: center;
@@ -551,7 +551,7 @@ page {
     margin: 0 30rpx;
     border-bottom: 1rpx solid #dcdcdc;
 }
-.cartsitems .item:last-child {
+.modal-body .item:last-child {
 	border-color: transparent;
 }
 .carts-list .item .name {
@@ -591,18 +591,21 @@ page {
 
 .toast-wrapper {
     position: fixed;
-    top: 50%;
+    top: 20%;
     left: 50%;
-    margin-top: -347.5rpx;
+    /* margin-top: -347.5rpx; */
     margin-left: -320rpx;
     width: 640rpx;
-    height: 695rpx;
+	height: auto;
+    /* height: 695rpx; */
+	overflow: hidden;
 }
 
 .toast-body {
 	position: relative;
     width: 100%;
-    height: 580rpx;
+	height: auto;
+    /* height: 580rpx; */
     background: rgba(255, 255, 255, 1);
     border-radius: 20rpx;
 }
@@ -633,14 +636,14 @@ page {
 }
 
 .item-title {
-    height: 72rpx;
+    /* height: 72rpx; */
     line-height: 72rpx;
     color: #323232;
     font-size: 28rpx;
 }
 
 .choose-box {
-    padding: 0 30rpx;
+    padding: 30rpx;
     box-sizing: border-box;
 }
 
@@ -667,8 +670,8 @@ page {
 .toast-footer {
 	padding: 0 30rpx;
 	box-sizing: border-box;
-	position: absolute;
-	bottom: 0;
+	/* position: absolute;
+	bottom: 0; */
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
