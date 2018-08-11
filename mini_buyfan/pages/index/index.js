@@ -44,8 +44,10 @@ Page({
 			console.log("index.app.globalData.actionData")
 			console.log(app.globalData.actionData)
 			var appSlideshow = app.globalData.actionData.appSlideshow
+			var orderway = app.globalData.actionData.orderway
 			that.setData({
-				appSlideshow: appSlideshow
+				tackout: orderway.tackout,
+				shopfor: orderway.shopfor
 			})
 		}
 

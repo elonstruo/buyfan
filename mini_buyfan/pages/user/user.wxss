@@ -17,6 +17,9 @@ page {
 }
 
 .header-box {
+	display: flex;
+	align-items: center;
+	justify-content: center;
     margin: 0 auto;
     border: 1rpx solid #fff;
 }

@@ -19,7 +19,7 @@ App({
 		// 设备信息
 		wx.getSystemInfo({
 			success: function (res) {
-				console.log(res)
+				// console.log(res)
 				that.screenWidth = res.windowWidth;
 				that.screenHeight = res.windowHeight;
 				that.pixelRatio = res.pixelRatio;
@@ -31,10 +31,10 @@ App({
         logs.unshift(Date.now())
         wx.setStorageSync('logs', logs)
 
+        // 登录
+        that.commomLogin()
         // actionrequest
         that.actionrequest()
-        // getUserInfo
-        // that.getUserInfo()
     },
     // 数据初始化
     actionrequest: function() {
@@ -62,76 +62,87 @@ App({
             complete: function(res) {},
         })
     },
+    //通用后台登录方法
+    commomLogin: function() {
+        var that = this;
+        var key = wx.getStorageSync('key');
+        if (key != '' && key != null && key != undefined) {
+            that.isLogined();
+        } else {
+            that.has_login();
+        }
+    },
     // 登录
-	has_login: function () {
-		var that = this;
-		// 登录
-		wx.login({
-			success: res => {
-				// 发送 res.code 到后台换取 openId, sessionKey, unionId
-				//发起网络请求
-				wx.request({
-					url: 'https://app.jywxkj.com/shop/baifen/request/usermanage.php',
-					method: 'POST',
-					data: {
-						action: 'xcxquery',
-						code: res.code
-					},
-					header: {
-						'content-type': 'application/x-www-form-urlencoded'
-					},
-					success: function (res) {
-						console.log("loginsuccess")
-						console.log(res)
-						if (res.data.res == 1) {
-							wx.setStorageSync('key', res.data.skey);
-							// console.log("______login")
-							// console.log(wx.getStorageSync("key"))
-							that.has_signup()
-						} 
-						// else {
-						// 	wx.showModal({
-						// 		title: '提示',
-						// 		content: '登录失败',
-						// 		success: function (res) { }
-						// 	})
-						// }
-					},
-					fail: function (res) {
-						console.log("loginfail")
-						console.log(res)
-					}
-				})
-			}
-		})
-	},
+    has_login: function() {
+        var that = this;
+        // 登录
+        wx.login({
+            success: res => {
+                // console.log("wx.login.res")
+                // console.log(res)
+                // 发送 res.code 到后台换取 openId, sessionKey, unionId
+                //发起网络请求
+                wx.request({
+                    url: 'https://app.jywxkj.com/shop/baifen/request/usermanage.php',
+                    method: 'POST',
+                    data: {
+                        code: res.code,
+                        action: 'xcxquery'
+                    },
+                    header: {
+                        'content-type': 'application/x-www-form-urlencoded'
+                    },
+                    success: function(res) {
+                        console.log("loginsuccess")
+                        console.log(res)
+                        if (res.data.data.skey) {
+                            that.globalData.userInfo = res.data;
+                            wx.setStorageSync('key', res.data.data.skey);
+                            // console.log("______login")
+                            // console.log(wx.getStorageSync("key"))
+                        } else {
+                            wx.showModal({
+                                title: '提示',
+                                content: '登录失败',
+                                success: function(res) {}
+                            })
+                        }
+                    },
+                    fail: function(res) {
+                        console.log("loginfail")
+                        console.log(res)
+                    }
+                })
+            }
+        })
+    },
 
-	//获取本地key登录
-	isLogined: function () {
-		var that = this;
-		var key = wx.getStorageSync('key');
-		if (key != '' && key != null && key != undefined) {
-			wx.request({
-				url: 'https://app.jywxkj.com/shop/baifen/request/goodsmanage.php',
-				method: 'POST',
-				data: {
-					action: 'xcxshow',
-					key: key,
-				},
-				header: {
-					'content-type': 'application/x-www-form-urlencoded'
-				},
-				success: function (res) {
-					console.log(res.data);
-					that.globalData.userInfo = res.data;
-					that.has_signup()
-				}
-			})
-			return 1;
-		} else {
-			return 0;
-		}
-	},
+    //获取本地key登录
+    isLogined: function() {
+        var that = this;
+        var key = wx.getStorageSync('key');
+        if (key != '' && key != null && key != undefined) {
+            wx.request({
+                url: 'https://app.jywxkj.com/shop/baifen/request/usermanage.php',
+                method: 'POST',
+                data: {
+                    key: key,
+                    action: 'xcxshow'
+                },
+                header: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
+                success: function(res) {
+                    console.log("isLogined.res.data");
+                    console.log(res.data);
+                    that.globalData.userInfo = res.data;
+                }
+            })
+            return 1;
+        } else {
+            return 0;
+        }
+    },
     // 微信支付
     wxpay: function(key, order_sn) {
         var that = this;

@@ -13,33 +13,48 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function(options) {
-
-        if (app.globalData.userInfo) {
-            this.setData({
-                userInfo: app.globalData.userInfo,
-                hasUserInfo: true
-            })
-        } else if (this.data.canIUse) {
-            // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-            // 所以此处加入 callback 以防止这种情况
-            app.userInfoReadyCallback = res => {
-                this.setData({
-                    userInfo: res.userInfo,
-                    hasUserInfo: true
-                })
-            }
-        } else {
-            // 在没有 open-type=getUserInfo 版本的兼容处理
-            wx.getUserInfo({
-                success: res => {
-                    app.globalData.userInfo = res.userInfo
-                    this.setData({
-                        userInfo: res.userInfo,
-                        hasUserInfo: true
-                    })
-                }
-            })
-        }
+		var that = this;
+		if (app.globalData.userInfo) {
+			console.log("user.app.globalData.userInfo")
+			console.log(app.globalData.userInfo)
+			var avatarUrl = app.globalData.userInfo.data.avatarUrl;
+			var nickName = app.globalData.userInfo.data.nickName;
+			that.setData({
+				userInfo: app.globalData.userInfo,
+				avatarUrl: avatarUrl,
+				nickName: nickName
+			})
+		} else if (that.data.canIUse) {
+			var avatarUrl = app.globalData.userInfo.data.avatarUrl;
+			var nickName = app.globalData.userInfo.data.nickName;
+			// 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+			// 所以此处加入 callback 以防止这种情况
+			app.userInfoReadyCallback = res => {
+				console.log('userInfoReadyCallback.res')
+				console.log(res)
+				that.setData({
+					userInfo: res.userInfo,
+					userInfo: app.globalData.userInfo,
+					avatarUrl: avatarUrl,
+				})
+			}
+		} else {
+			// 在没有 open-type=getUserInfo 版本的兼容处理
+			wx.getUserInfo({
+				success: res => {
+					console.log('在没有 open-type=getUserInfo 版本的兼容处理res')
+					console.log(res)
+					app.globalData.userInfo = res.userInfo;
+					var avatarUrl = app.globalData.userInfo.data.avatarUrl;
+					var nickName = app.globalData.userInfo.data.nickName;
+					that.setData({
+						userInfo: res.userInfo,
+						userInfo: app.globalData.userInfo,
+						avatarUrl: avatarUrl,
+					})
+				}
+			})
+		}
     },
     getUserInfo: function(e) {
         console.log(e)
@@ -68,7 +83,6 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function() {
-
     },
 
     /**

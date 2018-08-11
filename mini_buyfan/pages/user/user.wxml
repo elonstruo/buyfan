@@ -1,9 +1,9 @@
 <!--pages/user/user.wxml-->
 <view class='user-card'>
     <view class='header-box'>
-        <image class='header' src=''></image>
+        <image mode="aspectFit" class='header' src='{{avatarUrl}}'></image>
     </view>
-    <view class='user-name'>秋名山车神你个头</view>
+    <view class='user-name'>{{nickName}}</view>
 </view>
 <view class='user-info'>
     <view class='item'>
