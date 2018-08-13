@@ -17,7 +17,7 @@
         </view>
     </view>
     <view class='right'>
-        <view class='changeshop'>
+        <view class='changeshop' bindtap='changeshop'>
             <view class='image-box'>
                 <image class='icon-change' src='../../images/switch_white@2x.png'></image>
             </view>
@@ -63,7 +63,7 @@
 					<view class='price'>¥{{item.sPrice}}</view>
 				</view>
 				<!-- 没有规格加减 -->
-				<view class="cart-count-box" wx:if="{{item.goodsSpec.length<1 ||!item.goodsSpec}}">
+				<view class="cart-count-box" wx:if="{{item.goodsSpec.length < 1 ||!item.goodsSpec}}">
 					<text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-food-id="{{item.gid}}" wx:if="{{cartData[item.gid]}}">-</text>
 					<text class="cart-count-num">{{cartData[item.gid]}}</text>
 					<text class="cart-count-wrap cart-count-add" bindtap="addCount" data-food-id="{{item.gid}}">+</text>
@@ -94,9 +94,9 @@
                     <view class='toast-body'>
                         <view class='toast-title'>{{item.cartFood.goodsName}}</view>
                         <view class='choose-box'>
-                            <view class='choose-list' wx:for="{{item.cartFood.goodsSpec}}">
+                            <view class='choose-list' bindtap='chooseList' data-goodsSpec-index="{{index}}" wx:for="{{item.cartFood.goodsSpec}}">
                                 <view class='item-title'>{{item.name}}</view>
-                                <view data-index="{{index}}" bindtap="choosesty" wx:for="{{item.detail}}" class="choosesty">{{item.name}}</view>
+                                <view data-item-index="{{index}}" bindtap="choosesty" wx:for="{{item.detail}}" class='choosesty'>{{item.name}}</view>
                             </view>
                         </view>
                         <view class='toast-footer'>
@@ -176,22 +176,22 @@
     <!-- 商家tabbar-details -->
     <view class='tabitem' wx:if="{{selectedId == 3}}">
         <view class='stores'>
-            <view class='item'>
+            <view class='item' wx:for="{{stores}}" data-id="{{item.id}}">
                 <view class='title'>
-                    <text></text>佰分江南店</view>
+                    <text></text>{{item.shopName}}</view>
                 <view class='stores-info'>
                     <image class='icon-stores' src='../../images/location@2x.png'></image>
-                    <view>榕城区江南新城东一路卜蜂莲花车库入口正对面</view>
+                    <view>{{item.shopAdr}}</view>
                 </view>
                 <view class='stores-info'>
                     <image class='icon-stores' src='../../images/call@2x.png'></image>
-                    <view>0663-8484818</view>
+                    <view wx:for="{{item.shopTel}}">{{item}}</view>
                 </view>
                 <view class='stores-img'>
                     <view class="page-section-spacing">
                         <scroll-view class="scroll-view_H" scroll-x="true" bindscroll="scroll" style="width: 100%">
-                            <view class='scroll-view-item_H {{storesImgList.length == 1 ? "on" :"" }}' wx:for="{{storesImgList}}">
-                                <image class='store-img' mode="aspectFit" src='{{item}}'></image>
+                            <view wx:for="{{item.shopImg}}" data-length="{{item.shopImg.length}}" class='scroll-view-item_H {{item.shopImg.length == 1 ? "on" :"" }}'>
+                                <image class='store-img' mode="aspectFill" bindtap='previewImage' src='{{item}}'></image>
                             </view>
                         </scroll-view>
                     </view>

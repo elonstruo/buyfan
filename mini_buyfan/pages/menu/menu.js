@@ -31,11 +31,11 @@ Page({
         likeNum: "",
         storesImgList: [
             "../../images/shopimg.jpg",
-			// "../../images/shopimg.jpg",
-			// "../../images/shopimg.jpg",
-			// "../../images/shopimg.jpg",
-			// "../../images/shopimg.jpg",
-            // "../../images/shopimg.jpg",
+			"../../images/shopimg.jpg",
+			"../../images/shopimg.jpg",
+			"../../images/shopimg.jpg",
+			"../../images/shopimg.jpg",
+            "../../images/shopimg.jpg",
         ],
         appraisesImgList: [
             "../../images/shopimg.jpg",
@@ -83,10 +83,6 @@ Page({
                     goods: res.data.data,
                     // goodsSpecDetail: res.data.data.goodsSpecDetail,
                 })
-                console.log("xcxgoodsshow")
-                console.log(goods)
-				console.log("goods[0].goodsSpec")
-				console.log(goods[0].goodsSpec.length)
 				
                 for (var j = 0; j < goods.length; j++) {
                 }
@@ -120,11 +116,32 @@ Page({
 			success: function(res) {
 				console.log("商家分店")
 				console.log(res)
+				var storestring = JSON.stringify(res.data);
+				that.setData({
+					stores: res.data,
+					storestring: storestring
+				})
 			},
+
 			fail: function(res) {},
 			complete: function(res) {},
 		})
     },
+	changeshop: function () {
+		var that = this;
+		wx.navigateTo({
+			url: '../stores/stores?stores=' + that.data.storestring,
+			success: function(res) {},
+			fail: function(res) {},
+			complete: function(res) {},
+		})
+	},
+	previewImage: function () {
+		wx.previewImage({
+			current: '', // 当前显示图片的http链接
+			urls: [] // 需要预览的图片http链接列表
+		})
+	},
     // 点赞
     likeClick: function(e) {
         var that = this;
@@ -330,7 +347,9 @@ Page({
         }
     },
     chooseMoal: function(e) {
-        var that = this;
+		// console.log(e)
+		var that = this;
+		var goodsSpec = e.currentTarget.dataset.goodsspec;
         var cartData = that.data.cartData;
         var chooseObjects = that.data.chooseObjects;
         var goods = that.data.goods;
@@ -339,7 +358,8 @@ Page({
         that.setData({
             isModal: true,
             // isChoose: true,
-            chooseFoodId: e.currentTarget.dataset.foodId
+            chooseFoodId: e.currentTarget.dataset.foodId,
+			goodsSpec: goodsSpec
         })
         var chooseFoodId = that.data.chooseFoodId;
         for (var i = 0; i < goods.length; i++) {
@@ -364,12 +384,32 @@ Page({
         // console.log("choose.that.data.chooseObjects")
         // console.log(that.data.chooseObjects)
     },
+	chooseList: function (e) {
+		var that = this;
+		console.log(e)
+		var goodsSpecIndex = e.currentTarget.dataset.goodsspecIndex;
+		// console.log("goodsSpecIndex")
+		// console.log(goodsSpecIndex)
+		var goodsSpec = that.data.goodsSpec;
+		var goodsSpecItem = goodsSpec[goodsSpecIndex];
+		// console.log("chooseList.goodsSpecItem")
+		// console.log(goodsSpecItem)
+		that.setData({
+			goodsSpecItem: goodsSpecItem,
+			goodsspecIndex: goodsspecIndex
+		})
+	},
     choosesty: function(e) {
         var that = this;
         console.log(e)
         that.setData({
-            // choosestyId: e.currentTarget.dataset.gid
-        });
+			itemIndex: e.currentTarget.dataset.itemIndex
+		});
+		// console.log("that.data.itemIndex")
+		// console.log(that.data.itemIndex)
+		// var goodsSpecItem = that.data.goodsSpecItem;
+		// console.log("choosesty.goodsSpecItem")
+		// console.log(goodsSpecItem)
     },
     // 关闭蒙层
     toastClode: function() {

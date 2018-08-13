@@ -204,23 +204,26 @@ page {
 
 .item .description {
     width: 354rpx;
-    margin-top: 11rpx;
-    margin-bottom: 9rpx;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    /* margin-top: 11rpx;
+    margin-bottom: 9rpx; */
     font-size: 20rpx;
     color: #666;
+	display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
 
 .item .sale {
-    margin-bottom: 9rpx;
+    /* margin-bottom: 9rpx; */
     color: #666;
     font-size: 20rpx;
 }
 
 .item .price {
-    margin-top: 14rpx;
+    /* margin-top: 14rpx; */
     font-size: 30rpx;
     color: #fb873d;
     font-weight: bold;
@@ -315,6 +318,7 @@ page {
 
 .scroll-view_H {
     white-space: nowrap;
+	display: flex;
 }
 
 .page-section-spacing {
@@ -327,6 +331,7 @@ page {
     display: inline-block;
     width: 150rpx;
     height: 150rpx;
+	overflow: hidden
 }
 
 .scroll-view-item_H:last-of-type {
@@ -334,15 +339,15 @@ page {
 }
 
 .store-img {
-    width: 150rpx;
+	width: 150rpx;
     height: 150rpx;
 }
 
 .scroll-view-item_H.on, .scroll-view-item_H.on image {
     display: block;
     margin: 0 auto;
-    width: 690rpx;
-    height: 432rpx;
+    /* width: 690rpx;
+    height: 432rpx; */
 }
 
 .appraises-titles {

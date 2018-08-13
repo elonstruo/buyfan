@@ -45,8 +45,8 @@ Page({
 					console.log('在没有 open-type=getUserInfo 版本的兼容处理res')
 					console.log(res)
 					app.globalData.userInfo = res.userInfo;
-					var avatarUrl = app.globalData.userInfo.data.avatarUrl;
-					var nickName = app.globalData.userInfo.data.nickName;
+					var avatarUrl = app.globalData.userInfo.avatarUrl;
+					var nickName = app.globalData.userInfo.nickName;
 					that.setData({
 						userInfo: res.userInfo,
 						userInfo: app.globalData.userInfo,

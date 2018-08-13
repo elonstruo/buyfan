@@ -1,10 +1,11 @@
 {
     "pages": [
-        "pages/user/user",
-		"pages/menu/menu",
+        "pages/menu/menu",
+        "pages/stores/stores",
         "pages/index/index",
-		"pages/vip/vip",
-		"pages/coupon/coupon",
+        "pages/user/user",
+        "pages/vip/vip",
+        "pages/coupon/coupon",
         "pages/appraise/appraise",
         "pages/order-submit/order-submit",
         "pages/takeOut/takeOut",
