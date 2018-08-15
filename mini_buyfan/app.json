@@ -1,18 +1,18 @@
 {
     "pages": [
-        "pages/menu/menu",
+		"pages/address/address",
+		"pages/index/index",
+        "pages/edtiAddress/edtiAddress",
+		"pages/menu/menu",
         "pages/stores/stores",
-        "pages/index/index",
         "pages/user/user",
         "pages/vip/vip",
         "pages/coupon/coupon",
         "pages/appraise/appraise",
         "pages/order-submit/order-submit",
         "pages/takeOut/takeOut",
-        "pages/edtiAddress/edtiAddress",
         "pages/order-details/order-details",
         "pages/orders/orders",
-        "pages/address/address",
         "pages/tem/tem",
         "pages/logs/logs"
     ],

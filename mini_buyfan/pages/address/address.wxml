@@ -1,5 +1,5 @@
 <!--pages/address/address.wxml-->
-<view class='takeOutNone address' wx:if="{{isAddress}}">
+<view class='takeOutNone address' wx:if='{{userInfor == null || userInfor == ""}}'>
     <view>
         <image class='img-order' src='../../images/map@2x.png'></image>
         <view class='none-title'>你还没有添加收货地址</view>
@@ -7,30 +7,23 @@
         </view>
     </view>
 </view>
-<view class='toAddress' wx:if="{{toAddress}}">
-    <view class='item'>
-        <view class='left'>
-            <view class='address-title'>广东省 揭阳市 榕城区 莲花大道 某某小区19栋</view>
-            <view class='address-info'>
-                <view class='name'>王小明</view>
-                <view class='number'>13490880987</view>
+<view wx:if='{{userInfor !== null || userInfor !== ""}}'>
+    <view class='toAddress'>
+        <view class='item' wx:for="{{userInfor}}">
+            <view class='left'>
+                <view class='address-title'>{{item.adr}}</view>
+                <view class='address-info'>
+                    <view class='name'>{{item.username}}</view>
+                    <view class='number'>{{item.tel}}</view>
+                </view>
+            </view>
+            <view class='right'>
+                <image bindtap='edtiAddress' class='icon-edti' src='../../images/diex@2x.png'></image>
+            </view>
+            <view class='right'>
+                <image bindtap='deleteAddress' class='icon-edti' src='../../images/icon-delete.png'></image>
             </view>
         </view>
-		<view class='right'>
-			<image class='icon-edti' src='../../images/diex@2x.png'></image>
-		</view>
     </view>
-    <view class='item'>
-        <view class='left'>
-            <view class='address-title'>广东省 揭阳市 榕城区 莲花大道 某某小区19栋</view>
-            <view class='address-info'>
-                <view class='name'>王小明</view>
-                <view class='number'>13490880987</view>
-            </view>
-        </view>
-		<view class='right'>
-			<image class='icon-edti' src='../../images/diex@2x.png'></image>
-		</view>
-    </view>
+	<navigator class='addressButton' url='../../pages/edtiAddress/edtiAddress'>添加地址</navigator>
 </view>
-<view class='addressButton'>添加地址</view>

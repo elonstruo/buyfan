@@ -46,45 +46,27 @@ Page({
 			var appSlideshow = app.globalData.actionData.appSlideshow
 			var orderway = app.globalData.actionData.orderway
 			that.setData({
-				tackout: orderway.tackout,
-				shopfor: orderway.shopfor
+				appSlideshow: appSlideshow,
 			})
+		}
+		// location
+		if (app.globalData.locationData) {
+			console.log("index.app.globalData.locationData")
+			console.log(app.globalData.locationData)
+			var locationData = app.globalData.locationData;
+			that.setData({
+				street: locationData.result.address_component.street
+			})
+		} else {
+			street: "加载中……"
+			
 		}
 
     },
 	onShow: function () {
 		var that = this;
 
-		// 实例化API核心类
-		var qqmapsdk = new QQMapWX({
-			key: 'CT2BZ-I57RV-HIGP7-UMN64-ORLUV-LRB22'
-		});
-		wx.getLocation({
-			type: 'wgs84',
-			success: function (res) {
-				var latitude = res.latitude
-				var longitude = res.longitude
-				var speed = res.speed
-				var accuracy = res.accuracy
-				// 调用接口
-				qqmapsdk.reverseGeocoder({
-					location: {
-						latitude: latitude,
-						longitude: longitude
-					},
-					success: function (res) {
-						that.setData({
-							street: res.result.address_component.street
-						})
-					},
-					fail: function (res) {
-						console.log(res);
-					},
-					complete: function (res) {
-					}
-				});
-			}
-		})
+
 	},
 
 })

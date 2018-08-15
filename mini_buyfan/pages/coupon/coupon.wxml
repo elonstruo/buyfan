@@ -24,9 +24,9 @@
 	</view>
 </view>
 
-<!-- <view class='none' style='height: {{noneHeight}}px' wx:if="coupon.length>1">
+<view class='none' style='height: {{noneHeight}}px' wx:if="{{!coupon}}">
     <view>
         <image class='icon-none' src='../../images/paper@2x.png'></image>
         <view>还没有相关优惠卷</view>
     </view>
-</view> -->
+</view>

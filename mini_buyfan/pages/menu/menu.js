@@ -1,5 +1,6 @@
 // pages/menu/menu.js
-
+var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js');
+var qqmapsdk;
 const app = getApp()
 // 最大行数
 var max_row_height = 5;
@@ -16,7 +17,7 @@ Page({
     /**
      * 页面的初始数据
      */
-	data: {
+    data: {
         goodsItems: [],
         amount: 0,
         isModal: false,
@@ -31,10 +32,10 @@ Page({
         likeNum: "",
         storesImgList: [
             "../../images/shopimg.jpg",
-			"../../images/shopimg.jpg",
-			"../../images/shopimg.jpg",
-			"../../images/shopimg.jpg",
-			"../../images/shopimg.jpg",
+            "../../images/shopimg.jpg",
+            "../../images/shopimg.jpg",
+            "../../images/shopimg.jpg",
+            "../../images/shopimg.jpg",
             "../../images/shopimg.jpg",
         ],
         appraisesImgList: [
@@ -47,7 +48,7 @@ Page({
         selectedId: "1",
         type_sort: [],
         goods: [],
-		
+
 
     },
     /**
@@ -55,18 +56,43 @@ Page({
      */
     onLoad: function(options) {
         var that = this;
+        console.log("menu.options")
+        console.log(options)
         // 分类赋值
         if (app.globalData.actionData) {
             var actionData = app.globalData.actionData
+			var appLogo = app.globalData.actionData.appLogo
             that.setData({
                 type_sort: actionData.appClass,
-                appName: actionData.appName,
-                appPersonback: actionData.appPersonback,
-				categoryGoodsclass: actionData.appClass[0],
-				mesuScrollHeight: app.screenHeight - signH - tabbarH - food_row_height
+                categoryGoodsclass: actionData.appClass[0],
+                mesuScrollHeight: app.screenHeight - signH - tabbarH - food_row_height,
+				appLogo: appLogo
             })
         }
-		// 所有商品
+        // 商家分店
+        if (app.globalData.storesData) {
+            var storesData = app.globalData.storesData
+
+            var storestring = JSON.stringify(storesData);
+            that.setData({
+                storestring: storestring,
+				storesData: storesData
+            })
+        }
+        var storeId = options.id;
+        for (var i = 0; i < storesData.length; i++) {
+            if (storesData[i].id == storeId) {
+                var stores = storesData[i]
+            }
+        }
+        console.log("stores = storesData[i]")
+        console.log(stores)
+        that.setData({
+            stores: stores,
+            shopLatitude: stores.shopLocal.latitude,
+            shopLongitude: stores.shopLocal.longitude
+        })
+        // 所有商品
         wx.request({
             url: 'https://app.jywxkj.com/shop/baifen/request/goodsmanage.php',
             data: {
@@ -83,9 +109,8 @@ Page({
                     goods: res.data.data,
                     // goodsSpecDetail: res.data.data.goodsSpecDetail,
                 })
-				
-                for (var j = 0; j < goods.length; j++) {
-                }
+
+                for (var j = 0; j < goods.length; j++) {}
                 // var type_sort = that.data.type_sort;
                 // for (var i = 0; i < type_sort.length; i++) {
                 // 	console.log(type_sort[i])
@@ -103,45 +128,22 @@ Page({
             fail: function(res) {},
             complete: function(res) {},
         })
-		// 商家分店
-		wx.request({
-			url: 'https://app.jywxkj.com/shop/baifen/request/shop.php',
-			data: {
-				action: 'xcxcchopshow'
-			},
-			header: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			},
-			method: 'post',
-			success: function(res) {
-				console.log("商家分店")
-				console.log(res)
-				var storestring = JSON.stringify(res.data);
-				that.setData({
-					stores: res.data,
-					storestring: storestring
-				})
-			},
-
-			fail: function(res) {},
-			complete: function(res) {},
-		})
     },
-	changeshop: function () {
-		var that = this;
-		wx.navigateTo({
-			url: '../stores/stores?stores=' + that.data.storestring,
-			success: function(res) {},
-			fail: function(res) {},
-			complete: function(res) {},
-		})
-	},
-	previewImage: function () {
-		wx.previewImage({
-			current: '', // 当前显示图片的http链接
-			urls: [] // 需要预览的图片http链接列表
-		})
-	},
+    changeshop: function() {
+        var that = this;
+        wx.navigateTo({
+            url: '../stores/stores?stores=' + that.data.storestring,
+            success: function(res) {},
+            fail: function(res) {},
+            complete: function(res) {},
+        })
+    },
+    previewImage: function() {
+        wx.previewImage({
+            current: '', // 当前显示图片的http链接
+            urls: [] // 需要预览的图片http链接列表
+        })
+    },
     // 点赞
     likeClick: function(e) {
         var that = this;
@@ -157,10 +159,10 @@ Page({
             })
         }
     },
-	// 商家店铺照片
-	scroll: function (e) {
-		// console.log(e)
-	},
+    // 商家店铺照片
+    scroll: function(e) {
+        // console.log(e)
+    },
     // tabbar触发
     tabClick: function(e) {
         var that = this;
@@ -180,7 +182,7 @@ Page({
         var that = this;
         console.log(e)
         that.setData({
-			categoryGoodsclass: e.currentTarget.dataset.goodsclass,
+            categoryGoodsclass: e.currentTarget.dataset.goodsclass,
             activeCategoryId: e.currentTarget.dataset.id
         });
     },
@@ -283,11 +285,11 @@ Page({
         });
         that.animation = animation;
         // scrollHeight为商品列表本身的高度
-		var scrollHeight = (that.data.cartObjects.length <= max_row_height ? that.data.cartObjects.length : max_row_height) * food_row_height;
+        var scrollHeight = (that.data.cartObjects.length <= max_row_height ? that.data.cartObjects.length : max_row_height) * food_row_height;
         console.log("scrollHeight")
         console.log(scrollHeight)
         // cartHeight为整个购物车的高度，也就是包含了标题栏与底部栏的高度
-		var cartHeight = scrollHeight + cart_offset;
+        var cartHeight = scrollHeight + cart_offset;
         animation.translateY(-cartHeight).step();
         that.setData({
             animationData: that.animation.export(),
@@ -347,9 +349,9 @@ Page({
         }
     },
     chooseMoal: function(e) {
-		// console.log(e)
-		var that = this;
-		var goodsSpec = e.currentTarget.dataset.goodsspec;
+        // console.log(e)
+        var that = this;
+        var goodsSpec = e.currentTarget.dataset.goodsspec;
         var cartData = that.data.cartData;
         var chooseObjects = that.data.chooseObjects;
         var goods = that.data.goods;
@@ -359,7 +361,7 @@ Page({
             isModal: true,
             // isChoose: true,
             chooseFoodId: e.currentTarget.dataset.foodId,
-			goodsSpec: goodsSpec
+            goodsSpec: goodsSpec
         })
         var chooseFoodId = that.data.chooseFoodId;
         for (var i = 0; i < goods.length; i++) {
@@ -384,32 +386,32 @@ Page({
         // console.log("choose.that.data.chooseObjects")
         // console.log(that.data.chooseObjects)
     },
-	chooseList: function (e) {
-		var that = this;
-		console.log(e)
-		var goodsSpecIndex = e.currentTarget.dataset.goodsspecIndex;
-		// console.log("goodsSpecIndex")
-		// console.log(goodsSpecIndex)
-		var goodsSpec = that.data.goodsSpec;
-		var goodsSpecItem = goodsSpec[goodsSpecIndex];
-		// console.log("chooseList.goodsSpecItem")
-		// console.log(goodsSpecItem)
-		that.setData({
-			goodsSpecItem: goodsSpecItem,
-			goodsspecIndex: goodsspecIndex
-		})
-	},
+    chooseList: function(e) {
+        var that = this;
+        console.log(e)
+        var goodsSpecIndex = e.currentTarget.dataset.goodsspecIndex;
+        // console.log("goodsSpecIndex")
+        // console.log(goodsSpecIndex)
+        var goodsSpec = that.data.goodsSpec;
+        var goodsSpecItem = goodsSpec[goodsSpecIndex];
+        // console.log("chooseList.goodsSpecItem")
+        // console.log(goodsSpecItem)
+        that.setData({
+            goodsSpecItem: goodsSpecItem,
+            goodsspecIndex: goodsspecIndex
+        })
+    },
     choosesty: function(e) {
         var that = this;
         console.log(e)
         that.setData({
-			itemIndex: e.currentTarget.dataset.itemIndex
-		});
-		// console.log("that.data.itemIndex")
-		// console.log(that.data.itemIndex)
-		// var goodsSpecItem = that.data.goodsSpecItem;
-		// console.log("choosesty.goodsSpecItem")
-		// console.log(goodsSpecItem)
+            itemIndex: e.currentTarget.dataset.itemIndex
+        });
+        // console.log("that.data.itemIndex")
+        // console.log(that.data.itemIndex)
+        // var goodsSpecItem = that.data.goodsSpecItem;
+        // console.log("choosesty.goodsSpecItem")
+        // console.log(goodsSpecItem)
     },
     // 关闭蒙层
     toastClode: function() {
@@ -438,12 +440,47 @@ Page({
     onReady: function() {
 
     },
-
+    //js数字千分符处理
+    commafy: function (num) {　　
+        num = num + "";　　
+        var re = /(-?\d+)(\d{3})/　　
+        while (re.test(num)) {　　　　
+            num = num.replace(re, "$1.$2")　　
+        }　　
+        return num;
+    },
     /**
      * 生命周期函数--监听页面显示
      */
     onShow: function() {
-
+        var that = this;
+        // 实例化API核心类
+        var demo = new QQMapWX({
+            key: app.globalData.locationKey // 必填
+        });
+        // 调用接口
+        demo.calculateDistance({
+            mode: 'driving',
+            to: [{
+                latitude: that.data.shopLatitude,
+                longitude: that.data.shopLongitude
+            }],
+            success: function(res) {
+                console.log("demo.calculateDistance");
+                console.log(res);
+				var distance = that.commafy(res.result.elements[0].distance);
+				that.setData({
+					distance: distance
+				})
+            },
+            fail: function(res) {
+                console.log("demo.calculateDistance");
+                console.log(res);
+            },
+            complete: function(res) {
+                console.log(res);
+            }
+        });
     },
 
     /**

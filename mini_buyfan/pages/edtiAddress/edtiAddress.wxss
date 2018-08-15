@@ -9,6 +9,9 @@ page{
 	border-bottom: 1rpx solid #DCDCDC;
 	font-size: 30rpx;
 }
+.input-box:last-child {
+	border-color: transparent;
+}
 .title {
 	width: 120rpx;
 	margin-right: 20rpx;
@@ -20,7 +23,12 @@ page{
 	line-height: 100rpx;
 }
 .address-info {
+	width: 100%;
+	box-sizing: border-box;
 	padding: 20rpx 0;
+	font-size: 28rpx;
+	height: 120rpx;
+	white-space: normal;
 }
 .label, .address-info-hover {
 	font-size: 28rpx;
@@ -33,15 +41,23 @@ page{
 .right-arrow {
 	width: 18rpx;
 	height: 30rpx;
+	margin-left: 15rpx;
 }
 .name, .section {
-	width: 560rpx;
+	width: 460rpx;
 	height: 100rpx;
 	display: flex;
-	justify-content: space-between;
 	align-items: center; 
 }
-
+.name {
+	justify-content: space-between;
+}
+.section {
+	justify-content: flex-end
+}
+.locaiton-box {
+	justify-content: space-between
+}
 .addressButton {
     width: 640rpx;
     height: 80rpx;

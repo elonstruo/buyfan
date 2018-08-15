@@ -21,11 +21,9 @@
         </view>
     </view>
     <swiper class="swiper_box" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" bindchange="swiperchange">
-        <block wx:for="{{appSlideshow}}">
-            <swiper-item>
-                <image wx:if="{{item}}" src="{{item}}" bindtap="tapBanner" class="slide-image" width="100%" height="300rpx" />
+            <swiper-item wx:for="{{appSlideshow}}">
+                <image wx:if="{{item}}" src="{{item}}" bindtap="tapBanner" class="slide-image" width="100%" height="300rpx" mode="aspectFill" />
             </swiper-item>
-        </block>
     </swiper>
     <view class="dots">
         <block wx:for="{{bannerUrls}}" wx:key="unique">
@@ -34,7 +32,7 @@
     </view>
 </view>
 <view class='clm-top'>
-    <navigator url='../../pages/menu/menu' class='litem'>
+    <navigator url='../../pages/menu/menu?orderway=tackout&id=1' class='litem'>
         <view class='flex-wrapper '>
             <view class='image-box'>
                 <image src='../../images/index_taemilk@2x.png' class='icon-index'></image>
@@ -42,7 +40,7 @@
             </view>
         </view>
     </navigator>
-    <navigator url='../../pages/menu/menu' class='sitem'>
+    <navigator url='../../pages/menu/menu?orderway=shopfor&id=1' class='sitem'>
         <view class='flex-wrapper '>
             <view class='image-box'>
                 <image src='../../images/order@2x.png' class='icon-index'></image>
@@ -59,12 +57,12 @@
         </view>
     </view>
     <view class='clms'>
-        <view class='litem litemt'>
+		<navigator url='../../pages/coupon/coupon' class='litem litemt'>
             <view class='flex-wrapper '>
                 <image src='../../images/index_coupon@2x.png' class='icon-index'></image>
                 <view class='menu-title'>领劵中心</view>
             </view>
-        </view>
+        </navigator>
         <navigator class='litem' url='../../pages/vip/vip'>
             <view class='flex-wrapper'>
                 <image src='../../images/index_vip@2x.png' class='icon-index'></image>

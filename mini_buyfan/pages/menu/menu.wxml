@@ -4,15 +4,15 @@
     <view class='left'>
         <!-- <view class='image-box'> -->
         <!-- <image class='logo' src='../../images/logo@2x.png'></image> -->
-        <image class='logo' src='{{appPersonback}}'></image>
+        <image class='logo' mode="aspectFill" src='{{appLogo}}'></image>
         <!-- </view> -->
         <view class='sign-info'>
             <view class='sign-ln'>
-                <view class='name'>{{appName}}</view>|
-                <view class='km'>1.9km</view>|
+                <view class='name'>{{stores.shopName}}</view>|
+                <view class='km'>{{distance}}km</view>|
                 <view class='time'>19分钟</view>
             </view>
-            <view class='mimo'>公告：本店推出新产品</view>
+            <view class='mimo'>公告：{{stores.shopIntro}}</view>
             <view class=''>近期售出1323份</view>
         </view>
     </view>
@@ -176,7 +176,7 @@
     <!-- 商家tabbar-details -->
     <view class='tabitem' wx:if="{{selectedId == 3}}">
         <view class='stores'>
-            <view class='item' wx:for="{{stores}}" data-id="{{item.id}}">
+            <view class='item' wx:for="{{storesData}}" data-id="{{item.id}}">
                 <view class='title'>
                     <text></text>{{item.shopName}}</view>
                 <view class='stores-info'>

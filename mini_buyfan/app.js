@@ -1,4 +1,7 @@
 //app.js
+
+var QQMapWX = require('utils/qqmap-wx-jssdk.min.js');
+var qqmapsdk;
 App({
     d: {
         hostUrl: 'https://app.jywxkj.com/shop/baifen/request/shop.php',
@@ -8,7 +11,11 @@ App({
     globalData: {
         userInfo: null,
         hostUrl: 'https://app.jywxkj.com/shop/baifen/request/shop.php',
-        actionData: null
+        actionData: null,
+        storesData: null,
+        locationData: null,
+        locationKey: 'CT2BZ-I57RV-HIGP7-UMN64-ORLUV-LRB22'
+
 
     },
 
@@ -35,6 +42,8 @@ App({
         that.commomLogin()
         // actionrequest
         that.actionrequest()
+        // 商家分店
+        that.stores()
     },
     // 数据初始化
     actionrequest: function() {
@@ -61,6 +70,75 @@ App({
             fail: function(res) {},
             complete: function(res) {},
         })
+    },
+    // 商家分店
+    stores: function () {
+        var that = this;
+        wx.request({
+            url: 'https://app.jywxkj.com/shop/baifen/request/shop.php',
+            data: {
+                action: 'xcxcchopshow'
+            },
+            header: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'post',
+            success: function(res) {
+                console.log("商家分店")
+                console.log(res)
+                that.globalData.storesData = res.data
+                // var storestring = JSON.stringify(res.data);
+
+                // that.setData({
+                //     stores: res.data,
+                //     storestring: storestring,
+                // })
+            },
+
+            fail: function(res) {},
+            complete: function(res) {},
+        })
+    },
+    // 获取定位
+    onShow: function () {
+        var that = this;
+        // 实例化API核心类
+        var qqmapsdk = new QQMapWX({
+            key: that.globalData.locationKey
+        });
+        wx.getLocation({
+            type: 'wgs84',
+            success: function (res) {
+                var latitude = res.latitude
+                var longitude = res.longitude
+                var speed = res.speed
+                var accuracy = res.accuracy
+                // 调用接口
+                qqmapsdk.reverseGeocoder({
+                    location: {
+                        latitude: latitude,
+                        longitude: longitude
+                    },
+                    success: function (res) {
+                        // console.log("getLocation.success.res")
+                        // console.log(res)
+                        that.globalData.locationData = res
+                        if (getCurrentPages().length != 0) {
+                            getCurrentPages()[getCurrentPages().length - 1].onLoad()
+
+                        }
+                        
+                    },
+                    fail: function (res) {
+                        console.log("getLocation.fail.res")
+                        console.log(res);
+                    },
+                    complete: function (res) {
+                    }
+                });
+            }
+        })
+
     },
     //通用后台登录方法
     commomLogin: function() {

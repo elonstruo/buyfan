@@ -7,17 +7,17 @@
 </view>
 <view class='user-info'>
     <view class='item'>
-        <view class='num'>0</view>
+        <view class='num'>{{coupons}}</view>
         <view class='title'>优惠券</view>
     </view>
     <view class='line'></view>
     <view class='item'>
-        <view class='num'>0.00</view>
+        <view class='num'>{{money}}</view>
         <view class='title'>余额</view>
     </view>
     <view class='line'></view>
     <view class='item'>
-        <view class='num'>0</view>
+        <view class='num'>{{integral}}</view>
         <view class='title'>积分</view>
     </view>
 </view>
@@ -32,28 +32,28 @@
     <view class='items'>
         <view class='item'>
             <view class='img-box'>
-                <text class='number'>1</text>
+                <text class='number' wx:if="{{number}}">1</text>
                 <image class='icon-order' src='../../images/user_deal@2x.png'></image>
             </view>
             <view>待处理</view>
         </view>
         <view class='item'>
             <view class='img-box'>
-                <text class='number'>1</text>
+                <text class='number' wx:if="{{number}}">1</text>
                 <image class='icon-order' src='../../images/user_distribution@2x.png'></image>
             </view>
             <view>配送制作中</view>
         </view>
         <view class='item'>
             <view class='img-box'>
-                <text class='number'>1</text>
+                <text class='number' wx:if="{{number}}">1</text>
                 <image class='icon-order' src='../../images/user_complete@2x.png'></image>
             </view>
             <view>已完成</view>
         </view>
         <view class='item'>
             <view class='img-box'>
-                <text class='number'>1</text>
+                <text class='number' wx:if="{{number}}">1</text>
                 <image class='icon-order' src='../../images/user_refund@2x.png'></image>
             </view>
             <view>已退款</view>
@@ -68,11 +68,11 @@
     </view>
     <view class='item'>
         <image class='icon-toolbar' src='../../images/user_phone@2x.png'></image>
-        <view class='title'>联系电话：15500000000</view>
+        <view class='title' bindtap='call'>联系电话：{{appContact}}</view>
     </view>
     <view class='item'>
         <image class='icon-toolbar' src='../../images/user_open@2x.png'></image>
-        <view class='title'>配送时间：10:30—22:30</view>
+        <view class='title'>配送时间：{{appRunTime}}</view>
     </view>
 </view>
 <button class='getUserInfo' open-type='getUserInfo'>重新授权</button>

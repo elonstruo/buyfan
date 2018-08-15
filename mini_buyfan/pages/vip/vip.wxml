@@ -1,10 +1,10 @@
 <!--pages/vip/vip.wxml-->
-<view class='vip-card vipno' wx:if="{{isVIPNo}}">
+<view class='vip-card vipno' wx:if="{{member==0}}">
 	<image class='img-vip' src='../../images/vip_no@2x.png'></image>
 	<view class='open-vip'>开通会员</view>
-	<view class='vipno-title'>首次充值100元可自动激活会员卡功能</view>
+	<view class='vipno-title'>首次充值{{charge}}元可自动激活会员卡功能</view>
 </view>
-<view class='vip-card vipno vipyes' wx:if="{{isVIPYes}}">
+<view class='vip-card vipno vipyes' wx:if="{{member==1}}">
 	<image class='img-vip' src='../../images/vip_yes@2x.png'></image>
 </view>
 <view class='top-up'>
@@ -12,7 +12,7 @@
 	<view class='items'>
 		<view class='item' wx:for="{{recharge}}">
 			<view>会员单次充值</view>
-			<view>充值<text>{{item.price}}</text>元,赠送<text>{{item.givemoney}}</text>元</view>
+			<view>充值<text>{{item.price}}</text>元,赠送<text>{{item.giveprice}}</text>元</view>
 			<view class='button-topup' hover-class='button-topup-hover'>充值{{item.price}}</view>
 		</view>
 	</view>

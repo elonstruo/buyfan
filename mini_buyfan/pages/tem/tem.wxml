@@ -33,3 +33,6 @@
     </view>
 
 </template>
+<template name="addAddress">
+	
+</template>

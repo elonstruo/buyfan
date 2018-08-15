@@ -1,34 +1,133 @@
 // pages/edtiAddress/edtiAddress.js
 
 const app = getApp();
-
+var telReg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/;
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
-		region: [],
-		customItem: '全部',
-		isRegion: true
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function(options) {
-
+		var that = this;
+		if (app.globalData.userInfo) {
+			console.log("address.app.globalData.userInfo")
+			console.log(app.globalData.userInfo)
+			var userInfor = app.globalData.userInfo.data.userInfor;
+			var uid = app.globalData.userInfo.data.uid;
+			var openid = app.globalData.userInfo.data.openid;
+			that.setData({
+				userInforArr: userInfor,
+				uid: uid,
+				openid: openid
+			})
+		}
     },
 	edtiAddress: function (e) {
-		console.log('form发生了submit事件，携带数据为：', e.detail.value);
-		app.loadingBox("保存中")
-	},
-	bindRegionChange: function (e) {
 		var that = this;
-		// console.log('picker发送选择改变，携带值为', e.detail.value)
-		that.setData({
-			region: e.detail.value,
-			isRegion: false,
+		console.log('form发生了submit事件，携带数据为：', e.detail.value);
+		var userInforForm = e.detail.value;
+		userInforForm['latitude'] = that.data.latitude;
+		userInforForm['longitude'] = that.data.longitude;
+		var username = userInforForm.username;
+		var tel = userInforForm.tel;
+		var adr = userInforForm.adr;
+		var latitude = userInforForm.latitude;
+		var longitude = userInforForm.longitude;
+		if (!username) {
+			that.showtips("请输入姓名")
+			return
+		} else if (!tel) {
+			that.showtips("请输入手机号码")
+			return
+		} else if (!telReg.test(tel)) {
+			that.showtips("请输入正确的手机号码")
+			return
+		} else if (!adr) {
+			that.showtips("请选择地图定位")
+			return
+		} else if (!latitude) {
+			that.showtips("请选择地图定位")
+			return
+		}
+		console.log("that.data.userInforArr")
+		console.log(that.data.userInforArr)
+		if (userInforArr == "" || userInforArr == null || userInforArr == "undefined") {
+			that.data.userInforArr = [userInforForm];
+		} else {
+			var userInforArr = JSON.parse(that.data.userInforArr)
+			userInforArr[userInforArr.length] = userInforForm
+		}
+		
+		console.log("userInforArr")
+		console.log(userInforArr)
+		// wx.request({
+		// 	url: 'https://app.jywxkj.com/shop/baifen/request/usermanage.php',
+		// 	data: {
+		// 		action: 'modifyadr',
+		// 		uid: that.data.uid,
+		// 		openid: that.data.openid,
+		// 		userInfor: JSON.stringify(userInforArr)
+		// 	},
+		// 	header: {
+		// 		'Content-Type': 'application/x-www-form-urlencoded'
+		// 	},
+		// 	method: 'POST',
+		// 	success: function (res) {
+		// 		console.log("添加地址");
+		// 		console.log(res);
+		// 		// wx.showModal({
+		// 		// 	title: '提交成功！请等待审核结果',
+		// 		// 	content: '返回上一页',
+		// 		// 	showCancel: false,
+		// 		// 	confirmText: '好的',
+		// 		// 	confirmColor: '#333',
+		// 		// 	success: function (res) {
+		// 		// 		wx.navigateBack({
+		// 		// 			delta: 1,
+		// 		// 		})
+		// 		// 	},
+		// 		// 	fail: function (res) { },
+		// 		// 	complete: function (res) { },
+		// 		// })
+		// 	},
+		// 	fail: function (res) { },
+		// 	complete: function (res) { },
+		// })
+	},
+	showtips: function (title) {
+		wx.showToast({
+			title: title,
+			icon: "none",
+			duration: 2000
+		})
+	},
+	// 地址定位
+	taplocation: function () {
+		var that = this;
+		wx.showLoading({
+			title: '加载中'
+		})
+		setTimeout(function () {
+			wx.hideLoading()
+		}, 2000)
+		wx.chooseLocation({
+			success: function (res) {
+				console.log("地址定位")
+				console.log(res)
+				that.setData({
+					currInfo: res.name,
+					latitude: res.latitude,
+					longitude: res.longitude,
+				})
+			},
+			fail: function (res) { },
+			complete: function (res) { },
 		})
 	},
     /**

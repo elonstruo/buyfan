@@ -41,7 +41,14 @@
     align-items: center;
     justify-content: space-between;
 }
-
+.toAddress .item .left {
+	flex: 9
+}
+.toAddress .item .right {
+	flex: 1;
+	display: flex;
+	justify-content: flex-end
+}
 .toAddress .item:last-child {
     border-bottom: none;
 }

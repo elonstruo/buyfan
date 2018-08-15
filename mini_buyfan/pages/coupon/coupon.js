@@ -5,9 +5,10 @@ Page({
      * 页面的初始数据
      */
     data: {
+		isButton: true,
         type_sort: ["最新","未使用","已使用","已过期"],
 		activeCategoryId: "0",
-		statusText: "立即使用",
+		statusText: "立即获取",
 		coupon: [
 			{
 				fullNum: "100",
