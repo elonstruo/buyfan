@@ -41,8 +41,8 @@ Page({
 		
 		// banner
 		if (app.globalData.actionData) {
-			console.log("index.app.globalData.actionData")
-			console.log(app.globalData.actionData)
+			// console.log("index.app.globalData.actionData")
+			// console.log(app.globalData.actionData)
 			var appSlideshow = app.globalData.actionData.appSlideshow
 			var orderway = app.globalData.actionData.orderway
 			that.setData({
@@ -51,8 +51,8 @@ Page({
 		}
 		// location
 		if (app.globalData.locationData) {
-			console.log("index.app.globalData.locationData")
-			console.log(app.globalData.locationData)
+			// console.log("index.app.globalData.locationData")
+			// console.log(app.globalData.locationData)
 			var locationData = app.globalData.locationData;
 			that.setData({
 				street: locationData.result.address_component.street

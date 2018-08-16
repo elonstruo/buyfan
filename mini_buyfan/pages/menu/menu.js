@@ -18,6 +18,10 @@ Page({
      * 页面的初始数据
      */
     data: {
+		choosestyItems: [],
+		choosestyList: {
+			"detailItem": []
+		},
         goodsItems: [],
         amount: 0,
         isModal: false,
@@ -56,8 +60,8 @@ Page({
      */
     onLoad: function(options) {
         var that = this;
-        console.log("menu.options")
-        console.log(options)
+        // console.log("menu.options")
+        // console.log(options)
         // 分类赋值
         if (app.globalData.actionData) {
             var actionData = app.globalData.actionData
@@ -65,7 +69,8 @@ Page({
             that.setData({
                 type_sort: actionData.appClass,
                 categoryGoodsclass: actionData.appClass[0],
-                mesuScrollHeight: app.screenHeight - signH - tabbarH - food_row_height,
+				// mesuScrollHeight: app.screenHeight - signH - tabbarH - food_row_height,
+                mesuScrollHeight: app.screenHeight - signH - tabbarH,
 				appLogo: appLogo
             })
         }
@@ -85,8 +90,8 @@ Page({
                 var stores = storesData[i]
             }
         }
-        console.log("stores = storesData[i]")
-        console.log(stores)
+        // console.log("stores = storesData[i]")
+        // console.log(stores)
         that.setData({
             stores: stores,
             shopLatitude: stores.shopLocal.latitude,
@@ -109,19 +114,14 @@ Page({
                     goods: res.data.data,
                     // goodsSpecDetail: res.data.data.goodsSpecDetail,
                 })
-
-                for (var j = 0; j < goods.length; j++) {}
-                // var type_sort = that.data.type_sort;
-                // for (var i = 0; i < type_sort.length; i++) {
-                // 	console.log(type_sort[i])
-                // 	for (var j = 0; j < goods.length; j++) {
-                // 		if (goods[i].goodsclass == type_sort[i]) {
-                // 			var goodsItem = goods[j]
-                // 			console.log("goodsItem")
-                // 			console.log(goodsItem)
-                // 		}
-                // 	}
-                // }
+                
+				// for (var i = 0; i < goods.length; i++) {
+				// 	if (goods[i].goodsclass) {
+				// 		var goodsItem = goods[i]
+				// 		console.log("goodsItem")
+				// 		console.log(goodsItem)
+				// 	}
+				// }
 
 
             },
@@ -180,7 +180,7 @@ Page({
     // 获取分类id
     categoryClick: function(e) {
         var that = this;
-        console.log(e)
+        // console.log(e)
         that.setData({
             categoryGoodsclass: e.currentTarget.dataset.goodsclass,
             activeCategoryId: e.currentTarget.dataset.id
@@ -351,7 +351,6 @@ Page({
     chooseMoal: function(e) {
         // console.log(e)
         var that = this;
-        var goodsSpec = e.currentTarget.dataset.goodsspec;
         var cartData = that.data.cartData;
         var chooseObjects = that.data.chooseObjects;
         var goods = that.data.goods;
@@ -360,8 +359,9 @@ Page({
         that.setData({
             isModal: true,
             // isChoose: true,
-            chooseFoodId: e.currentTarget.dataset.foodId,
-            goodsSpec: goodsSpec
+			chooseFoodId: e.currentTarget.dataset.foodId,
+			foodId: e.currentTarget.dataset.foodId,
+            // goodsSpec: goodsSpec
         })
         var chooseFoodId = that.data.chooseFoodId;
         for (var i = 0; i < goods.length; i++) {
@@ -379,39 +379,29 @@ Page({
         }
         cart.cartFood = cartFood;
         chooseObjects.push(cart);
-
+		
         that.setData({
             chooseObjects: chooseObjects,
         });
-        // console.log("choose.that.data.chooseObjects")
-        // console.log(that.data.chooseObjects)
+        console.log("choose.that.data.chooseObjects")
+        console.log(that.data.chooseObjects)
     },
     chooseList: function(e) {
         var that = this;
         console.log(e)
         var goodsSpecIndex = e.currentTarget.dataset.goodsspecIndex;
-        // console.log("goodsSpecIndex")
-        // console.log(goodsSpecIndex)
-        var goodsSpec = that.data.goodsSpec;
-        var goodsSpecItem = goodsSpec[goodsSpecIndex];
-        // console.log("chooseList.goodsSpecItem")
-        // console.log(goodsSpecItem)
         that.setData({
-            goodsSpecItem: goodsSpecItem,
-            goodsspecIndex: goodsspecIndex
+			goodsspecIndex: goodsSpecIndex
         })
     },
     choosesty: function(e) {
         var that = this;
-        console.log(e)
-        that.setData({
-            itemIndex: e.currentTarget.dataset.itemIndex
-        });
-        // console.log("that.data.itemIndex")
-        // console.log(that.data.itemIndex)
-        // var goodsSpecItem = that.data.goodsSpecItem;
-        // console.log("choosesty.goodsSpecItem")
-        // console.log(goodsSpecItem)
+		console.log(e)
+		var itemIndex = e.currentTarget.dataset.itemIndex;
+		var choosestyItems = that.data.choosestyItems;
+		var detailItem = that.data.choosestyList.detailItem;
+		var goodsSpec = that.data.chooseObjects[0].cartFood.goodsSpec;
+		console.log(goodsSpec)
     },
     // 关闭蒙层
     toastClode: function() {
@@ -466,8 +456,8 @@ Page({
                 longitude: that.data.shopLongitude
             }],
             success: function(res) {
-                console.log("demo.calculateDistance");
-                console.log(res);
+                // console.log("demo.calculateDistance");
+                // console.log(res);
 				var distance = that.commafy(res.result.elements[0].distance);
 				that.setData({
 					distance: distance
@@ -478,7 +468,7 @@ Page({
                 console.log(res);
             },
             complete: function(res) {
-                console.log(res);
+                // console.log(res);
             }
         });
     },

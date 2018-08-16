@@ -84,8 +84,8 @@ App({
             },
             method: 'post',
             success: function(res) {
-                console.log("商家分店")
-                console.log(res)
+                // console.log("商家分店")
+                // console.log(res)
                 that.globalData.storesData = res.data
                 // var storestring = JSON.stringify(res.data);
 

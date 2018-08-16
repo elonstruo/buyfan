@@ -94,15 +94,17 @@
                     <view class='toast-body'>
                         <view class='toast-title'>{{item.cartFood.goodsName}}</view>
                         <view class='choose-box'>
-                            <view class='choose-list' bindtap='chooseList' data-goodsSpec-index="{{index}}" wx:for="{{item.cartFood.goodsSpec}}">
+                            <view class='choose-list' wx:key='index' data-goodsSpec-index="{{index}}" bindtap='chooseList' wx:for="{{item.cartFood.goodsSpec}}">
                                 <view class='item-title'>{{item.name}}</view>
-                                <view data-item-index="{{index}}" bindtap="choosesty" wx:for="{{item.detail}}" class='choosesty'>{{item.name}}</view>
+                                <view data-item-index="{{index}}" data-item-name="{{item.name}}" bindtap="choosesty" wx:for="{{item.detail}}" class='choosesty'>{{item.name}}</view>
                             </view>
                         </view>
                         <view class='toast-footer'>
                             <view class='left'>
                                 <view data-food-id="{{chooseFoodId}}" class='price'>¥ {{item.cartFood.sPrice}}</view>
-                                <view class='choose-text'>（冷饮，正常糖）</view>
+                                <view wx:for="{{choosestyItems}}" class='choose-text'>（
+									<text wx:for="{{item.detail}}">{{item}}</text>
+								）</view>
                             </view>
                             <view class="cart-count-box">
                                 <text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-food-id="{{chooseFoodId}}" wx:if="{{cartData[chooseFoodId]}}">-</text>

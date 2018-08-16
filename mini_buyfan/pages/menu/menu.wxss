@@ -697,3 +697,9 @@ page {
 	color: #323232;
 	font-size: 24rpx;
 }
+.choose-text text::after {
+	content: ", "
+}
+.choose-text text:last-child::after {
+	content: ""
+}
