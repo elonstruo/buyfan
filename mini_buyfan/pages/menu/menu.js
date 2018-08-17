@@ -114,7 +114,9 @@ Page({
                     goods: res.data.data,
                     // goodsSpecDetail: res.data.data.goodsSpecDetail,
                 })
-                
+
+				console.log("goods")
+				console.log(that.data.goods)
 				// for (var i = 0; i < goods.length; i++) {
 				// 	if (goods[i].goodsclass) {
 				// 		var goodsItem = goods[i]
@@ -208,17 +210,19 @@ Page({
         var that = this;
         var goods = that.data.goods;
         var cartData = that.data.cartData;
-        var cartObjects = that.data.cartObjects;
+		var cartObjects = that.data.cartObjects;
+        var choosestyItems = that.data.choosestyItems;
         var cartFood;
         var cart = {};
-        cart.quantity = cartData[foodId];
+		cart.quantity = cartData[foodId];
+		cart.choosestyItems = choosestyItems;
         for (var i = 0; i < goods.length; i++) {
             if (goods[i].gid == foodId) {
                 cartFood = goods[i];
             }
         }
         for (var i = 0; i < cartObjects.length; i++) {
-            if (cartObjects[i].cartFood.gid == foodId) {
+			if (cartObjects[i].cartFood.gid == foodId) {
                 // 如果是undefined，那么就是通过点减号被删完了
                 if (cartData[foodId] == undefined) {
                     cartObjects.splice(i, 1);
@@ -240,6 +244,9 @@ Page({
             cartObjects: cartObjects,
         });
         that.amount();
+		that.setData({
+			choosestyItems: choosestyItems
+		})
         console.log("cartToArray.that.data.cartObjects")
         console.log(that.data.cartObjects)
     },
@@ -388,20 +395,38 @@ Page({
     },
     chooseList: function(e) {
         var that = this;
-        console.log(e)
-        var goodsSpecIndex = e.currentTarget.dataset.goodsspecIndex;
-        that.setData({
-			goodsspecIndex: goodsSpecIndex
-        })
+		var goodsSpecIndex = e.currentTarget.dataset.goodsspecIndex;
+		var itemIndex = that.data.itemIndex;
+		var choosestyItems = that.data.choosestyItems;
+		var choosestyList = that.data.choosestyList;
+		var detailItem = choosestyList.detailItem;
+		var goodsSpec = that.data.chooseObjects[0].cartFood.goodsSpec;
+		detailItem.push(goodsSpec[goodsSpecIndex].detail[itemIndex].name)
+		// for (var i = 0; i < goodsSpec.length; i++) {
+		// 	if (goodsSpecIndex == i) {
+		// 		detailItem.splice(i, 1);
+		// 	}
+		// }
+		console.log("detailItem")
+		console.log(detailItem)
+		choosestyItems.push(that.data.choosestyList)
+		if (that.data.choosestyList.detailItem.length > 1 || choosestyItems.length > 1) {
+			for (var i = 0; i < choosestyItems.length; i++) {
+				choosestyItems.splice(i, 1);
+			}
+		}
+		that.setData({
+			choosestyItems: choosestyItems
+		})
+		console.log("choosestyItems")
+		console.log(choosestyItems)
     },
     choosesty: function(e) {
         var that = this;
-		console.log(e)
 		var itemIndex = e.currentTarget.dataset.itemIndex;
-		var choosestyItems = that.data.choosestyItems;
-		var detailItem = that.data.choosestyList.detailItem;
-		var goodsSpec = that.data.chooseObjects[0].cartFood.goodsSpec;
-		console.log(goodsSpec)
+		that.setData({
+			itemIndex: itemIndex
+		})
     },
     // 关闭蒙层
     toastClode: function() {

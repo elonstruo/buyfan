@@ -43,7 +43,7 @@
     <view class='tabitem' wx:if="{{selectedId == 1}}">
         <!-- sidebar点餐分类 -->
         <scroll-view scroll-y="true" style='height: {{mesuScrollHeight}}px' class='category'>
-            <view wx:for-items="{{type_sort}}" wx:key="index" class='type-box'>
+            <view wx:key="unique" wx:for-items="{{type_sort}}" wx:key="index" class='type-box'>
                 <view data-goodsclass="{{item}}" data-id="{{index}}" class="classes {{activeCategoryId == index ? 'on' : ''}}" bindtap='categoryClick'>
                     <text>{{item}}</text>
                 </view>
@@ -52,7 +52,7 @@
         <!-- 商品列表 -->
 		<scroll-view scroll-y="true" style='height: {{mesuScrollHeight}}px' class='items'>
 			<!-- <view class='tag'>热销</view> -->
-			<view class='item' data-goodsclass="{{item.goodsclass}}" wx:if="{{item.goodsclass == categoryGoodsclass}}" hover-class='on' wx:for="{{goods}}">
+			<view class='item' data-goodsclass="{{item.goodsclass}}" wx:if="{{item.goodsclass == categoryGoodsclass}}" hover-class='on' wx:key="unique" wx:for="{{goods}}">
 				<view class='img-shop'>
 					<image mode='aspectFill' class='img-shop' src='{{item.goodsImage}}'></image>
 				</view>
@@ -87,23 +87,23 @@
             <view class='addall' bindtap='toTakeOut'>去结算</view>
         </view>
         <!-- 规格详情 -->
-        <view class='modal' wx:if="{{isModal}}" wx:for="{{chooseObjects}}">
+        <view class='modal' wx:if="{{isModal}}" wx:key="unique" wx:for="{{chooseObjects}}">
 			<view class="modal-mask toast-mask"></view>
             <view class='toast'>
                 <view class='toast-wrapper'>
                     <view class='toast-body'>
                         <view class='toast-title'>{{item.cartFood.goodsName}}</view>
                         <view class='choose-box'>
-                            <view class='choose-list' wx:key='index' data-goodsSpec-index="{{index}}" bindtap='chooseList' wx:for="{{item.cartFood.goodsSpec}}">
+                            <view class='choose-list' wx:key='index' data-goodsSpec-index="{{index}}" bindtap='chooseList' wx:key="unique" wx:for="{{item.cartFood.goodsSpec}}">
                                 <view class='item-title'>{{item.name}}</view>
-                                <view data-item-index="{{index}}" data-item-name="{{item.name}}" bindtap="choosesty" wx:for="{{item.detail}}" class='choosesty'>{{item.name}}</view>
+                                <view data-item-index="{{index}}" data-item-name="{{item.name}}" bindtap="choosesty" wx:key="unique" wx:for="{{item.detail}}" class='choosesty'>{{item.name}}</view>
                             </view>
                         </view>
                         <view class='toast-footer'>
                             <view class='left'>
                                 <view data-food-id="{{chooseFoodId}}" class='price'>¥ {{item.cartFood.sPrice}}</view>
-                                <view wx:for="{{choosestyItems}}" class='choose-text'>（
-									<text wx:for="{{item.detail}}">{{item}}</text>
+                                <view wx:key="unique" wx:for="{{choosestyItems}}" class='choose-text'>（
+									<text wx:key="unique" wx:for="{{item.detail}}">{{item}}</text>
 								）</view>
                             </view>
                             <view class="cart-count-box">
@@ -128,7 +128,7 @@
                     清空购物车
                 </view>
                 <scroll-view class="modal-body" scroll-y="true" style="height: {{scrollHeight}}px;">
-                    <view class="item" wx:for="{{cartObjects}}" wx:key="">
+                    <view class="item" wx:key="unique" wx:for="{{cartObjects}}" wx:key="">
                         <view class="title">{{item.cartFood.goodsName}}</view>
                         <view class="fee">¥{{item.cartFood.sPrice * item.quantity}}</view>
                         <view class="cart-count-box">
@@ -162,7 +162,7 @@
                         </view>
                         <view class='content'>告辞</view>
                         <view class='appraises-imgList'>
-                            <block wx:for="{{appraisesImgList}}">
+                            <block wx:key="unique" wx:for="{{appraisesImgList}}">
                                 <image mode="aspectFill" src="{{item}}"></image>
                             </block>
                         </view>
@@ -178,7 +178,7 @@
     <!-- 商家tabbar-details -->
     <view class='tabitem' wx:if="{{selectedId == 3}}">
         <view class='stores'>
-            <view class='item' wx:for="{{storesData}}" data-id="{{item.id}}">
+            <view class='item' wx:key="unique" wx:for="{{storesData}}" data-id="{{item.id}}">
                 <view class='title'>
                     <text></text>{{item.shopName}}</view>
                 <view class='stores-info'>
@@ -187,12 +187,12 @@
                 </view>
                 <view class='stores-info'>
                     <image class='icon-stores' src='../../images/call@2x.png'></image>
-                    <view wx:for="{{item.shopTel}}">{{item}}</view>
+                    <view wx:key="unique" wx:for="{{item.shopTel}}">{{item}}</view>
                 </view>
                 <view class='stores-img'>
                     <view class="page-section-spacing">
                         <scroll-view class="scroll-view_H" scroll-x="true" bindscroll="scroll" style="width: 100%">
-                            <view wx:for="{{item.shopImg}}" data-length="{{item.shopImg.length}}" class='scroll-view-item_H {{item.shopImg.length == 1 ? "on" :"" }}'>
+                            <view wx:key="unique" wx:for="{{item.shopImg}}" data-length="{{item.shopImg.length}}" class='scroll-view-item_H {{item.shopImg.length == 1 ? "on" :"" }}'>
                                 <image class='store-img' mode="aspectFill" bindtap='previewImage' src='{{item}}'></image>
                             </view>
                         </scroll-view>
