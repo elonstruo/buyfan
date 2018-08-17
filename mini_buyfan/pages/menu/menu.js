@@ -18,11 +18,9 @@ Page({
      * 页面的初始数据
      */
     data: {
-		choosestyItems: [],
-		choosestyList: {
-			"detailItem": []
-		},
-        goodsItems: [],
+        itemIndex0: 0,
+        itemIndex1: 0,
+        goodsSpecDetail: [],
         amount: 0,
         isModal: false,
         maskVisual: 'hidden',
@@ -65,13 +63,13 @@ Page({
         // 分类赋值
         if (app.globalData.actionData) {
             var actionData = app.globalData.actionData
-			var appLogo = app.globalData.actionData.appLogo
+            var appLogo = app.globalData.actionData.appLogo
             that.setData({
                 type_sort: actionData.appClass,
                 categoryGoodsclass: actionData.appClass[0],
-				// mesuScrollHeight: app.screenHeight - signH - tabbarH - food_row_height,
+                // mesuScrollHeight: app.screenHeight - signH - tabbarH - food_row_height,
                 mesuScrollHeight: app.screenHeight - signH - tabbarH,
-				appLogo: appLogo
+                appLogo: appLogo
             })
         }
         // 商家分店
@@ -81,7 +79,7 @@ Page({
             var storestring = JSON.stringify(storesData);
             that.setData({
                 storestring: storestring,
-				storesData: storesData
+                storesData: storesData
             })
         }
         var storeId = options.id;
@@ -112,18 +110,17 @@ Page({
                 var goods = res.data.data;
                 that.setData({
                     goods: res.data.data,
-                    // goodsSpecDetail: res.data.data.goodsSpecDetail,
                 })
 
-				console.log("goods")
-				console.log(that.data.goods)
-				// for (var i = 0; i < goods.length; i++) {
-				// 	if (goods[i].goodsclass) {
-				// 		var goodsItem = goods[i]
-				// 		console.log("goodsItem")
-				// 		console.log(goodsItem)
-				// 	}
-				// }
+                console.log("goods")
+                console.log(that.data.goods)
+                // for (var i = 0; i < goods.length; i++) {
+                // 	if (goods[i].goodsclass) {
+                // 		var goodsItem = goods[i]
+                // 		console.log("goodsItem")
+                // 		console.log(goodsItem)
+                // 	}
+                // }
 
 
             },
@@ -196,6 +193,7 @@ Page({
         var that = this;
         var foodId = e.currentTarget.dataset.foodId;
         var cartData = that.data.cartData;
+        var goodsSpecDetail = that.data.goodsSpecDetail;
         var foodCount = cartData[foodId] ? cartData[foodId] : 0;
         cartData[foodId] = ++foodCount;
         that.setData({
@@ -210,19 +208,18 @@ Page({
         var that = this;
         var goods = that.data.goods;
         var cartData = that.data.cartData;
-		var cartObjects = that.data.cartObjects;
-        var choosestyItems = that.data.choosestyItems;
+        var cartObjects = that.data.cartObjects;
         var cartFood;
+        var goodsSpec;
         var cart = {};
-		cart.quantity = cartData[foodId];
-		cart.choosestyItems = choosestyItems;
+        cart.quantity = cartData[foodId];
         for (var i = 0; i < goods.length; i++) {
             if (goods[i].gid == foodId) {
                 cartFood = goods[i];
             }
         }
         for (var i = 0; i < cartObjects.length; i++) {
-			if (cartObjects[i].cartFood.gid == foodId) {
+            if (cartObjects[i].cartFood.gid == foodId) {
                 // 如果是undefined，那么就是通过点减号被删完了
                 if (cartData[foodId] == undefined) {
                     cartObjects.splice(i, 1);
@@ -239,14 +236,20 @@ Page({
         }
         cart.cartFood = cartFood;
         cart.quantity = cartData[foodId];
+        goodsSpec = cartFood.goodsSpec;
+        if (goodsSpec.length > 1) {
+            that.chooseList0();
+            that.chooseList1();
+            cart.goodsSpecDetail = that.data.goodsSpecDetail;
+        } else if (goodsSpec.length == 1) {
+            that.chooseList0();
+            cart.goodsSpecDetail = that.data.goodsSpecDetail;
+        }
         cartObjects.push(cart)
         that.setData({
             cartObjects: cartObjects,
         });
         that.amount();
-		that.setData({
-			choosestyItems: choosestyItems
-		})
         console.log("cartToArray.that.data.cartObjects")
         console.log(that.data.cartObjects)
     },
@@ -362,80 +365,97 @@ Page({
         var chooseObjects = that.data.chooseObjects;
         var goods = that.data.goods;
         var cartFood;
+        var goodsSpec
         var cart = {};
+        var chooseFoodId = e.currentTarget.dataset.foodId;
         that.setData({
             isModal: true,
-            // isChoose: true,
-			chooseFoodId: e.currentTarget.dataset.foodId,
-			foodId: e.currentTarget.dataset.foodId,
-            // goodsSpec: goodsSpec
+            chooseFoodId: chooseFoodId,
         })
-        var chooseFoodId = that.data.chooseFoodId;
         for (var i = 0; i < goods.length; i++) {
             if (goods[i].gid == chooseFoodId) {
                 cartFood = goods[i];
             }
         }
-        for (var i = 0; i < chooseObjects.length; i++) {
-            if (chooseObjects[i].cartFood.gid !== chooseFoodId || chooseObjects[i].cartFood.gid == chooseFoodId) {
-                chooseObjects.splice(i, 1);
-            }
-            that.setData({
-                chooseObjects: chooseObjects,
-            });
-        }
         cart.cartFood = cartFood;
+        cart.quantity = cartData[chooseFoodId];
+        goodsSpec = cartFood.goodsSpec;
         chooseObjects.push(cart);
-		
         that.setData({
             chooseObjects: chooseObjects,
+            goodsSpec: goodsSpec,
+            itemIndex0: 0,
+            itemIndex1: 0,
+            
         });
         console.log("choose.that.data.chooseObjects")
         console.log(that.data.chooseObjects)
     },
-    chooseList: function(e) {
+    chooseList0: function() {
         var that = this;
-		var goodsSpecIndex = e.currentTarget.dataset.goodsspecIndex;
-		var itemIndex = that.data.itemIndex;
-		var choosestyItems = that.data.choosestyItems;
-		var choosestyList = that.data.choosestyList;
-		var detailItem = choosestyList.detailItem;
-		var goodsSpec = that.data.chooseObjects[0].cartFood.goodsSpec;
-		detailItem.push(goodsSpec[goodsSpecIndex].detail[itemIndex].name)
-		// for (var i = 0; i < goodsSpec.length; i++) {
-		// 	if (goodsSpecIndex == i) {
-		// 		detailItem.splice(i, 1);
-		// 	}
-		// }
-		console.log("detailItem")
-		console.log(detailItem)
-		choosestyItems.push(that.data.choosestyList)
-		if (that.data.choosestyList.detailItem.length > 1 || choosestyItems.length > 1) {
-			for (var i = 0; i < choosestyItems.length; i++) {
-				choosestyItems.splice(i, 1);
-			}
-		}
-		that.setData({
-			choosestyItems: choosestyItems
-		})
-		console.log("choosestyItems")
-		console.log(choosestyItems)
+        var goodsSpec = that.data.goodsSpec;
+        var goodsSpec0 = goodsSpec[0];
+        var goodsSpecDetail = that.data.goodsSpecDetail;
+        var itemIndex0 = that.data.itemIndex0;
+        var chooseLists = {
+            "detail": goodsSpec0.detail[itemIndex0].name
+        }
+        goodsSpecDetail.push(chooseLists)
+        if (goodsSpecDetail.length > 1) {
+            for (var i = 0; i < goodsSpecDetail.length; i++) {
+                goodsSpecDetail.splice(i, 1);
+            }
+        }
+        that.setData({
+            goodsSpecDetail: goodsSpecDetail
+        })
+        console.log("goodsSpecDetail")
+        console.log(that.data.goodsSpecDetail)
     },
-    choosesty: function(e) {
+    chooseList1: function() {
         var that = this;
-		var itemIndex = e.currentTarget.dataset.itemIndex;
-		that.setData({
-			itemIndex: itemIndex
-		})
+        var goodsSpec = that.data.goodsSpec;
+        var goodsSpec0 = goodsSpec[0];
+        var goodsSpec1 = goodsSpec[1];
+        var goodsSpecDetail = that.data.goodsSpecDetail;
+        var chooseLists = {
+            "detail": goodsSpec0.detail[that.data.itemIndex0].name + "," + goodsSpec1.detail[that.data.itemIndex1].name
+        }
+        goodsSpecDetail.push(chooseLists)
+        if (goodsSpecDetail.length > 1) {
+            for (var i = 0; i < goodsSpecDetail.length; i++) {
+                goodsSpecDetail.splice(i, 1);
+            }
+            that.setData({
+                goodsSpecDetail: goodsSpecDetail
+            })
+        }
+        console.log("goodsSpecDetail")
+        console.log(that.data.goodsSpecDetail)
+    },
+    choosesty0: function(e) {
+        var that = this;
+        var itemIndex = e.currentTarget.dataset.itemIndex
+        that.setData({
+            itemIndex0: itemIndex
+        })
+    },
+    choosesty1: function(e) {
+        var that = this;
+        var itemIndex = e.currentTarget.dataset.itemIndex
+        that.setData({
+            itemIndex1: itemIndex
+        })
     },
     // 关闭蒙层
     toastClode: function() {
         var that = this;
         that.setData({
-            isModal: false
+            isModal: false,
+            chooseObjects: []
         })
     },
-    amount: function() {
+    amount: function (cartObjects) {
         var that = this;
         var cartObjects = that.data.cartObjects;
         var amount = 0;
@@ -456,7 +476,7 @@ Page({
 
     },
     //js数字千分符处理
-    commafy: function (num) {　　
+    commafy: function(num) {　　
         num = num + "";　　
         var re = /(-?\d+)(\d{3})/　　
         while (re.test(num)) {　　　　
@@ -483,10 +503,10 @@ Page({
             success: function(res) {
                 // console.log("demo.calculateDistance");
                 // console.log(res);
-				var distance = that.commafy(res.result.elements[0].distance);
-				that.setData({
-					distance: distance
-				})
+                var distance = that.commafy(res.result.elements[0].distance);
+                that.setData({
+                    distance: distance
+                })
             },
             fail: function(res) {
                 console.log("demo.calculateDistance");
