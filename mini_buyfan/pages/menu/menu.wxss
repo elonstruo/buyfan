@@ -134,10 +134,15 @@ page {
 	max-height: 295px;
 }
 .modal-body .item .title {
+	position: relative;
 	width: 388rpx;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+}
+.modal-body .item .title .detail {
+	font-size: 28rpx;
+	color: #aaa;
 }
 .modal-body .item .fee {
 	width: 120rpx;

@@ -94,7 +94,7 @@
                     <view class='toast-body'>
                         <view class='toast-title'>{{item.cartFood.goodsName}}</view>
                         <view class='choose-box'>
-                            <view class='choose-list' wx:key='index' data-goodsSpec-index="{{index}}" bindtap='chooseList0'>
+                            <view class='choose-list' wx:key='index' data-food-id="{{item.cartFood.gtd}}" data-goodsSpec-index="{{index}}" bindtap='chooseList0'>
                                 <view class='item-title'>{{item.cartFood.goodsSpec[0].name}}</view>
                                 <view data-item-index="{{index}}" data-item-name="{{item.name}}" bindtap="choosesty0" wx:key="unique" wx:for="{{item.cartFood.goodsSpec[0].detail}}" class='choosesty {{index==itemIndex0?"on":""}}'>{{item.name}}</view>
                             </view>
@@ -102,10 +102,6 @@
                                 <view class='item-title'>{{item.cartFood.goodsSpec[1].name}}</view>
                                 <view data-item-index="{{index}}" data-item-name="{{item.name}}" bindtap="choosesty1" wx:key="unique" wx:for="{{item.cartFood.goodsSpec[1].detail}}" class='choosesty {{index==itemIndex1?"on":""}}'>{{item.name}}</view>
                             </view>
-                            <!-- <view class='choose-list' wx:key='index' data-goodsSpec-index="{{index}}" bindtap='chooseList' wx:key="unique" wx:for="{{item.cartFood.goodsSpec}}">
-                                <view class='item-title'>{{item.name}}</view>
-                                <view data-item-index="{{index}}" data-item-name="{{item.name}}" bindtap="choosesty" wx:key="unique" wx:for="{{item.detail}}" class='choosesty'>{{item.name}}</view>
-                            </view> -->
                         </view>
                         <view class='toast-footer'>
                             <view class='left'>
@@ -115,9 +111,9 @@
 								）</view>
                             </view>
                             <view class="cart-count-box">
-                                <text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-food-id="{{chooseFoodId}}" wx:if="{{cartData[chooseFoodId]}}">-</text>
+                                <text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-food-id="{{chooseFoodId}}" data-goods-spec="{{item.cartFood.goodsSpec}}" wx:if="{{cartData[chooseFoodId]}}">-</text>
                                 <text data-food-id="{{chooseFoodId}}" class="cart-count-num">{{cartData[chooseFoodId]}}</text>
-                                <text class="cart-count-wrap cart-count-add" bindtap="addCount" data-food-id="{{chooseFoodId}}">+</text>
+                                <text class="cart-count-wrap cart-count-add" bindtap="addDetailCount" data-goods-spec="{{item.cartFood.goodsSpec}}" data-food-id="{{chooseFoodId}}">+</text>
                             </view>
                         </view>
                     </view>
@@ -136,8 +132,10 @@
                     清空购物车
                 </view>
                 <scroll-view class="modal-body" scroll-y="true" style="height: {{scrollHeight}}px;">
-                    <view class="item" wx:key="unique" wx:for="{{cartObjects}}" wx:key="">
-                        <view class="title">{{item.cartFood.goodsName}}</view>
+                    <view class="item" wx:key="unique" wx:for="{{cartObjects}}">
+                        <view class="title">{{item.cartFood.goodsName}}
+							<text class='detail'wx:key="unique" wx:for="{{item.goodsSpecDetail}}">（{{item.detail}}）</text>
+						</view>
                         <view class="fee">¥{{item.cartFood.sPrice * item.quantity}}</view>
                         <view class="cart-count-box">
                             <!-- 减号 -->
