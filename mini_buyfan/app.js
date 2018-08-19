@@ -221,6 +221,15 @@ App({
             return 0;
         }
     },
+    //js数字千分符处理
+    commafy: function (num) {
+        num = num + "";
+        var re = /(-?\d+)(\d{3})/
+        while (re.test(num)) {
+            num = num.replace(re, "$1.$2")
+        }
+        return num;
+    },
     // 微信支付
     wxpay: function(key, order_sn) {
         var that = this;

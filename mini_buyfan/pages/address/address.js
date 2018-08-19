@@ -17,6 +17,11 @@ Page({
 		var that = this;
 		// app.actionrequest()
 		// that.deleteAddress()
+        if (options.ordersubmit) {
+            that.setData({
+                ordersubmit: options.ordersubmit
+            })
+        }
 		// 地址内容
 		if (app.globalData.userInfo) {
 			console.log("address.app.globalData.userInfo")
@@ -35,31 +40,57 @@ Page({
 
 		}
     },
-	toAddress: function () {
+    //回到订单支付页面
+    toOrderSubmit: function (e) {
+        var that = this;
+        var addressIndex = e.currentTarget.dataset.index;
+        if (that.data.ordersubmit) {
+            wx.navigateTo({
+                url: '../order-submit/order-submit?index=' + addressIndex,
+                success: function (res) { },
+                fail: function (res) { },
+                complete: function (res) { },
+            })
+        }
+    },
+    // 编辑地址
+    edtiAddress: function (e) {
 		var that = this;
+        var userInforIndex = e.currentTarget.dataset.index;
 		wx.navigateTo({
-			url: '../edtiAddress/edtiAddress',
+            url: '../edtiAddress/edtiAddress?index=' + userInforIndex,
 			success: function(res) {},
 			fail: function(res) {},
 			complete: function(res) {},
 		})
-		// that.setData({
-		// 	isAddress: false,
-		// 	toAddress: true,
-		// })
 	},
-	edtiAddress: function () {
+    // 添加地址
+    toAddress: function () {
+        wx.navigateTo({
+            url: '../edtiAddress/edtiAddress',
+            success: function (res) { },
+            fail: function (res) { },
+            complete: function (res) { },
+        })
 
 	},
-	deleteAddress: function () {
+    // 修改地址
+	deleteAddress: function (e) {
 		var that = this;
+        var userInfor = that.data.userInfor;
+        var userInforIndex = e.currentTarget.dataset.index;
+        userInfor.splice(userInfor[userInforIndex],1)
+        console.log(userInfor)
+        that.setData({
+            userInfor: userInfor
+        })
 		wx.request({
 			url: 'https://app.jywxkj.com/shop/baifen/request/usermanage.php',
 			data: {
 				action: 'modifyadr',
 				uid: that.data.uid,
 				openid: that.data.openid,
-				userInfor: []
+                userInfor: JSON.stringify(userInfor)
 			},
 			header: {
 				'Content-Type': 'application/x-www-form-urlencoded'
@@ -68,20 +99,6 @@ Page({
 			success: function (res) {
 				console.log("personal_info_success");
 				console.log(res);
-				// wx.showModal({
-				// 	title: '提交成功！请等待审核结果',
-				// 	content: '返回上一页',
-				// 	showCancel: false,
-				// 	confirmText: '好的',
-				// 	confirmColor: '#333',
-				// 	success: function (res) {
-				// 		wx.navigateBack({
-				// 			delta: 1,
-				// 		})
-				// 	},
-				// 	fail: function (res) { },
-				// 	complete: function (res) { },
-				// })
 			},
 			fail: function (res) { },
 			complete: function (res) { },

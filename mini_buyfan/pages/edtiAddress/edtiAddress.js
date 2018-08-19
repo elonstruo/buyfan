@@ -15,6 +15,11 @@ Page({
      */
     onLoad: function(options) {
 		var that = this;
+        // if (options.index) {
+        //     that.setData({
+        //         userInforArrIndex : options.index
+        //     })
+        // }
 		if (app.globalData.userInfo) {
 			console.log("address.app.globalData.userInfo")
 			console.log(app.globalData.userInfo)
@@ -27,11 +32,20 @@ Page({
 				openid: openid
 			})
 		}
+        if (userInforArr !== "" || userInforArr !== null || userInforArr !== "undefined") {
+            var userInforArr = JSON.parse(that.data.userInforArr)
+        } else {
+            var userInforArr = []            
+        }
+        that.setData({
+            userInforArr: userInforArr
+        })
     },
 	edtiAddress: function (e) {
 		var that = this;
 		console.log('form发生了submit事件，携带数据为：', e.detail.value);
 		var userInforForm = e.detail.value;
+        userInforForm['currInfo'] = that.data.currInfo;
 		userInforForm['latitude'] = that.data.latitude;
 		userInforForm['longitude'] = that.data.longitude;
 		var username = userInforForm.username;
@@ -55,50 +69,41 @@ Page({
 			that.showtips("请选择地图定位")
 			return
 		}
-		console.log("that.data.userInforArr")
-		console.log(that.data.userInforArr)
-		if (userInforArr == "" || userInforArr == null || userInforArr == "undefined") {
-			that.data.userInforArr = [userInforForm];
-		} else {
-			var userInforArr = JSON.parse(that.data.userInforArr)
-			userInforArr[userInforArr.length] = userInforForm
-		}
-		
-		console.log("userInforArr")
-		console.log(userInforArr)
-		// wx.request({
-		// 	url: 'https://app.jywxkj.com/shop/baifen/request/usermanage.php',
-		// 	data: {
-		// 		action: 'modifyadr',
-		// 		uid: that.data.uid,
-		// 		openid: that.data.openid,
-		// 		userInfor: JSON.stringify(userInforArr)
-		// 	},
-		// 	header: {
-		// 		'Content-Type': 'application/x-www-form-urlencoded'
-		// 	},
-		// 	method: 'POST',
-		// 	success: function (res) {
-		// 		console.log("添加地址");
-		// 		console.log(res);
-		// 		// wx.showModal({
-		// 		// 	title: '提交成功！请等待审核结果',
-		// 		// 	content: '返回上一页',
-		// 		// 	showCancel: false,
-		// 		// 	confirmText: '好的',
-		// 		// 	confirmColor: '#333',
-		// 		// 	success: function (res) {
-		// 		// 		wx.navigateBack({
-		// 		// 			delta: 1,
-		// 		// 		})
-		// 		// 	},
-		// 		// 	fail: function (res) { },
-		// 		// 	complete: function (res) { },
-		// 		// })
-		// 	},
-		// 	fail: function (res) { },
-		// 	complete: function (res) { },
-		// })
+        var userInforArr = that.data.userInforArr;
+            userInforArr.push(userInforForm)
+		wx.request({
+			url: 'https://app.jywxkj.com/shop/baifen/request/usermanage.php',
+			data: {
+				action: 'modifyadr',
+				uid: that.data.uid,
+				openid: that.data.openid,
+				userInfor: JSON.stringify(userInforArr)
+			},
+			header: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			method: 'POST',
+			success: function (res) {
+				console.log("添加地址");
+				console.log(res);
+				// wx.showModal({
+				// 	title: '提交成功！请等待审核结果',
+				// 	content: '返回上一页',
+				// 	showCancel: false,
+				// 	confirmText: '好的',
+				// 	confirmColor: '#333',
+				// 	success: function (res) {
+				// 		wx.navigateBack({
+				// 			delta: 1,
+				// 		})
+				// 	},
+				// 	fail: function (res) { },
+				// 	complete: function (res) { },
+				// })
+			},
+			fail: function (res) { },
+			complete: function (res) { },
+		})
 	},
 	showtips: function (title) {
 		wx.showToast({

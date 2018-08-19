@@ -1,10 +1,10 @@
 <!--pages/order-submit/order-submit.wxml-->
 <view class='wrapper'>
-    <view class='dineInBox'>
-        <view class='store'>
+    <view class='dineInBox' wx:if="{{shopfor}}">
+        <view class='store' bindtap='changeshop'>
             <view class='left'>
                 <image class='icon-store' src='../../images/switch@2x.png'></image>
-                <view>佰分江南店</view>
+                <view>{{shopName}}</view>
             </view>
             <image class='icon-arrow' src='../../images/in@2x.png'></image>
         </view>
@@ -25,14 +25,14 @@
             </view>
         </view>
     </view>
-    <view class='takeOutBox'>
-        <view class='store store-takeOut'>
+    <view class='takeOutBox' wx:if="{{tackout}}">
+        <view class='store store-takeOut' bindtap='changeshop'>
             <view class='left'>
                 <image class='icon-store' src='../../images/switch@2x.png'></image>
                 <view>选择门面</view>
             </view>
             <view class='right'>
-                <view>佰分江南店</view>
+                <view>{{shopName}}</view>
                 <image class='icon-arrow' src='../../images/in@2x.png'></image>
             </view>
         </view>
@@ -50,43 +50,43 @@
                 <image class='icon-arrow' src='../../images/in@2x.png'></image>
             </view>
         </view>
-        <view class='order-list'>
-            <view class='title'>
-                <image class='icon-order' src='../../images/list@2x.png'></image>订单详情
-            </view>
-            <view class='items'>
-                <view class='item'>
-                    <image class='goods' src='../../images/shopimg.jpg'></image>
-                    <view class='info'>
-                        <view class='top'>
-                            <view class='name'>魔法嫩鸡卷</view>
-                            <view class='price'>¥ 24</view>
-                        </view>
-                        <view class='bottom'>
-                            <text>X</text>
-                            <text class='num'>2</text>
-                        </view>
+    </view>
+    <view class='order-list'>
+        <view class='title'>
+            <image class='icon-order' src='../../images/list@2x.png'></image>订单详情
+        </view>
+        <view class='items'>
+            <view class='item' wx:key="unique" wx:for="{{cartObjects}}">
+                <image class='goods' src='{{item.cartFood.goodsImage}}'></image>
+                <view class='info'>
+                    <view class='top'>
+                        <view class='name'>{{item.cartFood.goodsName}}</view>
+                        <view class='price'>{{item.numPrice}}</view>
+                    </view>
+                    <view class='bottom'>
+                        <text>X</text>
+                        <text class='num'>{{item.num}}</text>
                     </view>
                 </view>
             </view>
-            <view class='outPrice'>
-                <view>配送费</view>
-                <view>¥ 5</view>
-            </view>
-            <view class='tips'>
-                <text>备注</text>
-                <input name="tips" placeholder='口味·偏好要求' class='tips-title'></input>
-            </view>
-            <view class='addall'>
-                小计
-                <text>¥ 29</text>
-            </view>
-            <view class='tisu'>
-                <label class="checkbox">
-                    <checkbox value="" checked="" />餐巾纸
-                </label>
-                <text>¥ 1</text>
-            </view>
+        </view>
+        <view class='outPrice' wx:if="{{tackout}}">
+            <view>配送费</view>
+            <view>¥ 5</view>
+        </view>
+        <view class='tips'>
+            <text>备注</text>
+            <input name="tips" placeholder='口味·偏好要求' class='tips-title'></input>
+        </view>
+        <view class='addall'>
+            小计
+            <text>¥ {{amount}}</text>
+        </view>
+        <view class='tisu'>
+            <label class="checkbox">
+                <checkbox value="" checked="" />餐巾纸
+            </label>
+            <text>¥ 1</text>
         </view>
     </view>
 </view>

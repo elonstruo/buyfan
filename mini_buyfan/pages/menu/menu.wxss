@@ -489,8 +489,11 @@ page {
     font-size: 30rpx;
     color: #fff;
     background: rgba(255, 104, 22, 1);
+    border-radius: 0;
 }
-
+.carts-bar .addall::after{
+    border: none;
+}
 .icon-car {
     display: block;
     width: 60rpx;

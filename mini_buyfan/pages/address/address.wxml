@@ -9,7 +9,7 @@
 </view>
 <view wx:if='{{userInfor !== null || userInfor !== ""}}'>
     <view class='toAddress'>
-        <view class='item' wx:for="{{userInfor}}">
+        <view class='item' wx:key="unique" bindtap='toOrderSubmit' data-index="{{index}}" wx:for="{{userInfor}}">
             <view class='left'>
                 <view class='address-title'>{{item.adr}}</view>
                 <view class='address-info'>
@@ -17,8 +17,8 @@
                     <view class='number'>{{item.tel}}</view>
                 </view>
             </view>
-            <view class='right'>
-                <image bindtap='edtiAddress' class='icon-edti' src='../../images/diex@2x.png'></image>
+            <view class='right' data-index="{{index}}" bindtap='edtiAddress'>
+                <image class='icon-edti' src='../../images/diex@2x.png'></image>
             </view>
             <view class='right'>
                 <image bindtap='deleteAddress' class='icon-edti' src='../../images/icon-delete.png'></image>

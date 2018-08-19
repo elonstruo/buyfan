@@ -18,16 +18,34 @@ Page({
 		var stores = JSON.parse(options.stores)
 		console.log("stores")
 		console.log(stores)
-		that.setData({
-			stores: stores
-		})
+        if (options.ordersubmit) {
+            that.setData({
+                stores: stores,
+                orderway: options.orderway,
+                ordersubmit: options.ordersubmit,
+                cartObjectsString: options.cartObjectsString,
+            })
+        } else {
+            that.setData({
+                stores: stores,
+                orderway: options.orderway,
+            })
+        }
     },
 	chooseStore: function (e) {
 		console.log(e)
+        var that = this;
 		var id = e.currentTarget.dataset.id
-		wx.redirectTo({
-			url: '../menu/menu?id=' + id
-		})
+        if (that.data.ordersubmit == "true") {
+            wx.navigateTo({
+                url: '../../pages/order-submit/order-submit?orderway=' + that.data.orderway + '&cartObjects=' + that.data.cartObjectsString + '&storeId=' + id,
+            })
+        } else {
+            wx.navigateTo({
+                url: '../menu/menu?id=' + id + '&orderway=' + that.data.orderway
+            })
+        }
+        
 	},
     /**
      * 生命周期函数--监听页面初次渲染完成
