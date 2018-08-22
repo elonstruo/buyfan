@@ -37,11 +37,21 @@
             </view>
         </view>
         <view class='dine-in take-out'>
-            <view class='top'>
+            <!-- <view class='top'>
                 <view class='addaddress' hover-class='addaddress-hover' bindtap='addaddress'>
                     <image class='icon-add' src='../../images/add@2x.png'></image>
                     选择收货地址
                 </view>
+            </view> -->
+            <view class='top bottom address-box' bindtap='addaddress'>
+                <view class='left'>
+                    <image class='icon-now' src='../../images/location@2x.png'></image>
+                    <view class=''>
+                        <view class='address-top'>{{address.currInfo}}</view>
+                        <view class='address-bottom'>{{address.username}} {{address.tel}}</view>
+                    </view>
+                </view>
+                <image class='icon-arrow' src='../../images/in@2x.png'></image>
             </view>
             <view class='bottom'>
                 <view class='left'>
@@ -72,7 +82,7 @@
         </view>
         <view class='outPrice' wx:if="{{tackout}}">
             <view>配送费</view>
-            <view>¥ 5</view>
+            <view>¥ {{distancePrice}}</view>
         </view>
         <view class='tips'>
             <text>备注</text>
@@ -82,14 +92,14 @@
             小计
             <text>¥ {{amount}}</text>
         </view>
-        <view class='tisu'>
-            <label class="checkbox">
-                <checkbox value="" checked="" />餐巾纸
+        <checkbox-group bindchange="checkboxChange" class='tisu'>
+            <label class="checkbox" wx:for="{{otherItem}}" wx:key="unique">
+                <checkbox value="{{item.value}}" checked="{{item.checked}}" />{{item.name}}
             </label>
-            <text>¥ 1</text>
-        </view>
+            <text>¥ {{otherItem[0].value}}</text>
+        </checkbox-group>
     </view>
 </view>
 <view class='payButton'>微信支付
-    <text>¥29</text>
+    <text>¥{{allAmount}}</text>
 </view>

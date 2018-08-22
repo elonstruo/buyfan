@@ -17,14 +17,16 @@ Page({
     /**
      * 页面的初始数据
      */
-    data: {
+	data: {
+		cart: {},
+		detailsArr: [],
         itemIndex0: 0,
         itemIndex1: 0,
         goodsSpecDetail: [],
         amount: 0,
         isModal: false,
         maskVisual: 'hidden',
-        cartObjects: [],
+        // cartObjects: [],
         cartData: {},
         chooseObjects: [],
         goodsnum: 1,
@@ -58,12 +60,16 @@ Page({
      */
     onLoad: function(options) {
         var that = this;
-        console.log("menu.options")
-        console.log(options)
         that.setData({
             orderway: options.orderway,
             storeId: options.id
         })
+		if (app.globalData.cartObjectsStorage) {
+			that.setData({
+				cartObjects: app.globalData.cartObjectsStorage
+			})
+			that.amount();
+		}
         // 分类赋值
         if (app.globalData.actionData) {
             var actionData = app.globalData.actionData
@@ -115,17 +121,6 @@ Page({
                 that.setData({
                     goods: res.data.data,
                 })
-
-                // console.log("goods")
-                // console.log(that.data.goods)
-                // for (var i = 0; i < goods.length; i++) {
-                // 	if (goods[i].goodsclass) {
-                // 		var goodsItem = goods[i]
-                // 		console.log("goodsItem")
-                // 		console.log(goodsItem)
-                // 	}
-                // }
-
 
             },
             fail: function(res) {},
@@ -193,18 +188,18 @@ Page({
     addCount: function(e) {
         var that = this;
         var foodId = e.currentTarget.dataset.foodId;
-        var cart = {}
         var cartObjects = that.data.cartObjects;
         var cartData = that.data.cartData;
         var goodsSpecDetail;
         var chooseObjects = that.data.chooseObjects
         var num = 1;
         var goods = that.data.goods
-        var goodsSpecLength = e.currentTarget.dataset.goodsSpec;
+		var goodsSpecLength = e.currentTarget.dataset.goodsSpec;
+		var oroginDetails;
+		var cart = that.data.cart;
+		var detailsArr = that.data.detailsArr;
         if (chooseObjects.length > 0) {
             chooseObjects = that.data.chooseObjects
-            console.log("chooseObjects.length > 0")
-            console.log(chooseObjects)
         }
         if (goodsSpecLength !== null && goodsSpecLength !== "null" && goodsSpecLength.length >= 1) {
             var goodsSpec = chooseObjects[0].cartFood.goodsSpec;
@@ -219,23 +214,42 @@ Page({
                 cartFood: chooseObjects[0].cartFood,
                 goodsSpecDetail: goodsSpecDetail,
                 num: num
-            }
+			}
+			// cart = {
+			// 	foodId: foodId,
+			// 	goodsSpecDetail: goodsSpecDetail,
+			// 	num: num
+			// }
+			var numbox = {
+				// goodsSpecDetail: goodsSpecDetail,
+				num: num
+			}
             if (cartObjects.length !== 0) {
                 for (var i = 0; i < cartObjects.length; i++) {
                     if (cartObjects[i].cartFood.gid == foodId && cartObjects[i].goodsSpecDetail[0].detail == goodsSpecDetail[0].detail) {
                         cartObjects[i].num = ++cartObjects[i].num;
-                        cartData = cartObjects[i]
+						cartData = cartObjects[i]; 
                         cartObjects.splice(i, 1);
                     }
-                }
-            }
+				}
+			}
+			// cart[foodId + cartData.goodsSpecDetail[0].detail] = cartData.num
+			// console.log("cart")
+			// console.log(cart)
             cartObjects.push(cartData)
-            that.setData({
-                cartObjects: cartObjects,
-            })
+			that.setData({
+				cartObjects: cartObjects,
+				cart: cart
+			})
             that.amount()
             console.log("cartObjects")
-            console.log(cartObjects)
+			console.log(cartObjects)
+			wx.setStorage({
+				key: 'cartObjectsStorage',
+				data: cartObjects,
+			})
+			app.cartStorage()
+			
         } else {
             for (var i = 0; i < goods.length; i++) {
                 if (goods[i].gid == foodId) {
@@ -262,6 +276,11 @@ Page({
             that.amount()
             console.log("cartObjects")
             console.log(cartObjects)
+			wx.setStorage({
+				key: 'cartObjectsStorage',
+				data: cartObjects,
+			})
+			app.cartStorage()
         }
     },
     cartAdd: function (e) {
@@ -272,7 +291,12 @@ Page({
         that.setData({
             cartObjects: cartObjects
         })
-        that.amount()
+		that.amount()
+		wx.setStorage({
+			key: 'cartObjectsStorage',
+			data: cartObjects,
+		})
+		app.cartStorage()
     },
     cartMinus: function (e) {
         var that = this;
@@ -280,12 +304,19 @@ Page({
         var cartObjects = that.data.cartObjects;
         --cartObjects[cartIndex].num
         if (cartObjects[cartIndex].num == 0) {
-            delete cartObjects[cartIndex]
+            // delete cartObjects[cartIndex]
+			cartObjects.splice(cartIndex, 1);
+
         }
         that.setData({
             cartObjects: cartObjects
         })
-        that.amount()
+		that.amount()
+		wx.setStorage({
+			key: 'cartObjectsStorage',
+			data: cartObjects,
+		})
+		app.cartStorage()
     },
     // 转换购物车数据
     cartToArray: function(foodId, goodsSpecDetail) {
@@ -369,7 +400,7 @@ Page({
         var orderway = that.data.orderway;
         var storeId = that.data.storeId;
         wx.navigateTo({
-            url: '../../pages/order-submit/order-submit?orderway=' + orderway + '&cartObjects=' + cartObjects + '&storeId=' + storeId, 
+            url: '../../pages/order-submit/order-submit?orderway=' + orderway + '&storeId=' + storeId, 
             success: function(res) {},
             fail: function(res) {},
             complete: function(res) {},
@@ -397,6 +428,7 @@ Page({
         var cartFood;
         var goodsSpec
         var cart = {};
+		var num = 0;
         var chooseFoodId = e.currentTarget.dataset.foodId;
         that.setData({
             isModal: true,
@@ -407,7 +439,8 @@ Page({
                 cartFood = goods[i];
             }
         }
-        cart.cartFood = cartFood;
+		cart.cartFood = cartFood;
+        cart.num = num;
         goodsSpec = cartFood.goodsSpec;
         chooseObjects.push(cart);
         that.setData({
@@ -417,7 +450,7 @@ Page({
             itemIndex1: 0,
         });
         console.log("choose.that.data.chooseObjects")
-        console.log(that.data.chooseObjects)
+		console.log(that.data.chooseObjects)
     },
     chooseList0: function() {
         var that = this;
@@ -426,8 +459,10 @@ Page({
         var goodsSpecDetail = that.data.goodsSpecDetail;
         var itemIndex0 = that.data.itemIndex0;
         var chooseLists = {
-            "detail": goodsSpec0.detail[itemIndex0].name
+			"detail": goodsSpec0.detail[itemIndex0].name
+            // "detail": []
         }
+		// chooseLists.detail[0] = goodsSpec0.detail[itemIndex0].name
         goodsSpecDetail.push(chooseLists)
         if (goodsSpecDetail.length > 1) {
             for (var i = 0; i < goodsSpecDetail.length; i++) {
@@ -447,8 +482,11 @@ Page({
         var goodsSpec1 = goodsSpec[1];
         var goodsSpecDetail = that.data.goodsSpecDetail;
         var chooseLists = {
-            "detail": goodsSpec0.detail[that.data.itemIndex0].name + "," + goodsSpec1.detail[that.data.itemIndex1].name
+			"detail": goodsSpec0.detail[that.data.itemIndex0].name + "," + goodsSpec1.detail[that.data.itemIndex1].name
+            // "detail": []
         }
+		// chooseLists.detail[0] = goodsSpec0.detail[that.data.itemIndex0].name
+		// chooseLists.detail[1] = goodsSpec1.detail[that.data.itemIndex1].name
         goodsSpecDetail.push(chooseLists)
         if (goodsSpecDetail.length > 1) {
             for (var i = 0; i < goodsSpecDetail.length; i++) {
@@ -458,8 +496,8 @@ Page({
                 goodsSpecDetail: goodsSpecDetail
             })
         }
-        console.log("goodsSpecDetail")
-        console.log(that.data.goodsSpecDetail)
+        // console.log("goodsSpecDetail")
+        // console.log(that.data.goodsSpecDetail)
     },
     choosesty0: function(e) {
         var that = this;

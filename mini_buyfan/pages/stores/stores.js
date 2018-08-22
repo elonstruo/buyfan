@@ -23,7 +23,6 @@ Page({
                 stores: stores,
                 orderway: options.orderway,
                 ordersubmit: options.ordersubmit,
-                cartObjectsString: options.cartObjectsString,
             })
         } else {
             that.setData({
@@ -32,16 +31,16 @@ Page({
             })
         }
     },
+	//返回订单页或菜单页面
 	chooseStore: function (e) {
-		console.log(e)
         var that = this;
 		var id = e.currentTarget.dataset.id
         if (that.data.ordersubmit == "true") {
-            wx.navigateTo({
-                url: '../../pages/order-submit/order-submit?orderway=' + that.data.orderway + '&cartObjects=' + that.data.cartObjectsString + '&storeId=' + id,
+            wx.redirectTo({
+                url: '../../pages/order-submit/order-submit?orderway=' + that.data.orderway + '&storeId=' + id,
             })
         } else {
-            wx.navigateTo({
+			wx.redirectTo({
                 url: '../menu/menu?id=' + id + '&orderway=' + that.data.orderway
             })
         }

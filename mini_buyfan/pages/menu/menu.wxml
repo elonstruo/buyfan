@@ -111,9 +111,9 @@
 								）</view>
                             </view>
                             <view class="cart-count-box">
-                                <text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-food-id="{{chooseFoodId}}" data-goods-spec="{{item.cartFood.goodsSpec}}" wx:if="{{cartData[chooseFoodId]}}">-</text>
-                                <text data-food-id="{{chooseFoodId}}" class="cart-count-num">{{cartData[chooseFoodId]}}</text>
-                                <text class="cart-count-wrap cart-count-add" bindtap="addCount" data-goods-spec="{{item.cartFood.goodsSpec}}" data-food-id="{{chooseFoodId}}">+</text>
+                                <text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-food-id="{{chooseFoodId}}" data-goods-spec="{{item.cartFood.goodsSpec}}" wx:if="{{cartData.num}}">-</text>
+                                <text data-food-id="{{chooseFoodId}}" class="cart-count-num"></text>
+                                <text class="cart-count-wrap cart-count-add" bindtap="addCount" data-goods-spec="{{item.cartFood.goodsSpec}}"data-food-id="{{chooseFoodId}}">+</text>
                             </view>
                         </view>
                     </view>

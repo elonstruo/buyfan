@@ -1,4 +1,5 @@
 // pages/coupon/coupon.js
+const app = getApp();
 Page({
 
     /**
@@ -28,6 +29,29 @@ Page({
      */
     onLoad: function(options) {
 		var that = this;
+		var uid;
+		if (app.globalData.userInfo) {
+			console.log("coupon.app.globalData.userInfo")
+			console.log(app.globalData.userInfo.data)
+			uid = app.globalData.userInfo.data.uid
+		}
+		wx.request({
+			url: 'https://app.jywxkj.com/shop/baifen/request/usermanage.php',
+			data: {
+				action: 'xcxcouponshow',
+				uid: uid
+			},
+			header: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			method: 'post',
+			success: function(res) {
+				console.log("商家优惠券信息显示")
+				console.log(res)
+			},
+			fail: function(res) {},
+			complete: function(res) {},
+		})
 		// wx.createSelectorQuery().select('.none').boundingClientRect(function (rect) {
 		// 	console.log(rect.height)
 		// 	that.setData({

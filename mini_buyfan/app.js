@@ -14,8 +14,8 @@ App({
         actionData: null,
         storesData: null,
         locationData: null,
-        locationKey: 'CT2BZ-I57RV-HIGP7-UMN64-ORLUV-LRB22'
-
+        locationKey: 'CT2BZ-I57RV-HIGP7-UMN64-ORLUV-LRB22',
+		cartObjectsStorage: []
 
     },
 
@@ -36,7 +36,7 @@ App({
         // 展示本地存储能力
         var logs = wx.getStorageSync('logs') || []
         logs.unshift(Date.now())
-        wx.setStorageSync('logs', logs)
+		wx.setStorageSync('logs', logs)
 
         // 登录
         that.commomLogin()
@@ -44,6 +44,8 @@ App({
         that.actionrequest()
         // 商家分店
         that.stores()
+		// 购物车存储
+		that.cartStorage()
     },
     // 数据初始化
     actionrequest: function() {
@@ -71,6 +73,20 @@ App({
             complete: function(res) {},
         })
     },
+	// 购物车存储
+	cartStorage: function () {
+		var that = this;
+		wx.getStorage({
+			key: 'cartObjectsStorage',
+			success: function (res) {
+				that.globalData.cartObjectsStorage = res.data
+				// console.log("that.globalData.cartObjectsStorage")
+				// console.log(that.globalData.cartObjectsStorage)
+			 },
+			fail: function (res) { },
+			complete: function (res) { },
+		})
+	},
     // 商家分店
     stores: function () {
         var that = this;
@@ -120,7 +136,7 @@ App({
                         longitude: longitude
                     },
                     success: function (res) {
-                        // console.log("getLocation.success.res")
+                        // console.log("app.getLocation.success.res")
                         // console.log(res)
                         that.globalData.locationData = res
                         if (getCurrentPages().length != 0) {

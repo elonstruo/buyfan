@@ -5,7 +5,7 @@
     </view>
 </view>
 <view class='details'>
-    <view class='item' wx:for="{{coupon}}">
+    <view class='item' wx:key="index" wx:for="{{coupon}}">
 		<view class='border-img-box border-img-left'></view>
 		<view class='box'>
 			<view class='top'>

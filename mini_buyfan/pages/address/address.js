@@ -15,11 +15,13 @@ Page({
      */
     onLoad: function(options) {
 		var that = this;
-		// app.actionrequest()
-		// that.deleteAddress()
+		console.log("address.options")
+		console.log(options)
         if (options.ordersubmit) {
             that.setData({
-                ordersubmit: options.ordersubmit
+				ordersubmit: options.ordersubmit,
+                orderway: options.orderway,
+				storeId: options.storeId
             })
         }
 		// 地址内容
@@ -44,9 +46,11 @@ Page({
     toOrderSubmit: function (e) {
         var that = this;
         var addressIndex = e.currentTarget.dataset.index;
+		var userInfor = that.data.userInfor;
+		var address = JSON.stringify(userInfor[addressIndex])
         if (that.data.ordersubmit) {
-            wx.navigateTo({
-                url: '../order-submit/order-submit?index=' + addressIndex,
+            wx.redirectTo({
+				url: '../order-submit/order-submit?address=' + address + '&orderway=' + that.data.orderway + '&storeId=' + that.data.storeId,
                 success: function (res) { },
                 fail: function (res) { },
                 complete: function (res) { },
@@ -57,7 +61,7 @@ Page({
     edtiAddress: function (e) {
 		var that = this;
         var userInforIndex = e.currentTarget.dataset.index;
-		wx.navigateTo({
+		wx.redirectTo({
             url: '../edtiAddress/edtiAddress?index=' + userInforIndex,
 			success: function(res) {},
 			fail: function(res) {},
@@ -66,7 +70,7 @@ Page({
 	},
     // 添加地址
     toAddress: function () {
-        wx.navigateTo({
+        wx.redirectTo({
             url: '../edtiAddress/edtiAddress',
             success: function (res) { },
             fail: function (res) { },

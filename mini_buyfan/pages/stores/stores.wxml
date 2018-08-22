@@ -1,6 +1,6 @@
 <!--pages/stores/stores.wxml-->
 <radio-group class="radio-group" bindchange="radioChange">
-    <label class="radio" wx:for="{{stores}}" data-id='{{item.id}}' bindtap='chooseStore'>
+    <label class="radio" wx:key="unique" wx:for="{{stores}}" data-id='{{item.id}}' bindtap='chooseStore'>
         <radio value="{{item.shopName}}" checked="{{item.checked}}" />{{item.shopName}}
     </label>
 </radio-group>

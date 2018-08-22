@@ -247,4 +247,13 @@ page {
 	padding: 20rpx;
 	background-color: #fff;
 }
-
+.take-out .address-box {
+	height: 140rpx;
+	box-sizing: border-box;
+	/* font-size: 24rpx; */
+}
+.take-out .address-bottom {
+	font-size: 30rpx;
+	margin-top: 14rpx;
+	font-weight: bold;
+}
