@@ -6,6 +6,7 @@ Page({
      * 页面的初始数据
      */
     data: {
+		cSort: 0,
 		isButton: true,
         type_sort: ["最新","未使用","已使用","已过期"],
 		activeCategoryId: "0",
@@ -35,8 +36,9 @@ Page({
 			console.log(app.globalData.userInfo.data)
 			uid = app.globalData.userInfo.data.uid
 		}
+		// 商家优惠券信息
 		wx.request({
-			url: 'https://app.jywxkj.com/shop/baifen/request/usermanage.php',
+			url: 'https://app.jywxkj.com/shop/baifen/request/couponmanage.php',
 			data: {
 				action: 'xcxcouponshow',
 				uid: uid
@@ -47,10 +49,34 @@ Page({
 			method: 'post',
 			success: function(res) {
 				console.log("商家优惠券信息显示")
-				console.log(res)
+				console.log(res.data.data)
+				that.setData({
+					coupon: res.data.data
+				})
+				// 卡卷类型，0为优惠券，1为折扣卷，2为兑换券
+
 			},
 			fail: function(res) {},
 			complete: function(res) {},
+		})
+		// 用户优惠券信息
+		wx.request({
+			url: 'https://app.jywxkj.com/shop/baifen/request/couponmanage.php',
+			data: {
+				action: 'personcoupon',
+				uid: uid
+			},
+			header: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			method: 'post',
+			success: function (res) {
+				console.log("用户优惠券信息")
+				console.log(res)
+
+			},
+			fail: function (res) { },
+			complete: function (res) { },
 		})
 		// wx.createSelectorQuery().select('.none').boundingClientRect(function (rect) {
 		// 	console.log(rect.height)
