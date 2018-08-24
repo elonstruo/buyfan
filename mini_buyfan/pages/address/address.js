@@ -30,14 +30,18 @@ Page({
 			console.log(app.globalData.userInfo)
 			var userInfor = app.globalData.userInfo.data.userInfor;
 			if (userInfor) {
-				userInfor = JSON.parse(userInfor)
+				userInfor = userInfor
 			}
-			var uid = app.globalData.userInfo.data.uid;
-			var openid = app.globalData.userInfo.data.openid;
+			var skey = wx.getStorageSync('key');
+			console.log("skey")
+			console.log(skey)
+			// var uid = app.globalData.userInfo.data.uid;
+			// var openid = app.globalData.userInfo.data.openid;
 			that.setData({
 				userInfor: userInfor,
-				uid: uid,
-				openid: openid
+				skey: skey
+				// uid: uid,
+				// openid: openid
 			})
 
 		}
@@ -47,14 +51,21 @@ Page({
         var that = this;
         var addressIndex = e.currentTarget.dataset.index;
 		var userInfor = that.data.userInfor;
-		var address = JSON.stringify(userInfor[addressIndex])
+		var address = userInfor[addressIndex]
+		wx.setStorage({
+			key: 'orderAddress',
+			data: address,
+		})
         if (that.data.ordersubmit) {
-            wx.redirectTo({
-				url: '../order-submit/order-submit?address=' + address + '&orderway=' + that.data.orderway + '&storeId=' + that.data.storeId,
-                success: function (res) { },
-                fail: function (res) { },
-                complete: function (res) { },
-            })
+			wx.navigateBack({
+				delta: 1,
+			})
+            // wx.redirectTo({
+			// 	url: '../order-submit/order-submit?address=' + address + '&orderway=' + that.data.orderway + '&storeId=' + that.data.storeId,
+            //     success: function (res) { },
+            //     fail: function (res) { },
+            //     complete: function (res) { },
+            // })
         }
     },
     // 编辑地址
@@ -78,12 +89,16 @@ Page({
         })
 
 	},
-    // 修改地址
+    // 删除地址
 	deleteAddress: function (e) {
 		var that = this;
+		// 地址列表
         var userInfor = that.data.userInfor;
+		// 选中地址
         var userInforIndex = e.currentTarget.dataset.index;
+		// 删除地址列表中选中的地址
         userInfor.splice(userInfor[userInforIndex],1)
+		console.log("点击删除后提交的地址")
         console.log(userInfor)
         that.setData({
             userInfor: userInfor
@@ -92,14 +107,14 @@ Page({
 			url: 'https://app.jywxkj.com/shop/baifen/request/usermanage.php',
 			data: {
 				action: 'modifyadr',
-				uid: that.data.uid,
-				openid: that.data.openid,
-                userInfor: JSON.stringify(userInfor)
+                userInfor: JSON.stringify(that.data.userInfor),
+				skey: that.data.skey
 			},
 			header: {
 				'Content-Type': 'application/x-www-form-urlencoded'
 			},
 			method: 'POST',
+			dataType: 'json',
 			success: function (res) {
 				console.log("personal_info_success");
 				console.log(res);

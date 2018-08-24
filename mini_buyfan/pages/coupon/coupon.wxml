@@ -8,16 +8,36 @@
     <view class='item' wx:key="index" wx:for="{{coupon}}">
 		<view class='border-img-box border-img-left'></view>
 		<view class='box'>
+			<view class='tag' wx:if="{{item.cSort==0}}"><view>优惠券</view></view>
+			<view class='tag' wx:if="{{item.cSort==1}}"><view>折扣券</view></view>
+			<view class='tag' wx:if="{{item.cSort==2}}"><view>兑换券</view></view>
 			<view class='top'>
-				<view class='left'>满{{item.fullNum}}元可使用</view>
-				<view class='right'><text>¥</text>{{item.couponNum}}</view>
+				<!-- <view class='left'>满{{item.fullNum}}元可使用</view> -->
+				<!-- 判断是否兑换券cSort==2 -->
+				<view class='left' wx:if="{{item.cSort!==2}}">
+					满{{item.cDetail.minprice}}元可使用
+				</view>
+				<view class='left' wx:if="{{item.cSort==2}}">
+					{{item.cDetail.goodsname}}
+				</view>
+				<view class='right' wx:if="{{item.cSort==2}}">
+					{{item.cDetail.num}}<text class='text'>份</text>
+				</view>
+				<!-- <view class='right'><text>¥</text>{{item.couponNum}}</view> -->
+				<view class='right' wx:if="{{item.cSort!==2}}">
+					<text wx:if="{{item.cSort==0}}"><text class='text'>¥</text>{{item.cDetail.discounts}}</text>
+					<text wx:if="{{item.cSort==1}}">{{item.cDetail.discount}}<text class='text'>折</text></text>
+				</view>
 			</view>
 			<view class='bottom'>
 				<view>
-					<view class='text-top'>指定商品可用</view>
-					<view class='text-bottom'>{{item.time}}</view>
+					<view class='text-top' wx:if="{{item.cSort==2}}">指定商品可用</view>
+					<!-- <view class='text-bottom'>{{item.time}}</view> -->
+					<view class='text-bottom' wx:if="{{item.cAbleTime.endtime}}">有效期至{{item.cAbleTime.endtime}}</view>
+					<view class='text-bottom' wx:if="{{item.cAbleTime.days}}">领取后{{item.cAbleTime.days}}天到期</view>
 				</view>
-				<view class='coupon-statu {{isButton == true ? "coupon-button" : ""}}'>{{statusText}}</view>
+				<view wx:if="{{activeCategoryId==0}}" bindtap='getCoupon' data-cid="{{item.cid}}"  class='coupon-statu {{item.getstate == 0 ? "coupon-button" : ""}}'>{{item.getremark}}</view>
+				<view wx:if="{{activeCategoryId==1}}" bindtap='getCoupon' data-cid="{{item.cid}}"  class='coupon-statu {{item.usable==0 ? "coupon-button" : ""}}'>{{usableable[item.usable]}}</view>
 			</view>
 		</view>
 		<view class='border-img-box border-img-right'></view>

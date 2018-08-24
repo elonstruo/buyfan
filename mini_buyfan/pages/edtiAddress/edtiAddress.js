@@ -24,16 +24,14 @@ Page({
 			console.log("address.app.globalData.userInfo")
 			console.log(app.globalData.userInfo)
 			var userInfor = app.globalData.userInfo.data.userInfor;
-			var uid = app.globalData.userInfo.data.uid;
-			var openid = app.globalData.userInfo.data.openid;
+			var skey = app.globalData.userInfo.data.skey;
 			that.setData({
 				userInforArr: userInfor,
-				uid: uid,
-				openid: openid
+				skey: skey
 			})
 		}
         if (userInforArr !== "" || userInforArr !== null || userInforArr !== "undefined") {
-            var userInforArr = JSON.parse(that.data.userInforArr)
+            var userInforArr = that.data.userInforArr
         } else {
             var userInforArr = []            
         }
@@ -71,17 +69,18 @@ Page({
 		}
         var userInforArr = that.data.userInforArr;
             userInforArr.push(userInforForm)
+		console.log(userInforArr)
 		wx.request({
 			url: 'https://app.jywxkj.com/shop/baifen/request/usermanage.php',
 			data: {
 				action: 'modifyadr',
-				uid: that.data.uid,
-				openid: that.data.openid,
-				userInfor: JSON.stringify(userInforArr)
+				skey: that.data.skey,
+				userInfor: userInforArr
 			},
 			header: {
 				'Content-Type': 'application/x-www-form-urlencoded'
 			},
+			dataType: 'json',
 			method: 'POST',
 			success: function (res) {
 				console.log("添加地址");

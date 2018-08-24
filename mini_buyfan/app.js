@@ -47,6 +47,16 @@ App({
 		// 购物车存储
 		that.cartStorage()
     },
+	// 加载错误弹窗
+	showBox: function(title) {
+		wx.showToast({
+			title: title,
+			icon: 'none',
+			// image: '',
+			duration: 2000,
+			mask: true,
+		})
+	},
     // 数据初始化
     actionrequest: function() {
         var that = this;
@@ -62,7 +72,7 @@ App({
             success: function(res) {
                 // console.log("actionrequest")
                 // console.log(res)
-                that.globalData.actionData = res.data
+                that.globalData.actionData = res.data.data
                 if (getCurrentPages().length != 0) {
                     getCurrentPages()[getCurrentPages().length - 1].onLoad()
 
@@ -102,7 +112,7 @@ App({
             success: function(res) {
                 // console.log("商家分店")
                 // console.log(res)
-                that.globalData.storesData = res.data
+                that.globalData.storesData = res.data.data
                 // var storestring = JSON.stringify(res.data);
 
                 // that.setData({
@@ -111,7 +121,9 @@ App({
                 // })
             },
 
-            fail: function(res) {},
+            fail: function(res) {
+				that.showBox("网络出错！")
+			},
             complete: function(res) {},
         })
     },
@@ -191,16 +203,17 @@ App({
                         console.log(res)
                         if (res.data.data.skey) {
                             that.globalData.userInfo = res.data;
-                            wx.setStorageSync('key', res.data.data.skey);
-                            // console.log("______login")
-                            // console.log(wx.getStorageSync("key"))
-                        } else {
-                            wx.showModal({
-                                title: '提示',
-                                content: '登录失败',
-                                success: function(res) {}
-                            })
-                        }
+							wx.setStorageSync('key', res.data.data.skey);
+						}
+                        //     // console.log("______login")
+                        //     // console.log(wx.getStorageSync("key"))
+                        // } else {
+                        //     wx.showModal({
+                        //         title: '提示',
+                        //         content: '登录失败',
+                        //         success: function(res) {}
+                        //     })
+                        // }
                     },
                     fail: function(res) {
                         console.log("loginfail")
@@ -210,7 +223,6 @@ App({
             }
         })
     },
-
     //获取本地key登录
     isLogined: function() {
         var that = this;
@@ -229,7 +241,7 @@ App({
                 success: function(res) {
                     console.log("isLogined.res.data");
                     console.log(res.data);
-                    that.globalData.userInfo = res.data;
+					that.globalData.userInfo = res.data;
                 }
             })
             return 1;

@@ -1,9 +1,9 @@
 {
     "pages": [
-		"pages/coupon/coupon",
 		"pages/index/index",
-        "pages/order-submit/order-submit",
+		"pages/coupon/coupon",
         "pages/address/address",
+        "pages/order-submit/order-submit",
         "pages/edtiAddress/edtiAddress",
 		"pages/menu/menu",
         "pages/stores/stores",

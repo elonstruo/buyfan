@@ -49,6 +49,7 @@ page {
 	
 }
 .details .item .box {
+	position: relative;
 	width: 692rpx;
 	padding: 0 20rpx;
 	box-sizing: border-box;
@@ -57,18 +58,40 @@ page {
 	border-bottom: 1rpx solid #dddddd;	
 	font-size: 30rpx;
 }
+.tag {
+	transform: rotate(15deg);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	right: 220rpx;
+	top: 60rpx;
+	width: 200rpx;
+	height: 82rpx;
+	text-align: center;
+	box-sizing: border-box;
+	border: 1rpx solid #e8e8e8;
+}
+.tag view {
+	box-sizing: border-box;
+	width: 188rpx;
+	line-height: 68rpx;
+	border: 1rpx dashed #e8e8e8;
+	font-size: 46rpx;
+	color: #e8e8e8;
+}
 .details .item .box .top {
 	height: 100rpx;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	border-bottom: 1rpx solid #EEEEEE;
+	/* border-bottom: 1rpx solid #EEEEEE; */
 	color: #FF6816;
 }
 .details .item .box .top .right {
 	font-size: 56rpx;
 }
-.details .item .box .top text {
+.details .item .box .top .text {
 	font-size: 30rpx;
 }
 .details .item .box .bottom {

@@ -85,26 +85,23 @@ Page({
         // 商家分店
         if (app.globalData.storesData) {
             var storesData = app.globalData.storesData
-
             var storestring = JSON.stringify(storesData);
             that.setData({
                 storestring: storestring,
                 storesData: storesData
             })
         }
-        var storeId = options.id;
-        for (var i = 0; i < storesData.length; i++) {
-            if (storesData[i].id == storeId) {
-                var stores = storesData[i]
-            }
-        }
+		if (options.id) {
+			var storeId = options.id;
+			that.showStore(storeId)
+		}
         // console.log("stores = storesData[i]")
         // console.log(stores)
-        that.setData({
-            stores: stores,
-            shopLatitude: stores.shopLocal.latitude,
-            shopLongitude: stores.shopLocal.longitude
-        })
+        // that.setData({
+        //     stores: stores,
+        //     shopLatitude: stores.shopLocal.latitude,
+        //     shopLongitude: stores.shopLocal.longitude
+        // })
         // 所有商品
         wx.request({
             url: 'https://app.jywxkj.com/shop/baifen/request/goodsmanage.php',
@@ -116,17 +113,35 @@ Page({
             },
             method: 'POST',
             success: function(res) {
-
-                var goods = res.data.data;
-                that.setData({
-                    goods: res.data.data,
-                })
+				// if (res.request == "ok") {
+					var goods = res.data.data;
+					that.setData({
+						goods: res.data.data,
+					})
+				// }
 
             },
-            fail: function(res) {},
+            fail: function(res) {
+				app.showBox("网络出错！")
+			},
             complete: function(res) {},
         })
     },
+	// 传入分店id显示分店
+	showStore: function (storeId) {
+		var that = this;
+		var storesData = that.data.storesData;
+		for (var i = 0; i < storesData.length; i++) {
+			if (storesData[i].id == storeId) {
+				that.setData({
+					storeId: storeId,
+					shopName: storesData[i].shopName,
+					shopLatitude: storesData[i].shopLocal.latitude,
+					shopLongitude: storesData[i].shopLocal.longitude,
+				})
+			}
+		}
+	},
     //切换分店
     changeshop: function() {
         var that = this;
@@ -553,6 +568,11 @@ Page({
      */
     onShow: function() {
         var that = this;
+		// 获取选择店铺
+		var storeId = wx.getStorageSync('menuStoreId');
+		if (storeId) {
+			that.showStore(storeId)
+		}
         // 实例化API核心类
         var demo = new QQMapWX({
             key: app.globalData.locationKey // 必填
@@ -565,8 +585,8 @@ Page({
                 longitude: that.data.shopLongitude
             }],
             success: function(res) {
-                // console.log("demo.calculateDistance");
-                // console.log(res);
+                console.log("demo.calculateDistance");
+                console.log(res);
                 var distance = app.commafy(res.result.elements[0].distance);
                 that.setData({
                     distance: distance

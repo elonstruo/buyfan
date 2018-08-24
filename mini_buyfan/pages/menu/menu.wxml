@@ -8,11 +8,11 @@
         <!-- </view> -->
         <view class='sign-info'>
             <view class='sign-ln'>
-                <view class='name'>{{stores.shopName}}</view>|
+                <view class='name'>{{shopName}}</view>|
                 <view class='km'>{{distance}}km</view>|
                 <view class='time'>19分钟</view>
             </view>
-            <view class='mimo'>公告：{{stores.shopIntro}}</view>
+            <view class='mimo'>公告：{{shopIntro}}</view>
             <view class=''>近期售出1323份</view>
         </view>
     </view>
