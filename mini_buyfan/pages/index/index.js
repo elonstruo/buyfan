@@ -5,9 +5,6 @@ var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js');
 var qqmapsdk;
 Page({
     data: {
-        userInfo: {},
-        hasUserInfo: false,
-        canIUse: wx.canIUse('button.open-type.getUserInfo'),
 		indicatorDots: true,
 		swiperCurrent: 0,
 		selectCurrent: 0,
@@ -37,17 +34,23 @@ Page({
 	},
     onLoad: function() {
 		var that = this;
-		
 		// banner
 		if (app.globalData.actionData) {
-			// console.log("index.app.globalData.actionData")
-			// console.log(app.globalData.actionData)
 			var appSlideshow = app.globalData.actionData.appSlideshow
 			var orderway = app.globalData.actionData.orderway
 			that.setData({
 				appSlideshow: appSlideshow,
 			})
+		} else {
+			app.actionDataCallback = res => {
+				var appSlideshow = app.globalData.actionData.appSlideshow
+				var orderway = app.globalData.actionData.orderway
+				that.setData({
+					appSlideshow: appSlideshow,
+				})
+			}
 		}
+
 		// location
 		if (app.globalData.locationData) {
 			// console.log("index.app.globalData.locationData")
@@ -57,7 +60,9 @@ Page({
 				street: locationData.result.address_component.street
 			})
 		} else {
-			street: "加载中……"
+			that.setData({
+				street: "定位中"
+			})
 			
 		}
 

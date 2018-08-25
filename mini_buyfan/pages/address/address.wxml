@@ -17,10 +17,10 @@
                     <view class='number'>{{item.tel}}</view>
                 </view>
             </view>
-            <view class='right' data-index="{{index}}" bindtap='edtiAddress'>
+            <view class='right' data-index="{{index}}" bindtap='edtiAddress' style="display:{{isAddress ? 'none' : 'flex'}};">
                 <image class='icon-edti' src='../../images/diex@2x.png'></image>
             </view>
-            <view class='right'>
+            <view class='right' style="display:{{isAddress ? 'none' : 'flex'}};">
                 <image bindtap='deleteAddress' class='icon-edti' src='../../images/icon-delete.png'></image>
             </view>
         </view>

@@ -2,12 +2,12 @@
     "pages": [
 		"pages/index/index",
 		"pages/coupon/coupon",
+        "pages/user/user",
         "pages/address/address",
         "pages/order-submit/order-submit",
         "pages/edtiAddress/edtiAddress",
 		"pages/menu/menu",
         "pages/stores/stores",
-        "pages/user/user",
         "pages/vip/vip",
         "pages/appraise/appraise",
         "pages/takeOut/takeOut",

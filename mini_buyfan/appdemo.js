@@ -66,6 +66,73 @@ App({
 			complete: function (res) { },
 		})
 	},
+	getUserInfo: function (cb) {
+		var that = this
+		if (this.globalData.userInfor) {
+			typeof cb == "function" && cb(this.globalData.userInfor)
+		} else {
+			wx.showLoading({
+				title: '登陆中',
+				mask: true,
+			})
+			wx.getStorage({
+				key: 'key',
+				success: function (res) {
+					var key = res.data;
+					wx.request({
+						url: 'https://app.jywxkj.com/shop/baifen/request/usermanage.php',
+						data: { action: 'xcxshow', key: key },
+						header: { 'content-type': 'application/x-www-form-urlencoded' },
+						method: 'POST',
+						dataType: 'json',
+						success: function (res) {
+							console.log(res.data)
+							if (res.data.request == 'fail') {
+								that.getuserdata(function (newdata) {
+									wx.hideLoading()
+									if (newdata.request == 'ok') {
+										that.globalData.userInfor = newdata.data;
+										typeof cb == "function" && cb(that.globalData.userInfor);
+										if (newdata.data.skey != key) {
+											wx.setStorage({
+												key: 'key',
+												data: newdata.data.skey,
+											})
+										}
+									}
+								})
+							} else {
+								wx.hideLoading()
+								if (res.data.request == 'ok') {
+									that.globalData.userInfor = res.data.data;
+									typeof cb == "function" && cb(that.globalData.userInfor);
+									if (res.data.data.skey != key) {
+										wx.setStorage({
+											key: 'key',
+											data: res.data.data.skey,
+										})
+									}
+								}
+							}
+						},
+					})
+				},
+				fail: function () {
+					that.getuserdata(function (newdata) {
+						wx.hideLoading()
+						if (newdata.request == 'ok') {
+							that.globalData.userInfor = newdata.data;
+							typeof cb == "function" && cb(that.globalData.userInfor)
+							wx.setStorage({
+								key: 'key',
+								data: newdata.data.skey,
+							})
+						}
+					})
+				}
+			})
+		}
+	},
 	// 登录
 	has_login: function () {
 		var that = this;

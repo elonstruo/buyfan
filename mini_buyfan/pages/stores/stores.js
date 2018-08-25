@@ -35,23 +35,10 @@ Page({
 	chooseStore: function (e) {
         var that = this;
 		var id = e.currentTarget.dataset.id
-        // if (that.data.ordersubmit == "true") {
 			wx.navigateBack({
 				delta: 1,
 			})
-			// wx.setStorageSync("orderStoreId", id)
-            // wx.redirectTo({
-            //     url: '../../pages/order-submit/order-submit?orderway=' + that.data.orderway + '&storeId=' + id,
-            // })
-        // } else {
-			// wx.navigateBack({
-			// 	delta: 1,
-			// })
 			wx.setStorageSync("menuStoreId", id)
-			// wx.redirectTo({
-            //     url: '../menu/menu?id=' + id + '&orderway=' + that.data.orderway
-            // })
-        // }
         
 	},
     /**

@@ -75,4 +75,4 @@
         <view class='title'>配送时间：{{appRunTime}}</view>
     </view>
 </view>
-<button class='getUserInfo' open-type='getUserInfo'>重新授权</button>
+<button class='getUserInfo' wx:if="{{hasUserInfo}}" open-type='getUserInfo' bindgetuserinfo="getUserInfo">重新授权</button>

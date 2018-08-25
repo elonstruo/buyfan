@@ -6,6 +6,7 @@ Page({
      * 页面的初始数据
      */
     data: {
+		hasUserInfo: false
 
     },
 
@@ -23,6 +24,8 @@ Page({
 			var coupons = app.globalData.userInfo.data.coupons;
 			if (coupons == null) {
 				coupons = 0
+			} else {
+				coupons = coupons.length
 			}
 			var money = app.globalData.userInfo.data.money;
 			var integral = app.globalData.userInfo.data.integral;
@@ -34,36 +37,8 @@ Page({
 				money: money,
 				integral: integral,
 			})
-		} else if (that.data.canIUse) {
-			var avatarUrl = app.globalData.userInfo.data.avatarUrl;
-			var nickName = app.globalData.userInfo.data.nickName;
-			// 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-			// 所以此处加入 callback 以防止这种情况
-			app.userInfoReadyCallback = res => {
-				console.log('userInfoReadyCallback.res')
-				console.log(res)
-				that.setData({
-					userInfo: res.userInfo,
-					userInfo: app.globalData.userInfo,
-					avatarUrl: avatarUrl,
-				})
-			}
 		} else {
-			// 在没有 open-type=getUserInfo 版本的兼容处理
-			wx.getUserInfo({
-				success: res => {
-					console.log('在没有 open-type=getUserInfo 版本的兼容处理res')
-					console.log(res)
-					app.globalData.userInfo = res.userInfo;
-					var avatarUrl = app.globalData.userInfo.avatarUrl;
-					var nickName = app.globalData.userInfo.nickName;
-					that.setData({
-						userInfo: res.userInfo,
-						userInfo: app.globalData.userInfo,
-						avatarUrl: avatarUrl,
-					})
-				}
-			})
+			hasUserInfo: true
 		}
 		// actionData
 		if (app.globalData.actionData) {
@@ -79,6 +54,7 @@ Page({
     },
     getUserInfo: function(e) {
         console.log(e)
+		app.has_login()
         app.globalData.userInfo = e.detail.userInfo
         this.setData({
             userInfo: e.detail.userInfo,

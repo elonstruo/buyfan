@@ -8,6 +8,7 @@ Page({
     data: {
 		isAddress: false,
 		toAddress: true,
+		isAddress: true,
     },
 
     /**

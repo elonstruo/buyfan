@@ -321,11 +321,6 @@ page {
     height: 90rpx;
 }
 
-.scroll-view_H {
-    white-space: nowrap;
-	display: flex;
-}
-
 .page-section-spacing {
     padding-top: 20rpx;
     padding-bottom: 42rpx;
@@ -348,7 +343,13 @@ page {
     height: 150rpx;
 }
 
-.scroll-view-item_H.on, .scroll-view-item_H.on image {
+.scroll-view_H {
+    white-space: nowrap;
+	display: flex;
+}
+
+.scroll-view_H.on .scroll-view-item_H, 
+.scroll-view_H.on .scroll-view-item_H image {
     display: block;
     margin: 0 auto;
     /* width: 690rpx;

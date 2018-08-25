@@ -71,62 +71,84 @@ Page({
 			that.amount();
 		}
         // 分类赋值
-        if (app.globalData.actionData) {
-            var actionData = app.globalData.actionData
-            var appLogo = app.globalData.actionData.appLogo
-            that.setData({
-                type_sort: actionData.appClass,
-                categoryGoodsclass: actionData.appClass[0],
-                // mesuScrollHeight: app.screenHeight - signH - tabbarH - food_row_height,
-                mesuScrollHeight: app.screenHeight - signH - tabbarH,
-                appLogo: appLogo
-            })
-        }
+		if (app.globalData.actionData) {
+			var actionData = app.globalData.actionData
+			var appLogo = app.globalData.actionData.appLogo
+			that.setData({
+				type_sort: actionData.appClass,
+				categoryGoodsclass: actionData.appClass[0],
+				// mesuScrollHeight: app.screenHeight - signH - tabbarH - food_row_height,
+				mesuScrollHeight: app.screenHeight - signH - tabbarH,
+				appLogo: appLogo
+			})
+		} else {
+			app.actionDataCallback = res => {
+				var actionData = app.globalData.actionData
+				var appLogo = app.globalData.actionData.appLogo
+				that.setData({
+					type_sort: actionData.appClass,
+					categoryGoodsclass: actionData.appClass[0],
+					// mesuScrollHeight: app.screenHeight - signH - tabbarH - food_row_height,
+					mesuScrollHeight: app.screenHeight - signH - tabbarH,
+					appLogo: appLogo
+				})
+			}
+		}
         // 商家分店
-        if (app.globalData.storesData) {
-            var storesData = app.globalData.storesData
-            var storestring = JSON.stringify(storesData);
-            that.setData({
-                storestring: storestring,
-                storesData: storesData
-            })
-        }
+		if (app.globalData.storesData) {
+			var storesData = app.globalData.storesData
+			var storestring = JSON.stringify(storesData);
+			that.setData({
+				storestring: storestring,
+				storesData: storesData
+			})
+		} else {
+			app.storesDataCallback = res => {
+				var storesData = app.globalData.storesData
+				var storestring = JSON.stringify(storesData);
+				that.setData({
+					storestring: storestring,
+					storesData: storesData
+				})
+			}
+		}
+		// 商店id
 		if (options.id) {
 			var storeId = options.id;
 			that.showStore(storeId)
 		}
-        // console.log("stores = storesData[i]")
-        // console.log(stores)
-        // that.setData({
-        //     stores: stores,
-        //     shopLatitude: stores.shopLocal.latitude,
-        //     shopLongitude: stores.shopLocal.longitude
-        // })
-        // 所有商品
-        wx.request({
-            url: 'https://app.jywxkj.com/shop/baifen/request/goodsmanage.php',
-            data: {
-                action: "xcxgoodsshow"
-            },
-            header: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            method: 'POST',
-            success: function(res) {
-				// if (res.request == "ok") {
-					var goods = res.data.data;
-					that.setData({
-						goods: res.data.data,
-					})
-				// }
-
-            },
-            fail: function(res) {
+		// 所有商品
+		that.getGoods()
+    },
+	// 所有商品
+	getGoods: function () {
+		var that = this;
+		wx.showLoading({
+			title: '菜单加载中…',
+			mask: true,
+		})
+		wx.request({
+			url: 'https://app.jywxkj.com/shop/baifen/request/goodsmanage.php',
+			data: {
+				action: "xcxgoodsshow"
+			},
+			header: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			method: 'POST',
+			success: function (res) {
+				var goods = res.data.data;
+				that.setData({
+					goods: res.data.data,
+				})
+				wx.hideLoading()
+			},
+			fail: function (res) {
 				app.showBox("网络出错！")
 			},
-            complete: function(res) {},
-        })
-    },
+			complete: function (res) { },
+		})
+	},
 	// 传入分店id显示分店
 	showStore: function (storeId) {
 		var that = this;

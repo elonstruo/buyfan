@@ -197,8 +197,8 @@
                 </view>
                 <view class='stores-img'>
                     <view class="page-section-spacing">
-                        <scroll-view class="scroll-view_H" scroll-x="true" bindscroll="scroll" style="width: 100%">
-                            <view wx:key="unique" wx:for="{{item.shopImg}}" data-length="{{item.shopImg.length}}" class='scroll-view-item_H {{item.shopImg.length == 1 ? "on" :"" }}'>
+                        <scroll-view class='scroll-view_H {{item.shopImg.length == 1 ? "on" :"" }}' scroll-x="true" bindscroll="scroll" style="width: 100%" data-length="{{item.shopImg.length}}">
+                            <view wx:key="unique" wx:for="{{item.shopImg}}" class='scroll-view-item_H'>
                                 <image class='store-img' mode="aspectFill" bindtap='previewImage' src='{{item}}'></image>
                             </view>
                         </scroll-view>
