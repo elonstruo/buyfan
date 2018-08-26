@@ -6,9 +6,9 @@ Page({
      * 页面的初始数据
      */
     data: {
-		isAddress: false,
+		// isAddress: false,
 		toAddress: true,
-		isAddress: true,
+		isAddress: false,
     },
 
     /**
@@ -22,7 +22,8 @@ Page({
             that.setData({
 				ordersubmit: options.ordersubmit,
                 orderway: options.orderway,
-				storeId: options.storeId
+				storeId: options.storeId,
+				isAddress: true,
             })
         }
 		// 地址内容
@@ -40,7 +41,7 @@ Page({
 			// var openid = app.globalData.userInfo.data.openid;
 			that.setData({
 				userInfor: userInfor,
-				skey: skey
+				skey: skey,
 				// uid: uid,
 				// openid: openid
 			})

@@ -109,6 +109,7 @@ page {
     width: 80rpx;
     height: 48rpx;
     margin: 0 20rpx;
+	text-align: center;
     border: 1rpx solid rgba(204, 204, 204, 1);
 }
 

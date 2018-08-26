@@ -12,10 +12,10 @@
             <view class='top'>
                 <radio-group class="radio-group" bindchange="radioChange">
                     <label class="radio">
-                        <radio name="goStore" value="way" checked="" />到店
+                        <radio name="goStore" value="shopself" checked="checked" />到店
                     </label>
                     <label class="radio">
-                        <radio name="pickUp" value="way" checked="" />自提
+                        <radio name="pickUp" value="outself" checked="" />自提
                     </label>
                 </radio-group>
             </view>

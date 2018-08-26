@@ -235,13 +235,35 @@ App({
                 success: function(res) {
                     console.log("isLogined.res.data");
                     console.log(res.data);
-					that.globalData.userInfo = res.data;
-                }
+					if (res.data.request == "fail") {
+						wx.showModal({
+							title: '授权过期',
+							content: '请重新授权',
+							showCancel: true,
+							confirmText: '授权',
+							confirmColor: '#333',
+							success: function (res) {
+								if (res.confirm) {
+									that.has_login()
+								}
+							},
+							fail: function(res) {},
+							complete: function(res) {},
+						})
+					} else {
+						that.globalData.userInfo = res.data;
+					}
+                },
             })
         } else {
 			that.has_login()
         }
-    },
+	},
+	getUserInfo: function (e) {
+		var that = this;
+		// 登录
+		that.commomLogin()
+	},
     //js数字千分符处理
     commafy: function (num) {
         num = num + "";
@@ -283,10 +305,6 @@ App({
                         success: function(res) {
                             console.log("res")
                             console.log(res)
-                            // var paySuccess = true;
-                            // console.log("[paySuccess]")
-                            // console.log(paySuccess)
-                            // return paySuccess
                             wx.showToast({
                                 title: '支付成功',
                                 icon: 'none',

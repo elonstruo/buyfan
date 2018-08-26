@@ -37,8 +37,6 @@ Page({
 				money: money,
 				integral: integral,
 			})
-		} else {
-			hasUserInfo: true
 		}
 		// actionData
 		if (app.globalData.actionData) {
