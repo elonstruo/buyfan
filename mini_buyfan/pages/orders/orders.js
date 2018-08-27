@@ -5,22 +5,54 @@ Page({
      * 页面的初始数据
      */
     data: {
-		activeId: 0
+        activeId: 0
     },
-	orderTab: function (e) {
-		console.log(e)
-		var that = this;
-		that.setData({
-			activeId: e.currentTarget.dataset.id
-		})
-	},
+    orderTab: function(e) {
+        console.log(e)
+        var that = this;
+        that.setData({
+            activeId: e.currentTarget.dataset.id
+        })
+    },
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function(options) {
 
+		var that = this;
+		that.myOrder()
     },
 
+	// 个人订单
+	myOrder: function () {
+		var that = this;
+		wx.getStorage({
+			key: 'key',
+			success: function (res) {
+				var key = res.data
+				wx.request({
+					url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
+					data: {
+						action: 'userordershows',
+						key: key
+					},
+					header: { 'Content-Type': 'application/x-www-form-urlencoded' },
+					method: 'post',
+					dataType: 'json',
+					success: function (res) {
+						console.log("myOrder.res")
+						console.log(res)
+					},
+					fail: function (res) {
+						console.log(res)
+					},
+					complete: function (res) { },
+				})
+			},
+			fail: function (res) { },
+			complete: function (res) { },
+		})
+	},
     /**
      * 生命周期函数--监听页面初次渲染完成
      */

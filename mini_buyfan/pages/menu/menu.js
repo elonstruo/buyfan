@@ -18,6 +18,7 @@ Page({
      * 页面的初始数据
      */
 	data: {
+		page: 0,
 		cart: {},
 		detailsArr: [],
         itemIndex0: 0,
@@ -64,11 +65,21 @@ Page({
             orderway: options.orderway,
             storeId: options.id
         })
+		// 获取购物车
 		if (app.globalData.cartObjectsStorage) {
 			that.setData({
 				cartObjects: app.globalData.cartObjectsStorage
 			})
 			that.amount();
+		} 
+		// 个人信息
+		if (app.globalData.userInfo) {
+			console.log("menu.app.globalData.userInfo")
+			console.log(app.globalData.userInfo)
+			var uid = app.globalData.userInfo.data.uid;
+			that.setData({
+				uid: uid
+			})
 		}
         // 分类赋值
 		if (app.globalData.actionData) {
@@ -205,6 +216,29 @@ Page({
         that.setData({
             selectedId: e.currentTarget.dataset.id
         });
+		if (that.data.selectedId == "2") {
+			wx.request({
+				url: 'https://app.jywxkj.com/shop/baifen/request/commentmanage.php',
+				data: {
+					action: 'xcxshow',
+					page: that.data.page,
+					uid: that.data.uid 
+				},
+				header: { 'Content-Type': 'application/x-www-form-urlencoded'},
+				method: 'post',
+				success: function(res) {
+					if (res.statusCode == "200") {
+						that.setData({
+							comments: res.data.data
+						})
+					}
+					console.log("commentmanage.res")
+					console.log(res)
+				},
+				fail: function(res) {},
+				complete: function(res) {},
+			})
+		}
     },
     // 评价：最新/最热
     appraisesClick: function(e) {
@@ -279,8 +313,6 @@ Page({
 				cart: cart
 			})
             that.amount()
-            console.log("cartObjects")
-			console.log(cartObjects)
 			wx.setStorage({
 				key: 'cartObjectsStorage',
 				data: cartObjects,
@@ -561,9 +593,13 @@ Page({
     // 清空购物车
     deleteCart: function () {
         var that = this;
+		var cartObjects = [];
+		wx.setStorageSync('cartObjectsStorage', cartObjects)
         that.setData({
-            cartObjects: []
-        })
+			cartObjects: cartObjects,
+			amount: "0.00",
+			num: ""
+		});
     },
     amount: function(cartObjects) {
         var that = this;
@@ -589,7 +625,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function() {
-        var that = this;
+		var that = this;
 		// 获取选择店铺
 		var storeId = wx.getStorageSync('menuStoreId');
 		if (storeId) {
@@ -607,8 +643,8 @@ Page({
                 longitude: that.data.shopLongitude
             }],
             success: function(res) {
-                console.log("demo.calculateDistance");
-                console.log(res);
+                // console.log("demo.calculateDistance");
+                // console.log(res);
                 var distance = app.commafy(res.result.elements[0].distance);
                 that.setData({
                     distance: distance

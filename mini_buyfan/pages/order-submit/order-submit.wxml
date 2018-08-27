@@ -55,7 +55,7 @@
             </view>
             <view class='bottom'>
                 <view class='left'>
-                    <image class='icon-now' src='../../images/time@2x.png'></image>立即送出
+                    <image class='icon-now' src='../../images/time@2x.png'></image>立即送出（预计{{deliveryTime}}送达）
                 </view>
                 <image class='icon-arrow' src='../../images/in@2x.png'></image>
             </view>
@@ -86,7 +86,7 @@
         </view>
         <view class='tips'>
             <text>备注</text>
-            <input name="tips" placeholder='口味·偏好要求' class='tips-title'></input>
+            <input name="tips" bindinput='remark' placeholder='口味·偏好要求' class='tips-title'></input>
         </view>
         <view class='addall'>
             小计
@@ -100,6 +100,6 @@
         </checkbox-group>
     </view>
 </view>
-<view class='payButton'>微信支付
+<view class='payButton' bindtap='orderSubmit'>微信支付
     <text>¥{{allAmount}}</text>
 </view>

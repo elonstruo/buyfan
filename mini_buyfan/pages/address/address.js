@@ -45,7 +45,6 @@ Page({
 				// uid: uid,
 				// openid: openid
 			})
-
 		}
     },
     //回到订单支付页面
