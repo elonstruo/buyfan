@@ -39,8 +39,8 @@ Page({
 		var uid;
 		// var skey;
 		if (app.globalData.userInfo) {
-			console.log("coupon.app.globalData.userInfo")
-			console.log(app.globalData.userInfo.data)
+			// console.log("coupon.app.globalData.userInfo")
+			// console.log(app.globalData.userInfo.data)
 			uid = app.globalData.userInfo.data.uid
 			// skey = app.globalData.userInfo.data.skey
 			that.setData({
@@ -51,7 +51,7 @@ Page({
 		// 商家优惠券信息
 		that.storeCoupon()
 		// wx.createSelectorQuery().select('.none').boundingClientRect(function (rect) {
-		// 	console.log(rect.height)
+			// console.log(rect.height)
 		// 	that.setData({
 		// 		noneHeight: rect.height - 80
 		// 	})
@@ -71,13 +71,48 @@ Page({
 			},
 			method: 'post',
 			success: function (res) {
-				console.log("用户优惠券信息")
-				console.log(res)
+				// console.log("用户优惠券信息")
+				// console.log(res)
+				var activeCategoryId = that.data.activeCategoryId;
+				var canUse = [];
+				var used = [];
+				var cantUse = [];
 				if (res.data.request == "ok") {
 					var coupon = res.data.data
-					that.setData({
-						coupon: coupon
-					})
+					for (var i = 0; i < coupon.length; i++) {
+						if (coupon[i].usable == "0") {
+							canUse.push(coupon[i])
+						} else if (coupon[i].usable == "1") {
+							used.push(coupon[i])
+						} else if (coupon[i].usable == "2") {
+							cantUse.push(coupon[i])
+						} 
+					}
+					if (activeCategoryId == 0) {
+						that.setData({
+							coupon: coupon
+						})
+						// console.log("activeCategoryId == 0")
+						// console.log(coupon)
+					} else if (activeCategoryId == 1) {
+						that.setData({
+							coupon: canUse
+						})
+						// console.log("activeCategoryId == 1")
+						// console.log(coupon)
+					} else if (activeCategoryId == 2) {
+						that.setData({
+							coupon: used
+						})
+						// console.log("activeCategoryId == 2")
+						// console.log(coupon)
+					} else if (activeCategoryId == 3) {
+						that.setData({
+							coupon: cantUse
+						})
+						// console.log("activeCategoryId == 3")
+						// console.log(coupon)
+					}
 				} else {
 					app.showBox("网络出错")
 				}
@@ -100,14 +135,16 @@ Page({
 			},
 			method: 'post',
 			success: function (res) {
-				console.log("商家优惠券信息显示")
-				console.log(res.data.data)
+				var activeCategoryId = that.data.activeCategoryId
+				// console.log("商家优惠券信息显示")
+				// console.log(res.data.data)
 				if (res.data.request == "ok") {
 					var coupon = res.data.data
-					// for
-					that.setData({
-						coupon: coupon
-					})
+					if (activeCategoryId == 0) {
+						that.setData({
+							coupon: coupon
+						})
+					}
 				} else {
 					app.showBox("网络出错")
 				}
@@ -134,7 +171,7 @@ Page({
 			method: 'post',
 			success: function(res) {
 				console.log("getcouponres")
-				console.log(res)
+				// console.log(res)
 				if (res.request == "ok") {
 					that.setData({
 						gotText:"已领取"

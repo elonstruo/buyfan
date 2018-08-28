@@ -5,6 +5,12 @@
     </view>
 </view>
 <view class='details'>
+    <view wx:if="{{!coupon.length}}" class='none'>
+		<view>
+        	<image class='icon-none' src='../../images/paper@2x.png'></image>
+        	<view>还没有相关优惠卷</view>
+		</view>
+    </view>
     <view class='item' wx:key="index" wx:for="{{coupon}}">
 		<view class='border-img-box border-img-left'></view>
 		<view class='box'>

@@ -200,7 +200,7 @@ App({
                             that.globalData.userInfo = res.data;
 							wx.setStorageSync('key', res.data.data.skey);
 						} else {
-							that.has_login()
+							// that.has_login()
                             // wx.showModal({
                             //     title: '提示',
                             //     content: '登录失败',

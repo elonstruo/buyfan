@@ -1,19 +1,7 @@
 <!--pages/orders/orders.wxml-->
 <view class='order-tab'>
-    <view data-id="0" class='item {{activeId == 0 ? "on" : "" }}' bindtap='orderTab'>
-        <text>全部</text>
-    </view>
-    <view data-id="1" class='item {{activeId == 1 ? "on" : "" }}' bindtap='orderTab'>
-        <text>处理中</text>
-    </view>
-    <view data-id="2" class='item {{activeId == 2 ? "on" : "" }}' bindtap='orderTab'>
-        <text>配送中</text>
-    </view>
-    <view data-id="3" class='item {{activeId == 3 ? "on" : "" }}' bindtap='orderTab'>
-        <text>已完成</text>
-    </view>
-    <view data-id="4" class='item {{activeId == 4 ? "on" : "" }}' bindtap='orderTab'>
-        <text>已退款</text>
+    <view wx:for="{{type_sort}}" data-id="{{index}}" wx:key="index" class="item {{activeId == index ? 'on' : ''}}" bindtap='orderTab'>
+        <text>{{item}}</text>
     </view>
 </view>
 <view class='order-details'>

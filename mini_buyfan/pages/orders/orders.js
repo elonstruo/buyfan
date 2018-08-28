@@ -5,7 +5,8 @@ Page({
      * 页面的初始数据
      */
     data: {
-        activeId: 0
+        activeId: 0,
+		type_sort: ["全部","处理中","配送中","已完成","已退款"],
     },
     orderTab: function(e) {
         console.log(e)
@@ -40,8 +41,56 @@ Page({
 					method: 'post',
 					dataType: 'json',
 					success: function (res) {
+						var activeId = that.data.activeId;
+						var all = [];
+						var dealing = [];
+						var outting = [];
+						var finish = [];
+						var refund = [];
+						if (res.request == "ok") {
+							var orders = res.data.data
+							for (var i = 0; i < coupon.length; i++) {
+								if (coupon[i].orderState == "0") {
+									all.push(coupon[i])
+								} else if (coupon[i].orderState == "1") {
+									dealing.push(coupon[i])
+								} else if (coupon[i].orderState == "2") {
+									outting.push(coupon[i])
+								}
+							}
+							if (activeId == 0) {
+								that.setData({
+									coupon: coupon
+								})
+								// console.log("activeId == 0")
+								// console.log(coupon)
+							} else if (activeId == 1) {
+								that.setData({
+									coupon: all
+								})
+								// console.log("activeId == 1")
+								// console.log(coupon)
+							} else if (activeId == 2) {
+								that.setData({
+									coupon: dealing
+								})
+								// console.log("activeId == 2")
+								// console.log(coupon)
+							} else if (activeId == 3) {
+								that.setData({
+									coupon: outting
+								})
+								// console.log("activeId == 3")
+								// console.log(coupon)
+							}
+						} else {
+							app.showBox("网络出错")
+						}
+						that.setData({
+							orders: res.data.data
+						})
 						console.log("myOrder.res")
-						console.log(res)
+						console.log(that.data.orders)
 					},
 					fail: function (res) {
 						console.log(res)
