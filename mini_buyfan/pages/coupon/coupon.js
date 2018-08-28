@@ -77,7 +77,7 @@ Page({
 				var canUse = [];
 				var used = [];
 				var cantUse = [];
-				if (res.data.request == "ok") {
+                if (res.statusCode == 200) {
 					var coupon = res.data.data
 					for (var i = 0; i < coupon.length; i++) {
 						if (coupon[i].usable == "0") {

@@ -1,4 +1,5 @@
 // pages/orders/orders.js
+const app = getApp()
 Page({
 
     /**
@@ -6,7 +7,7 @@ Page({
      */
     data: {
         activeId: 0,
-		type_sort: ["全部","处理中","配送中","已完成","已退款"],
+		type_sort: ["全部","未支付","配送中","已完成","已退款"],
     },
     orderTab: function(e) {
         console.log(e)
@@ -27,6 +28,10 @@ Page({
 	// 个人订单
 	myOrder: function () {
 		var that = this;
+        wx.showLoading({
+            title: '正在加载',
+            mask: true,
+        })
 		wx.getStorage({
 			key: 'key',
 			success: function (res) {
@@ -47,48 +52,47 @@ Page({
 						var outting = [];
 						var finish = [];
 						var refund = [];
-						if (res.request == "ok") {
-							var orders = res.data.data
-							for (var i = 0; i < coupon.length; i++) {
-								if (coupon[i].orderState == "0") {
-									all.push(coupon[i])
-								} else if (coupon[i].orderState == "1") {
-									dealing.push(coupon[i])
-								} else if (coupon[i].orderState == "2") {
-									outting.push(coupon[i])
+                        if (res.statusCode == 200) {
+							var orders = res.data
+							for (var i = 0; i < orders.length; i++) {
+								if (orders[i].orderState == "0") {
+									all.push(orders[i])
+                                } else if (orders[i].orderState == "unpaid") {
+									dealing.push(orders[i])
+								} else if (orders[i].orderState == "2") {
+									outting.push(orders[i])
 								}
 							}
 							if (activeId == 0) {
 								that.setData({
-									coupon: coupon
+                                    orders: all
 								})
 								// console.log("activeId == 0")
-								// console.log(coupon)
+								// console.log(orders)
 							} else if (activeId == 1) {
 								that.setData({
-									coupon: all
+                                    orders: dealing
 								})
 								// console.log("activeId == 1")
-								// console.log(coupon)
+								// console.log(orders)
 							} else if (activeId == 2) {
 								that.setData({
-									coupon: dealing
+									orders: dealing
 								})
 								// console.log("activeId == 2")
-								// console.log(coupon)
+								// console.log(orders)
 							} else if (activeId == 3) {
 								that.setData({
-									coupon: outting
+									orders: outting
 								})
 								// console.log("activeId == 3")
-								// console.log(coupon)
+								// console.log(orders)
 							}
-						} else {
-							app.showBox("网络出错")
+                            wx.hideLoading()
 						}
-						that.setData({
-							orders: res.data.data
-						})
+						// that.setData({
+						// 	orders: res.data.data
+						// })
 						console.log("myOrder.res")
 						console.log(that.data.orders)
 					},
