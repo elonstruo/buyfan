@@ -18,6 +18,7 @@
 .order-tab .item text {
     display: block;
     padding: 25rpx 0;
+    border-bottom: 4rpx solid transparent;
 }
 
 .order-tab .item.on text {
@@ -47,6 +48,7 @@
 
 .order-details .item .tit .left {
     display: flex;
+	align-items: center;
 }
 
 .goods {
@@ -102,4 +104,13 @@
 .appraise {
 	color: #FF6816;
 	border: 1rpx solid #FF6816;
+}
+.none {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #909090;
+    font-size: 28rpx;
 }

@@ -5,16 +5,38 @@ Page({
     /**
      * 页面的初始数据
      */
-    data: {
+	data: {
+		payfinish: [],
+		delivery: [],
+		finish: [],
+		refund: [],
+		allrefund: [],
+		applyrefund: [],
+		applycancel: [],
+		cancel: [],
+		fail: [],
+		adopt: [],
+		noaccept: [],
+		accept: [],
+		unpaid: [],
+		orderslist: "",
         activeId: 0,
-		type_sort: ["全部","未支付","配送中","已完成","已退款"],
-    },
-    orderTab: function(e) {
-        console.log(e)
-        var that = this;
-        that.setData({
-            activeId: e.currentTarget.dataset.id
-        })
+		type_sort: ["全部", "处理中", "配送中", "已完成", "已退款"],
+		orderRule: {
+			"payfinish": "支付完成。待商家受理", 
+			"delivery": "跑腿配送中", 
+			"finish": "已完成",
+			"refund": "部分退款", 
+			"allrefund": "已退款", 
+			"applyrefund": "申请退款", 
+			"applycancel": "申请取消",
+			"cancel": "已取消", 
+			"fail": "已失败", 
+			"adopt": "跑腿已接单", 
+			"noaccept": "商家未受理", 
+			"accept": "已受理", 
+			"unpaid": "未支付"
+		}
     },
     /**
      * 生命周期函数--监听页面加载
@@ -23,8 +45,42 @@ Page({
 
 		var that = this;
 		that.myOrder()
-    },
-
+	},
+	// tab
+	orderTab: function (e) {
+		var that = this;
+		that.setData({
+			activeId: e.currentTarget.dataset.id
+		})
+		var activeId = that.data.activeId; 
+		if (activeId == 0) {
+			that.setData({
+				orders: that.data.orderslist
+			})
+			console.log("activeId == 0")
+			console.log(orders)
+		} else if (activeId == 1) {
+			var unpaid = that.data.unpaid
+			that.setData({
+				orders: unpaid
+			})
+		} else if (activeId == 2) {
+			var delivery = that.data.delivery
+			that.setData({
+				orders: delivery
+			})
+		} else if (activeId == 3) {
+			var finish = that.data.finish
+			that.setData({
+				orders: finish
+			})
+		} else if (activeId == 4) {
+			var allrefund = that.data.allrefund
+			that.setData({
+				orders: allrefund
+			})
+		}
+	},
 	// 个人订单
 	myOrder: function () {
 		var that = this;
@@ -47,57 +103,55 @@ Page({
 					dataType: 'json',
 					success: function (res) {
 						var activeId = that.data.activeId;
-						var all = [];
-						var dealing = [];
-						var outting = [];
-						var finish = [];
-						var refund = [];
+						var all = that.data.all;
+						var unpaid = that.data.unpaid;
+						var delivery = that.data.delivery;
+						var finish = that.data.finish;
+						var allrefund = that.data.allrefund;
                         if (res.statusCode == 200) {
-							var orders = res.data
-							for (var i = 0; i < orders.length; i++) {
-								if (orders[i].orderState == "0") {
-									all.push(orders[i])
-                                } else if (orders[i].orderState == "unpaid") {
-									dealing.push(orders[i])
-								} else if (orders[i].orderState == "2") {
-									outting.push(orders[i])
-								}
-							}
+							var orderslist = that.data.orderslist;
+							orderslist = res.data.data;
 							if (activeId == 0) {
 								that.setData({
-                                    orders: all
+									orders: orderslist,
+									orderslist: orderslist
 								})
-								// console.log("activeId == 0")
-								// console.log(orders)
-							} else if (activeId == 1) {
-								that.setData({
-                                    orders: dealing
-								})
-								// console.log("activeId == 1")
-								// console.log(orders)
-							} else if (activeId == 2) {
-								that.setData({
-									orders: dealing
-								})
-								// console.log("activeId == 2")
-								// console.log(orders)
-							} else if (activeId == 3) {
-								that.setData({
-									orders: outting
-								})
-								// console.log("activeId == 3")
-								// console.log(orders)
+							}
+							for (var i = 0; i < orderslist.length; i++) {
+								if (orderslist[i].orderState == "unpaid") {
+									unpaid.push(orderslist[i])
+									that.setData({
+										unpaid: unpaid
+									})
+								} else if (orderslist[i].orderState == "delivery") {
+									delivery.push(orderslist[i])
+									that.setData({
+										delivery: delivery
+									})
+								} else if (orderslist[i].orderState == "finish") {
+									finish.push(orderslist[i])
+									that.setData({
+										unpaid: unpaid
+									})
+								} else if (orderslist[i].orderState == "allrefund") {
+									allrefund.push(orderslist[i])
+									that.setData({
+										allrefund: allrefund
+									})
+								}
 							}
                             wx.hideLoading()
 						}
-						// that.setData({
-						// 	orders: res.data.data
-						// })
-						console.log("myOrder.res")
-						console.log(that.data.orders)
 					},
 					fail: function (res) {
 						console.log(res)
+						wx.hideLoading()
+						wx.showToast({
+							title: '网络出错',
+							icon: 'none',
+							duration: 2000,
+							mask: true,
+						})
 					},
 					complete: function (res) { },
 				})

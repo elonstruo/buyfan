@@ -10,18 +10,38 @@
         </view>
         <view class='dine-in'>
             <view class='top'>
-                <radio-group class="radio-group" bindchange="radioChange">
+                <radio-group class="radio-group" bindchange="storeWay">
                     <label class="radio">
-                        <radio name="goStore" value="shopself" checked="checked" />到店
+                        <radio name="goStore" value="0" checked="checked" />到店
                     </label>
                     <label class="radio">
-                        <radio name="pickUp" value="outself" checked="" />自提
+                        <radio name="pickUp" value="2" checked="" />自提
                     </label>
                 </radio-group>
             </view>
-            <view class='bottom'>
+            <view class='bottom' wx:if="{{storeWay == 0}}">
                 选择
-                <input name="desk" class='desk'></input>号桌
+                <input name="desk" bindinput='deskNum' class='desk'></input>号桌
+            </view>
+            <view class='bottom-self' wx:if="{{storeWay == 2}}">
+                <view class='address-form'>
+                    <view class='input-box'>
+                        <view class='title'>联系人：</view>
+                        <input class='name' bindinput='selfName' value='{{username}}' name="username"></input>
+                    </view>
+                    <view class='input-box'>
+                        <view class='title'>手机号：</view>
+                        <input class='name' bindinput='selfTel' value='{{tel}}' name="tel"></input>
+                    </view>
+                    <view class='input-box self-time'>
+                        <picker mode="time" value="{{time}}" start="00:00" end="00:00" bindchange="selfTime">
+                            <view class="picker">
+                                预计自提时间: {{time}} 
+                            </view>
+                        </picker>
+                        <image class='right-arrow' src='../../images/in@2x.png'></image>
+                    </view>
+                </view>
             </view>
         </view>
     </view>

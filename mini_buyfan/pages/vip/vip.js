@@ -17,6 +17,7 @@ Page({
 		var that = this;
 		// 充值内容
 		if (app.globalData.actionData) {
+			console.log("vip.app.globalData.actionData")
 			console.log(app.globalData.actionData)
 			var actionData = app.globalData.actionData;
 			that.setData({
@@ -24,42 +25,80 @@ Page({
 				charge: actionData.member.charge.price,
 				recharge: actionData.member.recharge,
 			})
-		} 
+		} else {
+			app.actionDataCallback = res => {
+				console.log("vip.actionDataCallback.app.globalData.actionData")
+				var actionData = app.globalData.actionData;
+				that.setData({
+					rights: actionData.member.rights,
+					charge: actionData.member.charge.price,
+					recharge: actionData.member.recharge,
+				})
+			}
+		}
 		
 		if (app.globalData.userInfo) {
 			console.log("user.app.globalData.userInfo")
 			console.log(app.globalData.userInfo)
 			var member = app.globalData.userInfo.data.member;
+			var key = app.globalData.userInfo.data.skey;
 			that.setData({
 				member: member,
-			})
-		} else if (that.data.canIUse) {
-			var member = app.globalData.userInfo.data.member;
-			// 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-			// 所以此处加入 callback 以防止这种情况
-			app.userInfoReadyCallback = res => {
-				console.log('userInfoReadyCallback.res')
-				console.log(res)
-				that.setData({
-					member: member,
-				})
-			}
-		} else {
-			// 在没有 open-type=getUserInfo 版本的兼容处理
-			wx.getUserInfo({
-				success: res => {
-					console.log('在没有 open-type=getUserInfo 版本的兼容处理res')
-					console.log(res)
-					app.globalData.userInfo = res.userInfo;
-					var member = app.globalData.userInfo.data.member;
-					that.setData({
-						member: member,
-					})
-				}
+				key: key
 			})
 		}
     },
+	// 点击充值按钮
+	topUp: function () {
+		var that = this;
+		var member = that.data.member;
+		if (member == 0) {
+			wx.showToast({
+				title: '请先开通会员',
+				icon: 'none',
+				duration: 2000,
+				mask: true,
+			})
+		} else if (member == 1) {
 
+		}
+	},
+	// 提交订单
+	orderSubmit: function () {
+		var that = this;
+		var out_trade_no = app.timedetail() + '' + app.randomnum();
+		console.log("out_trade_no")
+		console.log(out_trade_no)
+		wx.request({
+			url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
+			data: {
+				action: 'orderadd',
+				key: that.data.key,
+				ordernum: out_trade_no,
+				content: that.data.cartObjectsStorage,
+				userInfor: JSON.stringify(that.data.userInfor),
+				price: parseFloat(that.data.allAmount),
+				remark: that.data.remark,
+				pickState: that.data.pickState,
+				cshopid: parseInt(that.data.storeId),
+				cshopinfor: JSON.stringify(that.data.cshopinfor),
+				distance: parseFloat(that.data.distance)
+			},
+			header: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			method: 'post',
+			dataType: 'json',
+			responseType: 'text',
+			success: function (res) {
+				console.log("orderSubmit.success.res")
+				console.log(res)
+			},
+			fail: function (res) {
+				console.log("orderSubmit.success.res")
+				console.log(res)
+			},
+			complete: function (res) { },
+		})
+	},
     /**
      * 生命周期函数--监听页面初次渲染完成
      */

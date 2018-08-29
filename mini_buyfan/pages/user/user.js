@@ -5,7 +5,28 @@ Page({
     /**
      * 页面的初始数据
      */
-    data: {
+	data: {
+		// 待处理
+		pending: [],
+		// 制作配送中
+		dealing: [],
+		// 已完成
+		odone: [],
+		// 已退款
+		allrefund: [],
+		payfinish: [],
+		delivery: [],
+		finish: [],
+		refund: [],
+		applyrefund: [],
+		applycancel: [],
+		cancel: [],
+		fail: [],
+		adopt: [],
+		noaccept: [],
+		accept: [],
+		unpaid: [],
+		orderslist: "",
 		hasUserInfo: false
 
     },
@@ -49,7 +70,10 @@ Page({
 				appRunTime: appRunTime
 			})
 		}
+		// 个人订单
+		that.myOrder()
     },
+	// 重新授权
     getUserInfo: function(e) {
         console.log(e)
 		app.has_login()
@@ -59,6 +83,7 @@ Page({
             hasUserInfo: true
         })
     },
+	// 收货地址
 	toAddress: function () {
 		wx.navigateTo({
 			url: '../../pages/address/address',
@@ -67,11 +92,97 @@ Page({
 			complete: function(res) {},
 		})
 	},
+	// 打电话
 	call: function () {
 		var that = this;
 		var appContact = that.data.appContact
 		wx.makePhoneCall({
 			phoneNumber: appContact+"" //仅为示例，并非真实的电话号码
+		})
+	},
+	// 个人订单
+	myOrder: function () {
+		var that = this;
+		wx.showLoading({
+			title: '正在加载',
+			mask: true,
+		})
+		wx.getStorage({
+			key: 'key',
+			success: function (res) {
+				var key = res.data
+				wx.request({
+					url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
+					data: {
+						action: 'userordershows',
+						key: key
+					},
+					header: { 'Content-Type': 'application/x-www-form-urlencoded' },
+					method: 'post',
+					dataType: 'json',
+					success: function (res) {
+						var all = that.data.all;
+						var unpaid = that.data.unpaid;
+						var delivery = that.data.delivery;
+						var finish = that.data.finish;
+						var allrefund = that.data.allrefund;
+						var dealing = that.data.dealing;
+						var odone = that.data.odone;
+						var pending = that.data.pending;
+						if (res.statusCode == 200) {
+							var orderslist = that.data.orderslist;
+							orderslist = res.data.data;
+							console.log("个人订单")
+							console.log(orderslist)
+							for (var i = 0; i < orderslist.length; i++) {
+								// 制作配送中
+								if (orderslist[i].orderState == "delivery" || orderslist[i].orderState == "adopt" || orderslist[i].orderState == "accept") {
+									dealing.push(orderslist[i])
+									that.setData({
+										dealing: dealing,
+										dealingLen: dealing.length
+									}) 
+									// 已完成
+								} else if (orderslist[i].orderState == "finish" || orderslist[i].orderState == "cancel" || orderslist[i].orderState == "fail" || orderslist[i].orderState == "noaccept") {
+									odone.push(orderslist[i])
+									that.setData({
+										odone: odone,
+										odoneLen: odone.length
+									})
+									// 待处理
+								} else if (orderslist[i].orderState == "payfinish" || orderslist[i].orderState == "applyrefund" || orderslist[i].orderState == "applycancel" || orderslist[i].orderState == "unpaid") {
+									pending.push(orderslist[i])
+									that.setData({
+										pending: pending,
+										pendingLen: pending.length
+									})
+									// 已退款
+								} else if (orderslist[i].orderState == "refund" || orderslist[i].orderState == "allrefund") {
+									allrefund.push(orderslist[i])
+									that.setData({
+										allrefund: allrefund,
+										allrefundLen: allrefund.length
+									})
+								}
+							}
+							wx.hideLoading()
+						}
+					},
+					fail: function (res) {
+						console.log(res)
+						wx.hideLoading()
+						wx.showToast({
+							title: '网络出错',
+							icon: 'none',
+							duration: 2000,
+							mask: true,
+						})
+					},
+					complete: function (res) { },
+				})
+			},
+			fail: function (res) { },
+			complete: function (res) { },
 		})
 	},
     /**

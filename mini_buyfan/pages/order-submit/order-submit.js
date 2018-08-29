@@ -6,8 +6,11 @@ Page({
      * 页面的初始数据
      */
     data: {
+		userInforSubmit: {},
+		content: {},
 		// 到店下单way
-		shopway: 'shopself'
+		shopway: 'shopself',
+		storeWay: 0
     },
 
     /**
@@ -23,6 +26,7 @@ Page({
 			var key = userInfo.skey;
 			that.setData({
 				userInfo: userInfo,
+				userInfoString: JSON.stringify(userInfo),
 				key: key
 			})
 		}
@@ -32,9 +36,10 @@ Page({
 		})
 		// 判断外卖或堂食
 		if (that.data.orderway == "shopfor") {
+			var storeWay = that.data.storeWay
 			that.setData({
 				shopfor: true,
-				pickState: 0
+				pickState: storeWay
 			})
 		} else {
 			that.setData({
@@ -48,9 +53,13 @@ Page({
 				success: function (res) {
 					if (!res.data) {
 						if (app.globalData.userInfo) {
-							var address = app.globalData.userInfo.data.userInfor[0]
+							var address = app.globalData.userInfo.data.userInfor[0];
+							var addressString = JSON.stringify(address)
+							console.log("orderSubmitaddress")
+							console.log(address)
 							that.setData({
 								address: address,
+								addressString: addressString,
 								addressLat: address.latitude,
 								addressLon: address.longitude,
 							})
@@ -184,8 +193,39 @@ Page({
 		})
 	},
 	// 到店下单way
-	radioChange: function (e) {
-		console.log('radio发生change事件，携带value值为：', e.detail.value)
+	storeWay: function (e) {
+		var that = this;
+		that.setData({
+			storeWay: e.detail.value,
+			pickState: e.detail.value,
+		})
+	},
+	// 到店桌号
+	deskNum: function (e) {
+		var that = this;
+		that.setData({
+			desk: e.detail.value,
+		})
+	},
+	// 自提姓名
+	selfName: function (e) {
+		var that = this;
+		that.setData({
+			username: e.detail.value,
+		})
+	},
+	// 自提联系方式
+	selfTel: function (e) {
+		var that = this;
+		that.setData({
+			tel: e.detail.value,
+		})
+	},
+	// 自提时间
+	selfTime: function (e) {
+		this.setData({
+			ztTime: e.detail.value
+		})
 	},
 	// 传入分店id显示分店
 	showStore: function (storeId) {
@@ -220,10 +260,15 @@ Page({
     // 支付总额
     allAmount: function() {
         var that = this;
+		var amount = +that.data.amount;
         var tisuPrice = +that.data.tisuPrice;
 		var distancePrice = +that.data.distancePrice;
         var allAmount = that.data.amount;
-		allAmount = tisuPrice + distancePrice;
+		if (that.data.orderway == "shopfor") {
+			allAmount = tisuPrice + amount;
+		} else {
+			allAmount = tisuPrice + distancePrice + amount;
+		}
         that.setData({
             allAmount: allAmount
 		})
@@ -264,55 +309,72 @@ Page({
             that.allAmount()
         }
 	}, 
-	// 生成订单日期
-	timedetail: function () {
-		var timestamp = Date.parse(new Date());
-		timestamp = timestamp / 1000;
-		var n = timestamp * 1000;
-		var date = new Date(n);
-		var Y = date.getFullYear();
-		var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
-		var D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
-		var h = date.getHours();
-		var m = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();;
-		var s = date.getSeconds();
-		return Y + '' + M + '' + D + '' + h + '' + m + '' + s
-	},
-	// 生成订单流水号
-	randomnum: function () {
-		var chars = '1234567890';
-		var maxPos = chars.length;
-		var pwd = '';
-		for (var i = 0; i < 4; i++) {
-			pwd += chars.charAt(Math.floor(Math.random() * maxPos));
-		}
-		return pwd;
-	},
+	// 订单备注
 	remark: function (e) {
+		var that = this;
 		that.setData({
-			remark: e.detail.value
+			remarkText: e.detail.value
 		})
 	},
 	// 提交订单
 	orderSubmit: function () {
 		var that = this;
-		var out_trade_no = that.timedetail() + '' + that.randomnum();
-		console.log("out_trade_no")
-		console.log(out_trade_no)
+		var out_trade_no = app.timedetail() + '' + app.randomnum();
+		var allAmount = that.data.allAmount;
+		var cartObjectsStorage = that.data.cartObjectsStorage;
+		var addressString = that.data.addressString;
+		var address = that.data.address;
+		var pickState = that.data.pickState;
+		// if ()
+		// var Attach = [
+		// 		{
+		// 		name: "餐巾纸",
+		// 	}, {
+		// 		num: 1,
+		// 	}, {
+		// 		price: allAmount
+		// 	}
+		// ]
+		var userInforSubmit = that.data.userInforSubmit;
+		userInforSubmit.username = that.data.address.username
+		userInforSubmit.tel = that.data.address.tel
+		userInforSubmit.adr = that.data.address.adr
+		userInforSubmit.latitude = that.data.address.latitude
+		userInforSubmit.longitude = that.data.address.longitude
+		userInforSubmit.desk = that.data.desk
+		var content = that.data.content;
+		content.shopcar = that.data.cartObjects
+		console.log("content")
+		console.log(content)
+		console.log("userInforSubmit")
+		console.log(userInforSubmit)
+		content = JSON.stringify(content)
+		userInforSubmit = JSON.stringify(userInforSubmit)
+		console.log("content")
+		console.log(content)
+		console.log("userInforSubmit")
+		console.log(userInforSubmit)
+		console.log("that.data.pickState");
+		console.log(that.data.pickState);
+		console.log("parseInt(that.data.storeId");
+		console.log(parseInt(that.data.storeId));
+		console.log("that.data.cshopinfor");
+		console.log(that.data.cshopinfor);
 		wx.request({
 			url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
 			data: {
 				action: 'orderadd',
 				key: that.data.key,
 				ordernum: out_trade_no,
-				content: that.data.cartObjectsStorage,
-				userInfor: JSON.stringify(that.data.userInfor),
+				content: content,
+				userInfor: userInforSubmit,
 				price: parseFloat(that.data.allAmount),
-				remark: that.data.remark,
+				remark: that.data.remarkText,
 				pickState: that.data.pickState,
 				cshopid: parseInt(that.data.storeId),
 				cshopinfor: JSON.stringify(that.data.cshopinfor),
-				distance: parseFloat(that.data.distance)
+				distance: parseFloat(that.data.distance),
+				discount: 0
 			},
 			header: { 'Content-Type': 'application/x-www-form-urlencoded'},
 			method: 'post',
@@ -345,9 +407,13 @@ Page({
             key: 'orderAddress',
             success: function(res) {
                 var address = res.data;
+				var addressString = JSON.stringify(address)
+				console.log("onshowOrderSubmitaddress")
+				console.log(address)
 				if (res.data) {
 					that.setData({
 						address: address,
+						addressString: addressString,
 						addressLat: address.latitude,
 						addressLon: address.longitude,
 					})

@@ -1,6 +1,7 @@
 {
     "pages": [
 		"pages/index/index",
+        "pages/orders/orders",
 		"pages/coupon/coupon",
         "pages/user/user",
         "pages/address/address",
@@ -12,7 +13,6 @@
         "pages/appraise/appraise",
         "pages/takeOut/takeOut",
         "pages/order-details/order-details",
-        "pages/orders/orders",
         "pages/tem/tem",
         "pages/logs/logs"
     ],

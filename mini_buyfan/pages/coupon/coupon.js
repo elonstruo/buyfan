@@ -8,6 +8,9 @@ Page({
      * 页面的初始数据
      */
     data: {
+		canUse: [],
+		used: [],
+		cantUse: [],
 		tagName: "优惠券",
 		// cSort: 0,
 		isButton: true,
@@ -50,6 +53,7 @@ Page({
 		}
 		// 商家优惠券信息
 		that.storeCoupon()
+		that.userCoupon()
 		// wx.createSelectorQuery().select('.none').boundingClientRect(function (rect) {
 			// console.log(rect.height)
 		// 	that.setData({
@@ -71,48 +75,58 @@ Page({
 			},
 			method: 'post',
 			success: function (res) {
-				// console.log("用户优惠券信息")
-				// console.log(res)
+				console.log("用户优惠券信息")
+				console.log(res)
 				var activeCategoryId = that.data.activeCategoryId;
-				var canUse = [];
-				var used = [];
-				var cantUse = [];
+				var canUse = that.data.canUse;
+				var used = that.data.used;
+				var cantUse = that.data.cantUse;
                 if (res.statusCode == 200) {
-					var coupon = res.data.data
-					for (var i = 0; i < coupon.length; i++) {
-						if (coupon[i].usable == "0") {
-							canUse.push(coupon[i])
-						} else if (coupon[i].usable == "1") {
-							used.push(coupon[i])
-						} else if (coupon[i].usable == "2") {
-							cantUse.push(coupon[i])
+					var couponlist = res.data.data
+					for (var i = 0; i < couponlist.length; i++) {
+						if (couponlist[i].usable == "0") {
+							canUse.push(couponlist[i])
+							that.setData({
+								canUse: canUse
+							})
+						} else if (couponlist[i].usable == "1") {
+							used.push(couponlist[i])
+							that.setData({
+								used: used
+							})
+						} else if (couponlist[i].usable == "2") {
+							cantUse.push(couponlist[i])
+							that.setData({
+								cantUse: cantUse
+							})
 						} 
 					}
-					if (activeCategoryId == 0) {
-						that.setData({
-							coupon: coupon
-						})
+					// if (activeCategoryId == 0) {
+					// 	that.setData({
+					// 		coupon: coupon
+					// 	})
 						// console.log("activeCategoryId == 0")
 						// console.log(coupon)
-					} else if (activeCategoryId == 1) {
-						that.setData({
-							coupon: canUse
-						})
+					// } else 
+					// if (activeCategoryId == 1) {
+					// 	that.setData({
+					// 		coupon: canUse
+					// 	})
 						// console.log("activeCategoryId == 1")
 						// console.log(coupon)
-					} else if (activeCategoryId == 2) {
-						that.setData({
-							coupon: used
-						})
+					// } else if (activeCategoryId == 2) {
+					// 	that.setData({
+					// 		coupon: used
+					// 	})
 						// console.log("activeCategoryId == 2")
 						// console.log(coupon)
-					} else if (activeCategoryId == 3) {
-						that.setData({
-							coupon: cantUse
-						})
+					// } else if (activeCategoryId == 3) {
+					// 	that.setData({
+					// 		coupon: cantUse
+					// 	})
 						// console.log("activeCategoryId == 3")
 						// console.log(coupon)
-					}
+					// }
 				} else {
 					app.showBox("网络出错")
 				}
@@ -136,14 +150,16 @@ Page({
 			method: 'post',
 			success: function (res) {
 				var activeCategoryId = that.data.activeCategoryId
-				// console.log("商家优惠券信息显示")
-				// console.log(res.data.data)
-				if (res.data.request == "ok") {
-					var coupon = res.data.data
-					if (activeCategoryId == 0) {
-						that.setData({
-							coupon: coupon
-						})
+				console.log("商家优惠券信息显示")
+				console.log(res)
+				if (res.statusCode == 200) {
+					if (res.data.data.length) {
+						var coupon = res.data.data
+						if (activeCategoryId == 0) {
+							that.setData({
+								coupon: coupon
+							})
+						}
 					}
 				} else {
 					app.showBox("网络出错")
@@ -195,23 +211,32 @@ Page({
 			})
 			that.storeCoupon()
 		} else if (activeCategoryId == 1) {
+			var canUse = that.data.canUse;
+			console.log("canUse")
+			console.log(canUse)
 			that.setData({
 				statusText: "立刻使用",
-				isButton: true
+				isButton: true,
+				coupon: canUse
 			})
-			that.userCoupon()
 		} else if (activeCategoryId == 2) {
+			var used = that.data.used;
+			console.log("used")
+			console.log(used)
 			that.setData({
 				statusText: "已使用",
-				isButton: false
+				isButton: false,
+				coupon: used
 			})
-			that.userCoupon()
 		} else if (activeCategoryId == 3) {
+			var cantUse = that.data.cantUse;
+			console.log("cantUse")
+			console.log(cantUse)
 			that.setData({
 				statusText: "已过期",
-				isButton: false
+				isButton: false,
+				coupon: cantUse
 			})
-			that.userCoupon()
 		}
 	},
     /**

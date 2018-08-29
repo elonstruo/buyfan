@@ -3,7 +3,7 @@
 	<view>
 		<image class='img-order' src='../../images/run_form@2x.png'></image>
 		<view class='none-title'>暂时没有订单在配送</view>
-		<navigator class='take-order' url='../../pages/menu/menu'>去点餐
-		</navigator>
+		<!-- <navigator class='take-order' url='../../pages/menu/menu'>去点餐
+		</navigator> -->
 	</view>
 </view>

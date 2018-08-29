@@ -258,3 +258,73 @@ page {
 	margin-top: 14rpx;
 	font-weight: bold;
 }
+.bottom-self {
+}
+/* pages/edtiAddress/edtiAddress.wxss */
+.bottom-self .input-box {
+	height: 100rpx;
+	display: flex;
+	align-items: center;
+	border-bottom: 1rpx solid #DCDCDC;
+	font-size: 30rpx;
+}
+.bottom-self .input-box:last-child {
+	border-color: transparent;
+}
+.bottom-self .title {
+	width: 120rpx;
+	margin-right: 20rpx;
+	color: #323232;
+	font-size: 30rpx;
+}
+.bottom-self .name {
+	width: 100%;height: 100rpx;
+	line-height: 100rpx;
+}
+.bottom-self .address-info {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 20rpx 0;
+	font-size: 28rpx;
+	height: 120rpx;
+	white-space: normal;
+}
+.bottom-self .label, .bottom-self .address-info-hover {
+	font-size: 28rpx;
+	color: #AAAAAA;
+}
+.bottom-self .address-form {
+	background-color: #fff;
+}
+.bottom-self .right-arrow {
+	width: 18rpx;
+	height: 30rpx;
+	margin-left: 15rpx;
+}
+.bottom-self .name, .bottom-self .section {
+	width: 460rpx;
+	height: 100rpx;
+	display: flex;
+	align-items: center; 
+}
+.bottom-self .name {
+	justify-content: space-between;
+}
+.bottom-self .section {
+	justify-content: flex-end
+}
+.self-time {
+	display: flex;
+	justify-content: space-between
+}
+.bottom-self .addressButton {
+    width: 640rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+	margin: 40rpx auto;
+	color: #fff;
+	text-align: center;
+    background: rgba(251, 135, 60, 1);
+    border-radius: 50rpx;
+	font-size: 30rpx; 
+}

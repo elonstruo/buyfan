@@ -38,12 +38,12 @@ App({
         logs.unshift(Date.now())
 		wx.setStorageSync('logs', logs)
 
+		// actionrequest
+		that.actionrequest()
+		// 商家分店
+		that.stores()
         // 登录
         that.commomLogin()
-        // actionrequest
-        that.actionrequest()
-        // 商家分店
-        that.stores()
 		// 购物车存储
 		that.cartStorage()
     },
@@ -255,7 +255,8 @@ App({
 					}
                 },
             })
-        } else {
+        } 
+		else {
 			that.has_login()
         }
 	},
@@ -329,5 +330,29 @@ App({
             fail: function(res) {},
             complete: function(res) {},
         })
-    },
+	},
+	// 生成订单日期
+	timedetail: function () {
+		var timestamp = Date.parse(new Date());
+		timestamp = timestamp / 1000;
+		var n = timestamp * 1000;
+		var date = new Date(n);
+		var Y = date.getFullYear();
+		var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+		var D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+		var h = date.getHours();
+		var m = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();;
+		var s = date.getSeconds();
+		return Y + '' + M + '' + D + '' + h + '' + m + '' + s
+	},
+	// 生成订单流水号
+	randomnum: function () {
+		var chars = '1234567890';
+		var maxPos = chars.length;
+		var pwd = '';
+		for (var i = 0; i < 4; i++) {
+			pwd += chars.charAt(Math.floor(Math.random() * maxPos));
+		}
+		return pwd;
+	},
 })
