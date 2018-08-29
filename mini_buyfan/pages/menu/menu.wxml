@@ -133,17 +133,17 @@
                 </view>
                 <scroll-view class="modal-body" scroll-y="true" style="height: {{scrollHeight}}px;">
                     <view class="item" wx:key="unique" wx:for="{{cartObjects}}">
-                        <view class="title">{{item.cartFood.goodsName}}
+                        <view class="title">{{item.goodsName}}
 							<text class='detail'wx:key="unique" wx:for="{{item.goodsSpecDetail}}">（{{item.detail}}）</text>
 						</view>
-                        <view class="fee">¥{{item.cartFood.sPrice * item.num}}</view>
+                        <view class="fee">¥{{item.sprice * item.num}}</view>
                         <view class="cart-count-box">
                             <!-- 减号 -->
-                            <text class="cart-count-wrap cart-count-down" data-index="{{index}}" bindtap="cartMinus" data-food-id="{{item.cartFood.gid}}" wx:if="{{item.num}}">-</text>
+                            <text class="cart-count-wrap cart-count-down" data-index="{{index}}" bindtap="cartMinus" data-food-id="{{item.gid}}" wx:if="{{item.num}}">-</text>
                             <!-- 数量 -->
                             <text class="cart-count-num">{{item.num}}</text>
                             <!-- 加号 -->
-                            <text class="cart-count-wrap cart-count-add" data-index="{{index}}" bindtap="cartAdd" data-food-id="{{item.cartFood.gid}}" data-chooseObjects="{{chooseObjects}}" data-goods-spec="{{item.goodsSpec}}">+</text>
+                            <text class="cart-count-wrap cart-count-add" data-index="{{index}}" bindtap="cartAdd" data-food-id="{{item.gid}}" data-chooseObjects="{{chooseObjects}}" data-goods-spec="{{item.goodsSpec}}">+</text>
                         </view>
                     </view>
                 </scroll-view>

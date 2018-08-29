@@ -33,13 +33,13 @@
                         <view class='title'>手机号：</view>
                         <input class='name' bindinput='selfTel' value='{{tel}}' name="tel"></input>
                     </view>
-                    <view class='input-box self-time'>
-                        <picker mode="time" value="{{time}}" start="00:00" end="00:00" bindchange="selfTime">
+                    <view class='input-box'>
+                        <picker mode="time" class='self-time' value="{{time}}" start="00:00" end="00:00" bindchange="selfTime">
                             <view class="picker">
-                                预计自提时间: {{time}} 
+                                <text>预计自提时间: {{zttime}} </text>
+                                <image class='right-arrow' src='../../images/in@2x.png'></image>
                             </view>
                         </picker>
-                        <image class='right-arrow' src='../../images/in@2x.png'></image>
                     </view>
                 </view>
             </view>
@@ -87,10 +87,10 @@
         </view>
         <view class='items'>
             <view class='item' wx:key="unique" wx:for="{{cartObjects}}">
-                <image class='goods' src='{{item.cartFood.goodsImage}}'></image>
+                <image class='goods' src='{{item.goodsImage}}'></image>
                 <view class='info'>
                     <view class='top'>
-                        <view class='name'>{{item.cartFood.goodsName}}</view>
+                        <view class='name'>{{item.goodsName}}</view>
                         <view class='price'>{{item.numPrice}}</view>
                     </view>
                     <view class='bottom'>

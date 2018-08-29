@@ -42,7 +42,9 @@
 					<view class='text-bottom' wx:if="{{item.cAbleTime.endtime}}">有效期至{{item.cAbleTime.endtime}}</view>
 					<view class='text-bottom' wx:if="{{item.cAbleTime.days}}">领取后{{item.cAbleTime.days}}天到期</view>
 				</view>
+                <!-- 最新优惠券 -->
 				<view wx:if="{{activeCategoryId==0}}" bindtap='getCoupon' data-cid="{{item.cid}}"  class='coupon-statu {{item.getstate == 0 ? "coupon-button" : ""}}'>{{item.getremark}}</view>
+                <!-- 未使用优惠券 -->
 				<view wx:if="{{activeCategoryId==1}}" bindtap='getCoupon' data-cid="{{item.cid}}"  class='coupon-statu {{item.usable==0 ? "coupon-button" : ""}}'>{{usableable[item.usable]}}</view>
 			</view>
 		</view>

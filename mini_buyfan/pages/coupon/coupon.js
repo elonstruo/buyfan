@@ -53,9 +53,9 @@ Page({
 		}
 		// 商家优惠券信息
 		that.storeCoupon()
+        // 个人优惠券信息
 		that.userCoupon()
 		// wx.createSelectorQuery().select('.none').boundingClientRect(function (rect) {
-			// console.log(rect.height)
 		// 	that.setData({
 		// 		noneHeight: rect.height - 80
 		// 	})
@@ -75,8 +75,6 @@ Page({
 			},
 			method: 'post',
 			success: function (res) {
-				console.log("用户优惠券信息")
-				console.log(res)
 				var activeCategoryId = that.data.activeCategoryId;
 				var canUse = that.data.canUse;
 				var used = that.data.used;
@@ -101,32 +99,6 @@ Page({
 							})
 						} 
 					}
-					// if (activeCategoryId == 0) {
-					// 	that.setData({
-					// 		coupon: coupon
-					// 	})
-						// console.log("activeCategoryId == 0")
-						// console.log(coupon)
-					// } else 
-					// if (activeCategoryId == 1) {
-					// 	that.setData({
-					// 		coupon: canUse
-					// 	})
-						// console.log("activeCategoryId == 1")
-						// console.log(coupon)
-					// } else if (activeCategoryId == 2) {
-					// 	that.setData({
-					// 		coupon: used
-					// 	})
-						// console.log("activeCategoryId == 2")
-						// console.log(coupon)
-					// } else if (activeCategoryId == 3) {
-					// 	that.setData({
-					// 		coupon: cantUse
-					// 	})
-						// console.log("activeCategoryId == 3")
-						// console.log(coupon)
-					// }
 				} else {
 					app.showBox("网络出错")
 				}
@@ -150,8 +122,6 @@ Page({
 			method: 'post',
 			success: function (res) {
 				var activeCategoryId = that.data.activeCategoryId
-				console.log("商家优惠券信息显示")
-				console.log(res)
 				if (res.statusCode == 200) {
 					if (res.data.data.length) {
 						var coupon = res.data.data
@@ -172,7 +142,7 @@ Page({
 	},
 	getCoupon: function (e) {
 		var that = this;
-		// console.log(e)
+		console.log(e)
 		var cid = e.currentTarget.dataset.cid
 		wx.request({
 			url: 'https://app.jywxkj.com/shop/baifen/request/couponmanage.php',
@@ -186,12 +156,15 @@ Page({
 			},
 			method: 'post',
 			success: function(res) {
-				console.log("getcouponres")
-				// console.log(res)
-				if (res.request == "ok") {
+                if (res.statusCode == 200) {
 					that.setData({
-						gotText:"已领取"
-					})
+						// gotText:"已领取"
+                    })
+                    // 商家优惠券信息
+                    that.storeCoupon()
+                    // 个人优惠券信息
+                    that.userCoupon()
+                    app.showBox("领取成功！")
 				}
 			},
 			fail: function(res) {},
@@ -212,8 +185,6 @@ Page({
 			that.storeCoupon()
 		} else if (activeCategoryId == 1) {
 			var canUse = that.data.canUse;
-			console.log("canUse")
-			console.log(canUse)
 			that.setData({
 				statusText: "立刻使用",
 				isButton: true,
@@ -221,8 +192,6 @@ Page({
 			})
 		} else if (activeCategoryId == 2) {
 			var used = that.data.used;
-			console.log("used")
-			console.log(used)
 			that.setData({
 				statusText: "已使用",
 				isButton: false,
@@ -230,8 +199,6 @@ Page({
 			})
 		} else if (activeCategoryId == 3) {
 			var cantUse = that.data.cantUse;
-			console.log("cantUse")
-			console.log(cantUse)
 			that.setData({
 				statusText: "已过期",
 				isButton: false,

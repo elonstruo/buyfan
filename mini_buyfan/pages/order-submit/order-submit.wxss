@@ -313,9 +313,14 @@ page {
 .bottom-self .section {
 	justify-content: flex-end
 }
-.self-time {
+.self-time,
+.self-time .picker {
+    width: 100%;
 	display: flex;
 	justify-content: space-between
+}
+.self-time .picker {
+    width: 670rpx;
 }
 .bottom-self .addressButton {
     width: 640rpx;

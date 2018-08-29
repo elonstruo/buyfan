@@ -70,7 +70,21 @@ Page({
 				},
 				fail: function (res) {
 					console.log("fail.res")
-					console.log(res)
+                    console.log(res)
+                    if (app.globalData.userInfo) {
+                        var address = app.globalData.userInfo.data.userInfor[0];
+                        var addressString = JSON.stringify(address)
+                        console.log("orderSubmitaddress")
+                        console.log(address)
+                        that.setData({
+                            address: address,
+                            addressString: addressString,
+                            addressLat: address.latitude,
+                            addressLon: address.longitude,
+                        })
+                        // 距离计算
+                        that.orderDistance(that.data.addressLat, that.data.addressLon)
+                    }
 				},
 				complete: function (res) { },
 			})
@@ -123,7 +137,7 @@ Page({
         }
         var cartObjects = that.data.cartObjects
         for (var i = 0; i < cartObjects.length; i++) {
-            var numPrice = cartObjects[i].num * cartObjects[i].cartFood.sPrice
+            var numPrice = cartObjects[i].num * cartObjects[i].sprice
             cartObjects[i].numPrice = numPrice
         }
         that.setData({
@@ -211,20 +225,21 @@ Page({
 	selfName: function (e) {
 		var that = this;
 		that.setData({
-			username: e.detail.value,
+            selfname: e.detail.value,
 		})
 	},
 	// 自提联系方式
 	selfTel: function (e) {
 		var that = this;
 		that.setData({
-			tel: e.detail.value,
+            selftel: e.detail.value,
 		})
 	},
 	// 自提时间
 	selfTime: function (e) {
-		this.setData({
-			ztTime: e.detail.value
+        var that = this;
+		that.setData({
+			zttime: e.detail.value
 		})
 	},
 	// 传入分店id显示分店
@@ -250,7 +265,7 @@ Page({
         var amount = 0;
         var num = 0;
         cartObjects.forEach(function(item, index) {
-            amount += item.num * item.cartFood.sPrice;
+            amount += item.num * item.sprice;
             num += item.num;
         });
         that.setData({
@@ -325,44 +340,57 @@ Page({
 		var addressString = that.data.addressString;
 		var address = that.data.address;
 		var pickState = that.data.pickState;
-		// if ()
-		// var Attach = [
-		// 		{
-		// 		name: "餐巾纸",
+        var desk = that.data.desk;
+        var selfname = that.data.selfname;
+        var selftel = that.data.selftel;
+        var zttime = that.data.zttime;
+        var attach = {};
+        // 手机正则
+        var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/;
+        // 是否有买纸巾
+        if (that.data.tisuPrice == 1) {
+            attach.name
+        }
+        // {
+        //     name: "餐巾纸",
 		// 	}, {
-		// 		num: 1,
+        //     num: 1,
 		// 	}, {
-		// 		price: allAmount
-		// 	}
-		// ]
-		var userInforSubmit = that.data.userInforSubmit;
-		userInforSubmit.username = that.data.address.username
-		userInforSubmit.tel = that.data.address.tel
-		userInforSubmit.adr = that.data.address.adr
-		userInforSubmit.latitude = that.data.address.latitude
-		userInforSubmit.longitude = that.data.address.longitude
-		userInforSubmit.desk = that.data.desk
+        //     price: allAmount
+        // }
+        var userInforSubmit = that.data.userInforSubmit;
+        if (pickState == 0) {
+            userInforSubmit.desk = desk
+        } else if (pickState == 2) {            
+            // 自提联系人判断
+            if (!selfname) {
+                app.showBox("请填写联系人")
+                return false
+            } else if (!selftel) {
+                app.showBox("请填写联系电话")
+                return false
+            } else if (!myreg.test(selftel)) {
+                app.showBox("请正确填写联系电话")
+                return false
+            } else if (!zttime) {
+                app.showBox("请选择预计自提时间")
+                return false
+            }
+            userInforSubmit.username = selfname
+            userInforSubmit.tel = selftel
+            userInforSubmit.zttime = zttime
+        } else {
+            userInforSubmit.username = address.username
+            userInforSubmit.tel = address.tel
+            userInforSubmit.adr = address.adr
+            userInforSubmit.latitude = address.latitude
+            userInforSubmit.longitude = address.longitude
+        }
 		var content = that.data.content;
 		content.shopcar = that.data.cartObjects
-		console.log("content")
-		console.log(content)
-		console.log("userInforSubmit")
-		console.log(userInforSubmit)
-		content = JSON.stringify(content)
-		userInforSubmit = JSON.stringify(userInforSubmit)
-		console.log("content")
-		console.log(content)
-		console.log("userInforSubmit")
-		console.log(userInforSubmit)
-		console.log("that.data.pickState");
-		console.log(that.data.pickState);
-		console.log("parseInt(that.data.storeId");
-		console.log(parseInt(that.data.storeId));
-		console.log("that.data.cshopinfor");
-		console.log(that.data.cshopinfor);
-		wx.request({
-			url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
-			data: {
+		// wx.request({
+		// 	url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
+			var data={
 				action: 'orderadd',
 				key: that.data.key,
 				ordernum: out_trade_no,
@@ -375,20 +403,26 @@ Page({
 				cshopinfor: JSON.stringify(that.data.cshopinfor),
 				distance: parseFloat(that.data.distance),
 				discount: 0
-			},
-			header: { 'Content-Type': 'application/x-www-form-urlencoded'},
-			method: 'post',
-			dataType: 'json',
-			responseType: 'text',
-			success: function(res) {
-				console.log("orderSubmit.success.res")
-				console.log(res)
-			},
-			fail: function (res) {
-				console.log("orderSubmit.success.res")
-				console.log(res)},
-			complete: function(res) {},
-		})
+			}
+            console.log("data")
+            console.log(data)
+		// 	header: { 'Content-Type': 'application/x-www-form-urlencoded'},
+		// 	method: 'post',
+		// 	dataType: 'json',
+		// 	responseType: 'text',
+		// 	success: function(res) {
+		// 		console.log("orderSubmit.success.res")
+		// 		console.log(res)
+		// 	},
+		// 	fail: function (res) {
+		// 		console.log("orderSubmit.success.res")
+		// 		console.log(res)},
+		// 	complete: function(res) {
+                // that.setData({
+                //     userInforSubmit: {}
+                // })
+        // },
+		// })
 	},
     /**
      * 生命周期函数--监听页面初次渲染完成

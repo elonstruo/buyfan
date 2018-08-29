@@ -282,10 +282,15 @@ Page({
             }
             goodsSpecDetail = that.data.goodsSpecDetail;
             cartData = {
-                cartFood: chooseObjects[0].cartFood,
+                gid: chooseObjects[0].cartFood.gid,
+                goodsName: chooseObjects[0].cartFood.goodsName,
+                goodsImage: chooseObjects[0].cartFood.goodsImage,
+                sprice: chooseObjects[0].cartFood.sPrice,
                 goodsSpecDetail: goodsSpecDetail,
                 num: num
 			}
+            console.log("cartData")
+            console.log(cartData)
 			// cart = {
 			// 	foodId: foodId,
 			// 	goodsSpecDetail: goodsSpecDetail,
@@ -297,7 +302,7 @@ Page({
 			}
             if (cartObjects.length !== 0) {
                 for (var i = 0; i < cartObjects.length; i++) {
-                    if (cartObjects[i].cartFood.gid == foodId && cartObjects[i].goodsSpecDetail[0].detail == goodsSpecDetail[0].detail) {
+                    if (cartObjects[i].gid == foodId && cartObjects[i].goodsSpecDetail[0].detail == goodsSpecDetail[0].detail) {
                         cartObjects[i].num = ++cartObjects[i].num;
 						cartData = cartObjects[i]; 
                         cartObjects.splice(i, 1);
@@ -326,12 +331,15 @@ Page({
                 }
             }
             cartData = {
-                cartFood: cartFood,
+                gid: cartFood.gid,
+                goodsName: cartFood.goodsName,
+                goodsImage: cartFood.goodsImage,
+                sprice: cartFood.sPrice,
                 num: num
             }
             if (cartObjects.length !== 0) {
                 for (var i = 0; i < cartObjects.length; i++) {
-                    if (cartObjects[i].cartFood.gid == foodId) {
+                    if (cartObjects[i].gid == foodId) {
                         cartObjects[i].num = ++cartObjects[i].num;
                         cartData = cartObjects[i]
                         cartObjects.splice(i, 1);
@@ -607,7 +615,7 @@ Page({
         var amount = 0;
         var num = 0;
         cartObjects.forEach(function(item, index) {
-            amount += item.num * item.cartFood.sPrice;
+            amount += item.num * item.sprice;
             num += item.num;
         });
         that.setData({
