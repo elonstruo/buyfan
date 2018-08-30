@@ -278,10 +278,11 @@ App({
     wxpay: function(key, order_sn) {
         var that = this;
         wx.request({
-            url: that.globalData.hostUrl + 'Api/Wxpay/wxpay',
+			url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
             data: {
+				action: 'encryption',
                 key: key,
-                order_sn: order_sn
+				ordernum: order_sn
             },
             header: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -290,8 +291,8 @@ App({
             success: function(res) {
                 console.log(res)
                 console.log(res.data)
-                if (res.data.status == 1) {
-                    var payArr = res.data.arr;
+                // if (res.data.status == 1) {
+                    var payArr = res.data.param;
                     var timeStamp = payArr.timeStamp;
                     var nonceStr = payArr.nonceStr;
                     var arrPackage = payArr.package;
@@ -304,28 +305,21 @@ App({
                         signType: 'MD5',
                         paySign: paySign,
                         success: function(res) {
-                            console.log("res")
+							console.log("success/pay/res")
                             console.log(res)
-                            wx.showToast({
-                                title: '支付成功',
-                                icon: 'none',
-                                duration: 2000,
-                                mask: true,
-                            })
+							that.showBox("支付成功")
                             wx.navigateBack({
                                 delta: 1,
                             })
                         },
                         fail: function(res) {
-                            // var payFail = false
-                            // console.log("[payFail]")
-                            // console.log(payFail)
-                            // return payFail
-
+							// if (res.errMsg == "requestPayment:fail cancel") {
+								that.showBox("支付未完成")
+							// }
                         },
                         complete: function(res) {},
                     })
-                }
+                // }
             },
             fail: function(res) {},
             complete: function(res) {},

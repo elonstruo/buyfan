@@ -344,6 +344,12 @@ Page({
         var selfname = that.data.selfname;
         var selftel = that.data.selftel;
         var zttime = that.data.zttime;
+		var distance = that.data.distance;
+		console.log("distance")
+		console.log(distance)
+		if (!distance) {
+			distance = ""
+		}
         var attach = {};
         // 手机正则
         var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/;
@@ -387,42 +393,43 @@ Page({
             userInforSubmit.longitude = address.longitude
         }
 		var content = that.data.content;
-		content.shopcar = that.data.cartObjects
-		// wx.request({
-		// 	url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
-			var data={
+		content.shopcar = that.data.cartObjects;
+		wx.request({
+			url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
+			data: {
 				action: 'orderadd',
 				key: that.data.key,
 				ordernum: out_trade_no,
-				content: content,
-				userInfor: userInforSubmit,
-				price: parseFloat(that.data.allAmount),
+				content: JSON.stringify(content),
+				userInfor: JSON.stringify(userInforSubmit),
+				price: that.data.allAmount,
 				remark: that.data.remarkText,
 				pickState: that.data.pickState,
 				cshopid: parseInt(that.data.storeId),
 				cshopinfor: JSON.stringify(that.data.cshopinfor),
-				distance: parseFloat(that.data.distance),
+				distance: distance,
 				discount: 0
-			}
-            console.log("data")
-            console.log(data)
-		// 	header: { 'Content-Type': 'application/x-www-form-urlencoded'},
-		// 	method: 'post',
-		// 	dataType: 'json',
-		// 	responseType: 'text',
-		// 	success: function(res) {
-		// 		console.log("orderSubmit.success.res")
-		// 		console.log(res)
-		// 	},
-		// 	fail: function (res) {
-		// 		console.log("orderSubmit.success.res")
-		// 		console.log(res)},
-		// 	complete: function(res) {
-                // that.setData({
-                //     userInforSubmit: {}
-                // })
-        // },
-		// })
+			},
+			header: { 'Content-Type': 'application/x-www-form-urlencoded'},
+			method: 'post',
+			dataType: 'json',
+			responseType: 'text',
+			success: function(res) {
+				console.log("orderSubmit.success.res")
+				console.log(res)
+				if (res.statusCode == 200) {
+					app.wxpay(that.data.key, out_trade_no)
+				}				
+			},
+			fail: function (res) {
+				console.log("orderSubmit.success.res")
+				console.log(res)},
+			complete: function(res) {
+                that.setData({
+                    userInforSubmit: {}
+                })
+        	},
+		})
 	},
     /**
      * 生命周期函数--监听页面初次渲染完成

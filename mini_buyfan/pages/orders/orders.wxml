@@ -14,19 +14,20 @@
                 <image src='../../images/store@2x.png' class='icon-store'></image>
                 <view class='store-name'>{{item.cshopInfor.shopName}}</view>
             </view>
-            <view class='state'>{{orderRule.unpaid}}</view>
+            <view class='state'>{{orderRule[item.orderState]}}</view>
         </view>
         <view class='goods-list'>
-            <view class='goods' wx:for="{{item.orderContent.Shopcar}}" wx:key="index">
-                <view class='name'>{{item.cartFood.goodsName}}</view>
+            <view class='goods' wx:for="{{item.orderContent.shopcar}}" wx:key="index">
+                <view class='name'>{{item.goodsName}}</view>
                 <view class='num'>x{{item.num}}</view>
             </view>
 			<view class='settle'>
 				<!-- 共{{item.cartFood.goodsNum}}件商品, -->
-				实付<text class='price'>¥{{item.orderprice}}</text></view>
+				实付<text class='price'>¥{{item.orderprice}}</text>
+			</view>
         </view>
 		<view class='handle-box'>
-			<view class='delete handle'>删除订单</view>
+			<view data-order-num="{{item.orderNum}}" bindtap='deleteOrder' class='delete handle'>删除订单</view>
 			<view class='refund handle'>申请退款</view>
 			<view class='appraise handle'>评价</view>
 		</view>

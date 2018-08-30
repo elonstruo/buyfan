@@ -30,28 +30,28 @@
         </navigator>
     </view>
     <view class='items'>
-        <view class='item'>
+        <view class='item' data-order-index="1" bindtap='toOrderLs'>
             <view class='img-box'>
                 <text class='number' wx:if="{{pendingLen}}">{{pendingLen}}</text>
                 <image class='icon-order' src='../../images/user_deal@2x.png'></image>
             </view>
             <view>待处理</view>
         </view>
-        <view class='item'>
+        <view class='item' data-order-index="2" bindtap='toOrderLs'>
             <view class='img-box'>
                 <text class='number' wx:if="{{dealingLen}}">{{dealingLen}}</text>
                 <image class='icon-order' src='../../images/user_distribution@2x.png'></image>
             </view>
             <view>配送制作中</view>
         </view>
-        <view class='item'>
+        <view class='item' data-order-index="3" bindtap='toOrderLs'>
             <view class='img-box'>
                 <text class='number' wx:if="{{odoneLen}}">{{odoneLen}}</text>
                 <image class='icon-order' src='../../images/user_complete@2x.png'></image>
             </view>
             <view>已完成</view>
         </view>
-        <view class='item'>
+        <view class='item' data-order-index="4" bindtap='toOrderLs'>
             <view class='img-box'>
                 <text class='number' wx:if="{{allrefundLen}}">{{allrefundLen}}</text>
                 <image class='icon-order' src='../../images/user_refund@2x.png'></image>

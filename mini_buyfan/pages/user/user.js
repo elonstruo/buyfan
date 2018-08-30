@@ -38,8 +38,8 @@ Page({
 		var that = this;
 		// app.globalData.userInfo
 		if (app.globalData.userInfo) {
-			console.log("user.app.globalData.userInfo")
-			console.log(app.globalData.userInfo)
+			// console.log("user.app.globalData.userInfo")
+			// console.log(app.globalData.userInfo)
 			var avatarUrl = app.globalData.userInfo.data.avatarUrl;
 			var nickName = app.globalData.userInfo.data.nickName;
 			var coupons = app.globalData.userInfo.data.coupons;
@@ -61,8 +61,8 @@ Page({
 		}
 		// actionData
 		if (app.globalData.actionData) {
-			console.log("user.app.globalData.actionData")
-			console.log(app.globalData.actionData)
+			// console.log("user.app.globalData.actionData")
+			// console.log(app.globalData.actionData)
 			var appContact = app.globalData.actionData.appContact
 			var appRunTime = app.globalData.actionData.appRunTime
 			that.setData({
@@ -107,6 +107,13 @@ Page({
 			title: '正在加载',
 			mask: true,
 		})
+		var unpaid = [];
+		var delivery = [];
+		var finish = [];
+		var allrefund = [];
+		var dealing = [];
+		var odone = [];
+		var pending = [];
 		wx.getStorage({
 			key: 'key',
 			success: function (res) {
@@ -121,19 +128,9 @@ Page({
 					method: 'post',
 					dataType: 'json',
 					success: function (res) {
-						var all = that.data.all;
-						var unpaid = that.data.unpaid;
-						var delivery = that.data.delivery;
-						var finish = that.data.finish;
-						var allrefund = that.data.allrefund;
-						var dealing = that.data.dealing;
-						var odone = that.data.odone;
-						var pending = that.data.pending;
 						if (res.statusCode == 200) {
 							var orderslist = that.data.orderslist;
 							orderslist = res.data.data;
-							console.log("个人订单")
-							console.log(orderslist)
 							for (var i = 0; i < orderslist.length; i++) {
 								// 制作配送中
 								if (orderslist[i].orderState == "delivery" || orderslist[i].orderState == "adopt" || orderslist[i].orderState == "accept") {
@@ -185,6 +182,17 @@ Page({
 			complete: function (res) { },
 		})
 	},
+	// 前往订单页
+	toOrderLs: function (e) {
+		console.log(e)
+		var orderIndex = e.currentTarget.dataset.orderIndex
+		wx.navigateTo({
+			url: '../../pages/orders/orders?orderIndex=' + orderIndex,
+			success: function(res) {},
+			fail: function(res) {},
+			complete: function(res) {},
+		})
+	},
     /**
      * 生命周期函数--监听页面初次渲染完成
      */
@@ -196,6 +204,9 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function() {
+		var that = this;
+		// 个人订单
+		that.myOrder()
     },
 
     /**
