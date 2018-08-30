@@ -1,5 +1,14 @@
 // pages/orders/orders.js
+var Promise = require('../../utils/es6-promise.js');
 const app = getApp()
+function myOrders () {
+    return new Promise(function(resolve, reject) {
+        console.log("res")
+        that.myOrder()
+        resolve();
+    })
+}
+myOrders()
 Page({
 
     /**
@@ -48,9 +57,18 @@ Page({
 			that.setData({
 				orderIndex: options.orderIndex
 			})
-			that.taborder(options.orderIndex)
-		}
-		that.myOrder()
+        }
+        // 个人信息
+        if (app.globalData.userInfo) {
+            // console.log("menu.app.globalData.userInfo")
+            // console.log(app.globalData.userInfo)
+            var key = app.globalData.userInfo.data.skey;
+            that.setData({
+                key: key
+            })
+        }
+
+        that.taborder()
 	},
 	// tab
 	orderTab: function (e) {
@@ -59,35 +77,37 @@ Page({
 			activeId: e.currentTarget.dataset.id
 		})
 		var activeId = that.data.activeId;
-		if (activeId == 0) {
-			that.setData({
-				orders: that.data.orderslist
-			})
-		} else if (activeId == 1) {
-			var unpaid = that.data.unpaid
-			that.setData({
-				orders: unpaid
-			})
-		} else if (activeId == 2) {
-			var delivery = that.data.delivery
-			that.setData({
-				orders: delivery
-			})
-		} else if (activeId == 3) {
-			var finish = that.data.finish
-			that.setData({
-				orders: finish
-			})
-		} else if (activeId == 4) {
-			var allrefund = that.data.allrefund
-			that.setData({
-				orders: allrefund
-			})
-		}
+        that.taborder()
+		// if (activeId == 0) {
+		// 	that.setData({
+		// 		orders: that.data.orderslist
+		// 	})
+		// } else if (activeId == 1) {
+		// 	var unpaid = that.data.unpaid
+		// 	that.setData({
+		// 		orders: unpaid
+		// 	})
+		// } else if (activeId == 2) {
+		// 	var delivery = that.data.delivery
+		// 	that.setData({
+		// 		orders: delivery
+		// 	})
+		// } else if (activeId == 3) {
+		// 	var finish = that.data.finish
+		// 	that.setData({
+		// 		orders: finish
+		// 	})
+		// } else if (activeId == 4) {
+		// 	var allrefund = that.data.allrefund
+		// 	that.setData({
+		// 		orders: allrefund
+		// 	})
+		// }
 	},
 	// tab判断
-	taborder: function (activeIds) {
+	taborder: function () {
 		var that = this;
+        var activeIds = that.data.activeId;
 		if (activeIds == 0) {
 			that.setData({
 				orders: that.data.orderslist
@@ -115,6 +135,7 @@ Page({
 		}
 
 	},
+    
 	// 个人订单
 	myOrder: function () {
 		var that = this;
@@ -125,76 +146,77 @@ Page({
 		var delivery = [];
 		var finish = [];
 		var allrefund = [];
-		wx.getStorage({
-			key: 'key',
-			success: function (res) {
-				var key = res.data
-				wx.request({
-					url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
-					data: {
-						action: 'userordershows',
-						key: key
-					},
-					header: { 'Content-Type': 'application/x-www-form-urlencoded' },
-					method: 'post',
-					dataType: 'json',
-					success: function (res) {
-						wx.showLoading({
-							title: '正在加载',
-							mask: true,
-						})
-						if (res.statusCode == 200) {
-							var orderslist = that.data.orderslist;
-							orderslist = res.data.data;
-							that.setData({
-								// orders: orderslist,
-								orderslist: orderslist
-							})
-							for (var i = 0; i < orderslist.length; i++) {
-								if (orderslist[i].orderState == "unpaid") {
-									unpaid.push(orderslist[i])
-									that.setData({
-										unpaid: unpaid
-									})
-								} else if (orderslist[i].orderState == "delivery") {
-									delivery.push(orderslist[i])
-									that.setData({
-										delivery: delivery
-									})
-								} else if (orderslist[i].orderState == "finish") {
-									finish.push(orderslist[i])
-									that.setData({
-										finish: finish
-									})
-								} else if (orderslist[i].orderState == "allrefund") {
-									allrefund.push(orderslist[i])
-									that.setData({
-										allrefund: allrefund
-									})
-								}
-							}
-							that.setData({
-								activeId: that.data.orderIndex
-							})
-							wx.hideLoading()
-						}
-					},
-					fail: function (res) {
-						console.log(res)
-						wx.hideLoading()
-						wx.showToast({
-							title: '网络出错',
-							icon: 'none',
-							duration: 2000,
-							mask: true,
-						})
-					},
-					complete: function (res) {},
-				})
-			},
-			fail: function (res) { },
-			complete: function (res) { },
-		})
+        wx.request({
+            url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
+            data: {
+                action: 'userordershows',
+                key: that.data.key
+            },
+            header: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            method: 'post',
+            dataType: 'json',
+            success: function (res) {
+                wx.showLoading({
+                    title: '正在加载',
+                    mask: true,
+                })
+                if (res.statusCode == 200) {
+                    var orderslist = that.data.orderslist;
+                    orderslist = res.data.data;
+                    that.setData({
+                        // orders: orderslist,
+                        orderslist: orderslist
+                    })
+                    for (var i = 0; i < orderslist.length; i++) {
+                        if (orderslist[i].orderState == "unpaid") {
+                            unpaid.push(orderslist[i])
+                            that.setData({
+                                unpaid: unpaid
+                            })
+                        } else if (orderslist[i].orderState == "delivery") {
+                            delivery.push(orderslist[i])
+                            that.setData({
+                                delivery: delivery
+                            })
+                        } else if (orderslist[i].orderState == "finish") {
+                            finish.push(orderslist[i])
+                            that.setData({
+                                finish: finish
+                            })
+                        } else if (orderslist[i].orderState == "allrefund") {
+                            allrefund.push(orderslist[i])
+                            that.setData({
+                                allrefund: allrefund
+                            })
+                        }
+                    }
+                    that.setData({
+                        activeId: that.data.orderIndex
+                    })
+                    that.taborder()
+                    wx.hideLoading()
+                }
+            },
+            fail: function (res) {
+                console.log(res)
+                wx.hideLoading()
+                wx.showToast({
+                    title: '网络出错',
+                    icon: 'none',
+                    duration: 2000,
+                    mask: true,
+                })
+            },
+            complete: function (res) { },
+        })
+		// wx.getStorage({
+		// 	key: 'key',
+		// 	success: function (res) {
+		// 		var key = res.data
+		// 	},
+		// 	fail: function (res) { },
+		// 	complete: function (res) { },
+		// })
 	},
 	// 删除订单
 	deleteOrder: function (e) {
@@ -230,6 +252,8 @@ Page({
      * 生命周期函数--监听页面初次渲染完成
      */
     onReady: function() {
+        var that = this;
+        that.taborder(that.data.orderIndex)
 
     },
 
@@ -238,7 +262,6 @@ Page({
      */
     onShow: function() {
 		var that = this;
-		// that.myOrder()
     },
 
     /**
