@@ -17,10 +17,11 @@ Page({
     /**
      * 页面的初始数据
      */
-	data: {
-		page: 0,
-		cart: {},
-		detailsArr: [],
+    data: {
+        appage: 0,
+        page: 0,
+        cart: {},
+        detailsArr: [],
         itemIndex0: 0,
         itemIndex1: 0,
         goodsSpecDetail: [],
@@ -65,116 +66,116 @@ Page({
             orderway: options.orderway,
             storeId: options.id
         })
-		// 获取购物车
-		if (app.globalData.cartObjectsStorage) {
-			that.setData({
-				cartObjects: app.globalData.cartObjectsStorage
-			})
-			that.amount();
-		} 
-		// 个人信息
-		if (app.globalData.userInfo) {
-			console.log("menu.app.globalData.userInfo")
-			console.log(app.globalData.userInfo)
-			var uid = app.globalData.userInfo.data.uid;
-			that.setData({
-				uid: uid
-			})
-		}
+        // 获取购物车
+        if (app.globalData.cartObjectsStorage) {
+            that.setData({
+                cartObjects: app.globalData.cartObjectsStorage
+            })
+            that.amount();
+        }
+        // 个人信息
+        if (app.globalData.userInfo) {
+            console.log("menu.app.globalData.userInfo")
+            console.log(app.globalData.userInfo)
+            var uid = app.globalData.userInfo.data.uid;
+            that.setData({
+                uid: uid
+            })
+        }
         // 分类赋值
-		if (app.globalData.actionData) {
-			var actionData = app.globalData.actionData
-			var appLogo = app.globalData.actionData.appLogo
-			that.setData({
-				type_sort: actionData.appClass,
-				categoryGoodsclass: actionData.appClass[0],
-				// mesuScrollHeight: app.screenHeight - signH - tabbarH - food_row_height,
-				mesuScrollHeight: app.screenHeight - signH - tabbarH,
-				appLogo: appLogo
-			})
-		} else {
-			app.actionDataCallback = res => {
-				var actionData = app.globalData.actionData
-				var appLogo = app.globalData.actionData.appLogo
-				that.setData({
-					type_sort: actionData.appClass,
-					categoryGoodsclass: actionData.appClass[0],
-					// mesuScrollHeight: app.screenHeight - signH - tabbarH - food_row_height,
-					mesuScrollHeight: app.screenHeight - signH - tabbarH,
-					appLogo: appLogo
-				})
-			}
-		}
+        if (app.globalData.actionData) {
+            var actionData = app.globalData.actionData
+            var appLogo = app.globalData.actionData.appLogo
+            that.setData({
+                type_sort: actionData.appClass,
+                categoryGoodsclass: actionData.appClass[0],
+                // mesuScrollHeight: app.screenHeight - signH - tabbarH - food_row_height,
+                mesuScrollHeight: app.screenHeight - signH - tabbarH,
+                appLogo: appLogo
+            })
+        } else {
+            app.actionDataCallback = res => {
+                var actionData = app.globalData.actionData
+                var appLogo = app.globalData.actionData.appLogo
+                that.setData({
+                    type_sort: actionData.appClass,
+                    categoryGoodsclass: actionData.appClass[0],
+                    // mesuScrollHeight: app.screenHeight - signH - tabbarH - food_row_height,
+                    mesuScrollHeight: app.screenHeight - signH - tabbarH,
+                    appLogo: appLogo
+                })
+            }
+        }
         // 商家分店
-		if (app.globalData.storesData) {
-			var storesData = app.globalData.storesData
-			var storestring = JSON.stringify(storesData);
-			that.setData({
-				storestring: storestring,
-				storesData: storesData
-			})
-		} else {
-			app.storesDataCallback = res => {
-				var storesData = app.globalData.storesData
-				var storestring = JSON.stringify(storesData);
-				that.setData({
-					storestring: storestring,
-					storesData: storesData
-				})
-			}
-		}
-		// 商店id
-		if (options.id) {
-			var storeId = options.id;
-			that.showStore(storeId)
-		}
-		// 所有商品
-		that.getGoods()
+        if (app.globalData.storesData) {
+            var storesData = app.globalData.storesData
+            var storestring = JSON.stringify(storesData);
+            that.setData({
+                storestring: storestring,
+                storesData: storesData
+            })
+        } else {
+            app.storesDataCallback = res => {
+                var storesData = app.globalData.storesData
+                var storestring = JSON.stringify(storesData);
+                that.setData({
+                    storestring: storestring,
+                    storesData: storesData
+                })
+            }
+        }
+        // 商店id
+        if (options.id) {
+            var storeId = options.id;
+            that.showStore(storeId)
+        }
+        // 所有商品
+        that.getGoods()
     },
-	// 所有商品
-	getGoods: function () {
-		var that = this;
-		wx.showLoading({
-			title: '菜单加载中…',
-			mask: true,
-		})
-		wx.request({
-			url: 'https://app.jywxkj.com/shop/baifen/request/goodsmanage.php',
-			data: {
-				action: "xcxgoodsshow"
-			},
-			header: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			},
-			method: 'POST',
-			success: function (res) {
-				var goods = res.data.data;
-				that.setData({
-					goods: res.data.data,
-				})
-				wx.hideLoading()
-			},
-			fail: function (res) {
-				app.showBox("网络出错！")
-			},
-			complete: function (res) { },
-		})
-	},
-	// 传入分店id显示分店
-	showStore: function (storeId) {
-		var that = this;
-		var storesData = that.data.storesData;
-		for (var i = 0; i < storesData.length; i++) {
-			if (storesData[i].id == storeId) {
-				that.setData({
-					storeId: storeId,
-					shopName: storesData[i].shopName,
-					shopLatitude: storesData[i].shopLocal.latitude,
-					shopLongitude: storesData[i].shopLocal.longitude,
-				})
-			}
-		}
-	},
+    // 所有商品
+    getGoods: function() {
+        var that = this;
+        wx.showLoading({
+            title: '菜单加载中…',
+            mask: true,
+        })
+        wx.request({
+            url: 'https://app.jywxkj.com/shop/baifen/request/goodsmanage.php',
+            data: {
+                action: "xcxgoodsshow"
+            },
+            header: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'POST',
+            success: function(res) {
+                var goods = res.data.data;
+                that.setData({
+                    goods: res.data.data,
+                })
+                wx.hideLoading()
+            },
+            fail: function(res) {
+                app.showBox("网络出错！")
+            },
+            complete: function(res) {},
+        })
+    },
+    // 传入分店id显示分店
+    showStore: function(storeId) {
+        var that = this;
+        var storesData = that.data.storesData;
+        for (var i = 0; i < storesData.length; i++) {
+            if (storesData[i].id == storeId) {
+                that.setData({
+                    storeId: storeId,
+                    shopName: storesData[i].shopName,
+                    shopLatitude: storesData[i].shopLocal.latitude,
+                    shopLongitude: storesData[i].shopLocal.longitude,
+                })
+            }
+        }
+    },
     //切换分店
     changeshop: function() {
         var that = this;
@@ -185,10 +186,22 @@ Page({
             complete: function(res) {},
         })
     },
-    previewImage: function() {
-        wx.previewImage({
-            current: '', // 当前显示图片的http链接
-            urls: [] // 需要预览的图片http链接列表
+    // 图片预览
+    previewImage: function(e) {
+        var that = this;
+        var commentimg = e.currentTarget.dataset.commentimg
+		var appraisesImgsrc = that.data.appraisesImgsrc
+		wx.previewImage({
+			current: appraisesImgsrc, 
+			urls: commentimg 
+		})
+    },
+    // 图片预览index
+    getAppraisesIndex: function(e) {
+        var that = this;
+        var imgsrc = e.currentTarget.dataset.imgsrc
+        that.setData({
+			appraisesImgsrc: imgsrc
         })
     },
     // 点赞
@@ -210,41 +223,41 @@ Page({
     scroll: function(e) {
         // console.log(e)
     },
-    // tabbar触发
+    // tabbar触发请求评价列表
     tabClick: function(e) {
         var that = this;
         that.setData({
             selectedId: e.currentTarget.dataset.id
         });
-		if (that.data.selectedId == "2") {
-			wx.request({
-				url: 'https://app.jywxkj.com/shop/baifen/request/commentmanage.php',
-				data: {
-					action: 'xcxshow',
-					page: that.data.page,
-					uid: that.data.uid 
-				},
-				header: { 'Content-Type': 'application/x-www-form-urlencoded'},
-				method: 'post',
-				success: function(res) {
-					if (res.statusCode == "200") {
-						that.setData({
-							comments: res.data.data
-						})
-					}
-					console.log("commentmanage.res")
-					console.log(res)
-				},
-				fail: function(res) {},
-				complete: function(res) {},
-			})
-		}
+        if (that.data.selectedId == "2") {
+            wx.request({
+                url: 'https://app.jywxkj.com/shop/baifen/request/commentmanage.php',
+                data: {
+                    action: 'xcxshow',
+                    page: that.data.page,
+                    uid: that.data.uid
+                },
+                header: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                method: 'post',
+                success: function(res) {
+                    if (res.statusCode == "200") {
+                        that.setData({
+                            comments: res.data.data
+                        })
+                    }
+                },
+                fail: function(res) {},
+                complete: function(res) {},
+            })
+        }
     },
     // 评价：最新/最热
     appraisesClick: function(e) {
         var that = this;
         that.setData({
-            selectA: e.currentTarget.dataset.gid
+            selectA: e.currentTarget.dataset.id
         });
     },
     // 获取分类id
@@ -265,10 +278,10 @@ Page({
         var chooseObjects = that.data.chooseObjects
         var num = 1;
         var goods = that.data.goods
-		var goodsSpecLength = e.currentTarget.dataset.goodsSpec;
-		var oroginDetails;
-		var cart = that.data.cart;
-		var detailsArr = that.data.detailsArr;
+        var goodsSpecLength = e.currentTarget.dataset.goodsSpec;
+        var oroginDetails;
+        var cart = that.data.cart;
+        var detailsArr = that.data.detailsArr;
         if (chooseObjects.length > 0) {
             chooseObjects = that.data.chooseObjects
         }
@@ -283,47 +296,47 @@ Page({
             goodsSpecDetail = that.data.goodsSpecDetail;
             cartData = {
                 gid: chooseObjects[0].cartFood.gid,
-                goodsName: chooseObjects[0].cartFood.goodsName,
-                goodsImage: chooseObjects[0].cartFood.goodsImage,
-                sprice: chooseObjects[0].cartFood.sPrice,
-                goodsSpecDetail: goodsSpecDetail,
+                name: chooseObjects[0].cartFood.goodsName,
+                img: chooseObjects[0].cartFood.goodsImage,
+                price: chooseObjects[0].cartFood.sPrice,
+                spec: goodsSpecDetail[0].detail,
                 num: num
-			}
+            }
             console.log("cartData")
             console.log(cartData)
-			// cart = {
-			// 	foodId: foodId,
-			// 	goodsSpecDetail: goodsSpecDetail,
-			// 	num: num
-			// }
-			var numbox = {
-				// goodsSpecDetail: goodsSpecDetail,
-				num: num
-			}
+            // cart = {
+            // 	foodId: foodId,
+            // 	goodsSpecDetail: goodsSpecDetail,
+            // 	num: num
+            // }
+            var numbox = {
+                // goodsSpecDetail: goodsSpecDetail,
+                num: num
+            }
             if (cartObjects.length !== 0) {
                 for (var i = 0; i < cartObjects.length; i++) {
                     if (cartObjects[i].gid == foodId && cartObjects[i].goodsSpecDetail[0].detail == goodsSpecDetail[0].detail) {
                         cartObjects[i].num = ++cartObjects[i].num;
-						cartData = cartObjects[i]; 
+                        cartData = cartObjects[i];
                         cartObjects.splice(i, 1);
                     }
-				}
-			}
-			// cart[foodId + cartData.goodsSpecDetail[0].detail] = cartData.num
-			// console.log("cart")
-			// console.log(cart)
+                }
+            }
+            // cart[foodId + cartData.goodsSpecDetail[0].detail] = cartData.num
+            // console.log("cart")
+            // console.log(cart)
             cartObjects.push(cartData)
-			that.setData({
-				cartObjects: cartObjects,
-				cart: cart
-			})
+            that.setData({
+                cartObjects: cartObjects,
+                cart: cart
+            })
             that.amount()
-			wx.setStorage({
-				key: 'cartObjectsStorage',
-				data: cartObjects,
-			})
-			app.cartStorage()
-			
+            wx.setStorage({
+                key: 'cartObjectsStorage',
+                data: cartObjects,
+            })
+            app.cartStorage()
+
         } else {
             for (var i = 0; i < goods.length; i++) {
                 if (goods[i].gid == foodId) {
@@ -332,9 +345,9 @@ Page({
             }
             cartData = {
                 gid: cartFood.gid,
-                goodsName: cartFood.goodsName,
-                goodsImage: cartFood.goodsImage,
-                sprice: cartFood.sPrice,
+                name: cartFood.goodsName,
+                img: cartFood.goodsImage,
+                price: cartFood.sPrice,
                 num: num
             }
             if (cartObjects.length !== 0) {
@@ -353,14 +366,14 @@ Page({
             that.amount()
             console.log("cartObjects")
             console.log(cartObjects)
-			wx.setStorage({
-				key: 'cartObjectsStorage',
-				data: cartObjects,
-			})
-			app.cartStorage()
+            wx.setStorage({
+                key: 'cartObjectsStorage',
+                data: cartObjects,
+            })
+            app.cartStorage()
         }
     },
-    cartAdd: function (e) {
+    cartAdd: function(e) {
         var that = this;
         var cartIndex = e.currentTarget.dataset.index;
         var cartObjects = that.data.cartObjects;
@@ -368,32 +381,32 @@ Page({
         that.setData({
             cartObjects: cartObjects
         })
-		that.amount()
-		wx.setStorage({
-			key: 'cartObjectsStorage',
-			data: cartObjects,
-		})
-		app.cartStorage()
+        that.amount()
+        wx.setStorage({
+            key: 'cartObjectsStorage',
+            data: cartObjects,
+        })
+        app.cartStorage()
     },
-    cartMinus: function (e) {
+    cartMinus: function(e) {
         var that = this;
         var cartIndex = e.currentTarget.dataset.index;
         var cartObjects = that.data.cartObjects;
         --cartObjects[cartIndex].num
         if (cartObjects[cartIndex].num == 0) {
             // delete cartObjects[cartIndex]
-			cartObjects.splice(cartIndex, 1);
+            cartObjects.splice(cartIndex, 1);
 
         }
         that.setData({
             cartObjects: cartObjects
         })
-		that.amount()
-		wx.setStorage({
-			key: 'cartObjectsStorage',
-			data: cartObjects,
-		})
-		app.cartStorage()
+        that.amount()
+        wx.setStorage({
+            key: 'cartObjectsStorage',
+            data: cartObjects,
+        })
+        app.cartStorage()
     },
     // 转换购物车数据
     cartToArray: function(foodId, goodsSpecDetail) {
@@ -477,7 +490,7 @@ Page({
         var orderway = that.data.orderway;
         var storeId = that.data.storeId;
         wx.navigateTo({
-            url: '../../pages/order-submit/order-submit?orderway=' + orderway + '&storeId=' + storeId, 
+            url: '../../pages/order-submit/order-submit?orderway=' + orderway + '&storeId=' + storeId,
             success: function(res) {},
             fail: function(res) {},
             complete: function(res) {},
@@ -505,7 +518,7 @@ Page({
         var cartFood;
         var goodsSpec
         var cart = {};
-		var num = 0;
+        var num = 0;
         var chooseFoodId = e.currentTarget.dataset.foodId;
         that.setData({
             isModal: true,
@@ -516,7 +529,7 @@ Page({
                 cartFood = goods[i];
             }
         }
-		cart.cartFood = cartFood;
+        cart.cartFood = cartFood;
         cart.num = num;
         goodsSpec = cartFood.goodsSpec;
         chooseObjects.push(cart);
@@ -527,7 +540,7 @@ Page({
             itemIndex1: 0,
         });
         console.log("choose.that.data.chooseObjects")
-		console.log(that.data.chooseObjects)
+        console.log(that.data.chooseObjects)
     },
     chooseList0: function() {
         var that = this;
@@ -536,10 +549,10 @@ Page({
         var goodsSpecDetail = that.data.goodsSpecDetail;
         var itemIndex0 = that.data.itemIndex0;
         var chooseLists = {
-			"detail": goodsSpec0.detail[itemIndex0].name
+            "detail": goodsSpec0.detail[itemIndex0].name
             // "detail": []
         }
-		// chooseLists.detail[0] = goodsSpec0.detail[itemIndex0].name
+        // chooseLists.detail[0] = goodsSpec0.detail[itemIndex0].name
         goodsSpecDetail.push(chooseLists)
         if (goodsSpecDetail.length > 1) {
             for (var i = 0; i < goodsSpecDetail.length; i++) {
@@ -559,11 +572,11 @@ Page({
         var goodsSpec1 = goodsSpec[1];
         var goodsSpecDetail = that.data.goodsSpecDetail;
         var chooseLists = {
-			"detail": goodsSpec0.detail[that.data.itemIndex0].name + "," + goodsSpec1.detail[that.data.itemIndex1].name
+            "detail": goodsSpec0.detail[that.data.itemIndex0].name + "," + goodsSpec1.detail[that.data.itemIndex1].name
             // "detail": []
         }
-		// chooseLists.detail[0] = goodsSpec0.detail[that.data.itemIndex0].name
-		// chooseLists.detail[1] = goodsSpec1.detail[that.data.itemIndex1].name
+        // chooseLists.detail[0] = goodsSpec0.detail[that.data.itemIndex0].name
+        // chooseLists.detail[1] = goodsSpec1.detail[that.data.itemIndex1].name
         goodsSpecDetail.push(chooseLists)
         if (goodsSpecDetail.length > 1) {
             for (var i = 0; i < goodsSpecDetail.length; i++) {
@@ -599,15 +612,15 @@ Page({
         })
     },
     // 清空购物车
-    deleteCart: function () {
+    deleteCart: function() {
         var that = this;
-		var cartObjects = [];
-		wx.setStorageSync('cartObjectsStorage', cartObjects)
+        var cartObjects = [];
+        wx.setStorageSync('cartObjectsStorage', cartObjects)
         that.setData({
-			cartObjects: cartObjects,
-			amount: "0.00",
-			num: ""
-		});
+            cartObjects: cartObjects,
+            amount: "0.00",
+            num: ""
+        });
     },
     amount: function(cartObjects) {
         var that = this;
@@ -615,7 +628,7 @@ Page({
         var amount = 0;
         var num = 0;
         cartObjects.forEach(function(item, index) {
-            amount += item.num * item.sprice;
+            amount += item.num * item.price;
             num += item.num;
         });
         that.setData({
@@ -633,12 +646,12 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function() {
-		var that = this;
-		// 获取选择店铺
-		var storeId = wx.getStorageSync('menuStoreId');
-		if (storeId) {
-			that.showStore(storeId)
-		}
+        var that = this;
+        // 获取选择店铺
+        var storeId = wx.getStorageSync('menuStoreId');
+        if (storeId) {
+            that.showStore(storeId)
+        }
         // 实例化API核心类
         var demo = new QQMapWX({
             key: app.globalData.locationKey // 必填

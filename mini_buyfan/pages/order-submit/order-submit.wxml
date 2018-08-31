@@ -87,10 +87,10 @@
         </view>
         <view class='items'>
             <view class='item' wx:key="unique" wx:for="{{cartObjects}}">
-                <image class='goods' src='{{item.goodsImage}}'></image>
+                <image class='goods' src='{{item.img}}'></image>
                 <view class='info'>
                     <view class='top'>
-                        <view class='name'>{{item.goodsName}}</view>
+                        <view class='name'>{{item.name}}<text wx:if="{{item.spec}}"> ({{item.spec}})</text></view>
                         <view class='price'>{{item.numPrice}}</view>
                     </view>
                     <view class='bottom'>

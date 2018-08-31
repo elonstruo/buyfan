@@ -349,11 +349,11 @@ page {
 }
 
 .scroll-view_H.on .scroll-view-item_H, 
-.scroll-view_H.on .scroll-view-item_H image {
+.scroll-view_H.on .scroll-view-item_H image.store-img {
     display: block;
     margin: 0 auto;
-    /* width: 690rpx;
-    height: 432rpx; */
+    width: 690rpx;
+    height: 432rpx;
 }
 
 .appraises-titles {

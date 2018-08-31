@@ -275,7 +275,7 @@ App({
         return num;
     },
     // 微信支付
-    wxpay: function(key, order_sn) {
+    wxpay: function(key, order_sn, funName) {
         var that = this;
         wx.request({
 			url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
@@ -308,9 +308,12 @@ App({
 							console.log("success/pay/res")
                             console.log(res)
 							that.showBox("支付成功")
-                            wx.navigateBack({
-                                delta: 1,
-                            })
+							wx.navigateTo({
+								url: 'page/orders/orders',
+								success: function(res) {},
+								fail: function(res) {},
+								complete: function(res) {},
+							})
                         },
                         fail: function(res) {
 							// if (res.errMsg == "requestPayment:fail cancel") {

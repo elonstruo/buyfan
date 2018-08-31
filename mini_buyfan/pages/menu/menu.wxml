@@ -133,10 +133,10 @@
                 </view>
                 <scroll-view class="modal-body" scroll-y="true" style="height: {{scrollHeight}}px;">
                     <view class="item" wx:key="unique" wx:for="{{cartObjects}}">
-                        <view class="title">{{item.goodsName}}
-							<text class='detail'wx:key="unique" wx:for="{{item.goodsSpecDetail}}">（{{item.detail}}）</text>
+                        <view class="title">{{item.name}}
+							<text class='detail' wx:if="{{item.spec}}">（{{item.spec}}）</text>
 						</view>
-                        <view class="fee">¥{{item.sprice * item.num}}</view>
+                        <view class="fee">¥{{item.price * item.num}}</view>
                         <view class="cart-count-box">
                             <!-- 减号 -->
                             <text class="cart-count-wrap cart-count-down" data-index="{{index}}" bindtap="cartMinus" data-food-id="{{item.gid}}" wx:if="{{item.num}}">-</text>
@@ -159,22 +159,22 @@
                 <view data-id='2' bindtap='appraisesClick' class='appraises-title {{selectA == 2 ? "on":""}}'>最热</view>
             </view>
             <view class='appraisesTabDetails'>
-                <view class='item'>
-                    <image class='header' src='../../images/shopimg.jpg'></image>
+                <view class='item' wx:key="unique" wx:for="{{comments}}">
+                    <image class='header' src='{{item.userImg}}'></image>
                     <view class='right'>
                         <view class='top'>
-                            <view class='name'>天下最弱</view>
-                            <view class='time'>17小时前</view>
+                            <view class='name'>{{item.username}}</view>
+                            <view class='time'>{{commentTime}}</view>
                         </view>
-                        <view class='content'>告辞</view>
-                        <view class='appraises-imgList'>
-                            <block wx:key="unique" wx:for="{{appraisesImgList}}">
-                                <image mode="aspectFill" src="{{item}}"></image>
+                        <view class='content'>{{item.comment}}</view>
+                        <view class='appraises-imgList' bindtap='previewImage' data-commentImg="{{item.commentImg}}">
+                            <block wx:key="unique" wx:for="{{item.commentImg}}">
+                                <image bindtap='getAppraisesIndex' data-imgsrc="{{imgsrc}}"  mode="aspectFill" src="{{item}}"></image>
                             </block>
                         </view>
                         <view bindtap='likeClick' class='like'>
                             <image class='icon-like' src='../../images/icon-like.png'></image>
-                            <view class='like-text'>{{likeNum}}人点赞</view>
+                            <view class='like-text'>{{item.likenum}}人点赞</view>
                         </view>
                     </view>
                 </view>
@@ -197,9 +197,9 @@
                 </view>
                 <view class='stores-img'>
                     <view class="page-section-spacing">
-                        <scroll-view class='scroll-view_H {{item.shopImg.length == 1 ? "on" :"" }}' scroll-x="true" bindscroll="scroll" style="width: 100%" data-length="{{item.shopImg.length}}">
+                        <scroll-view bindtap='previewImage' data-commentimg="{{item.shopImg}}" class='scroll-view_H {{item.shopImg.length == 1 ? "on" :"" }}' scroll-x="true" bindscroll="scroll" style="width: 100%" data-length="{{item.shopImg.length}}">
                             <view wx:key="unique" wx:for="{{item.shopImg}}" class='scroll-view-item_H'>
-                                <image class='store-img' mode="aspectFill" bindtap='previewImage' src='{{item}}'></image>
+                                <image bindtap='getAppraisesIndex' data-imgsrc="{{item}}" class='store-img' mode="aspectFill"  src='{{item}}'></image>
                             </view>
                         </scroll-view>
                     </view>

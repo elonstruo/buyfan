@@ -137,7 +137,7 @@ Page({
         }
         var cartObjects = that.data.cartObjects
         for (var i = 0; i < cartObjects.length; i++) {
-            var numPrice = cartObjects[i].num * cartObjects[i].sprice
+            var numPrice = cartObjects[i].num * cartObjects[i].price
             cartObjects[i].numPrice = numPrice
         }
         that.setData({
@@ -265,7 +265,7 @@ Page({
         var amount = 0;
         var num = 0;
         cartObjects.forEach(function(item, index) {
-            amount += item.num * item.sprice;
+            amount += item.num * item.price;
             num += item.num;
         });
         that.setData({
@@ -402,7 +402,8 @@ Page({
 				ordernum: out_trade_no,
 				content: JSON.stringify(content),
 				userInfor: JSON.stringify(userInforSubmit),
-				price: that.data.allAmount,
+				// price: that.data.allAmount,
+				price: 0.01,
 				remark: that.data.remarkText,
 				pickState: that.data.pickState,
 				cshopid: parseInt(that.data.storeId),
@@ -429,6 +430,15 @@ Page({
                     userInforSubmit: {}
                 })
         	},
+		})
+	},
+	// 前往订单页
+	toOrders: function () {
+		wx.navigateTo({
+			url: '../../page/orders/orders',
+			success: function(res) {},
+			fail: function(res) {},
+			complete: function(res) {},
 		})
 	},
     /**
