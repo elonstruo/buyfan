@@ -1,9 +1,10 @@
 <!--pages/takeOut/takeOut.wxml-->
-<view class='takeOutNone'>
+<!-- <view class='takeOutNone'>
 	<view>
 		<image class='img-order' src='../../images/run_form@2x.png'></image>
-		<view class='none-title'>暂时没有订单在配送</view>
+		<view class='none-title'>暂时没有订单在配送</view> -->
 		<!-- <navigator class='take-order' url='../../pages/menu/menu'>去点餐
 		</navigator> -->
-	</view>
-</view>
+	<!-- </view>
+</view> -->
+<map id="map" longitude="{{shoplog}}" latitude="{{shoplat}}" scale="14" controls="{{controls}}" bindcontroltap="controltap" markers="{{markers}}" bindmarkertap="markertap" polyline="{{polyline}}" bindregionchange="regionchange" show-location style="width: 100%; height: 300px;"></map>

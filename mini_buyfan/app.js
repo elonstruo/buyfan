@@ -311,7 +311,7 @@ App({
                             console.log(res)
 							that.showBox("支付成功")
 							wx.navigateTo({
-								url: 'page/orders/orders',
+								url: '../orders/orders',
 								success: function(res) {},
 								fail: function(res) {},
 								complete: function(res) {},

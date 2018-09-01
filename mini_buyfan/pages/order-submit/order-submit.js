@@ -406,6 +406,7 @@ Page({
 				// price: that.data.allAmount,
 				price: 0.01,
 				remark: that.data.remarkText,
+				couponid: that.data.couponid,
 				pickState: that.data.pickState,
 				cshopid: parseInt(that.data.storeId),
 				cshopinfor: JSON.stringify(that.data.cshopinfor),
@@ -453,10 +454,6 @@ Page({
      * 生命周期函数--监听页面初次渲染完成
      */
 	onReady: function () {
-
-	},
-	// 获取优惠券换算总额
-	amountbycoupon: function (money) {
 
 	},
     /**
@@ -514,7 +511,8 @@ Page({
 						cut = userCoupon.cDetail.discounts
 						that.setData({
 							cut: cut,
-							amount: cutmam
+							amount: cutmam,
+							couponid: userCoupon.cid
 						})
 						that.allAmount()
 					}
@@ -527,7 +525,8 @@ Page({
 						cut = amount - cutmam;
 						that.setData({
 							cut: cut.toFixed(2),
-							amount: cutmam
+							amount: cutmam,
+							couponid: userCoupon.cid
 						})
 						that.allAmount()
 					}
@@ -540,12 +539,14 @@ Page({
 							amount = amount - cut;
 							that.setData({
 								amount: amount,
-								cut: cut
+								cut: cut,
+								couponid: userCoupon.cid
 							})
 							that.allAmount()
 						} else {
 							that.setData({
-								cut: ""
+								cut: "",
+								couponid: ""
 							})
 							wx.setStorageSync('userCoupon', "")
 							that.amount()
