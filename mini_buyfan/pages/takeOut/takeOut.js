@@ -87,7 +87,20 @@ Page({
 								width: 28,
 								height: 37
 							}
-						],
+						], 
+						polyline: [{
+							points: [{
+								latitude: shoplat,
+								longitude: shoplog,
+							},{
+									latitude: homelat,
+									longitude: homelog,
+								}
+							],
+      						color: "#FF0000DD",
+							width: 2,
+							dottedLine: true
+						}]
 					})
 					console.log("markers")
 					console.log(that.data.markers)
