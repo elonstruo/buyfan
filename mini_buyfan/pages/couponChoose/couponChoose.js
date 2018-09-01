@@ -182,7 +182,7 @@ Page({
 	},
 	// 使用优惠券
 	useCoupon: function (e) {
-		console.log(e)
+		// console.log(e)
 		var userCoupon = e.currentTarget.dataset.coupon
 		wx.setStorageSync('userCoupon', userCoupon)
 		wx.navigateBack({
