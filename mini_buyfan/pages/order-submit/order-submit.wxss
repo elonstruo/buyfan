@@ -178,6 +178,9 @@ page {
 .tips text {
     margin-right: 50rpx;
 }
+.coupon-choose text {
+    margin-right: 0;
+}
 
 .addall {
     margin-bottom: 20rpx;
@@ -337,4 +340,15 @@ page {
 	/* margin-top: 20rpx; */
 	display: flex;
 	justify-content: space-between
+}
+.couponresult {
+	line-height: 90rpx;
+	display: flex;
+	align-items: center;
+	font-size: 24rpx;
+	color: #CC6061;
+}
+.couponresult .cut {
+	font-size: 30rpx;
+	font-weight: bold;
 }

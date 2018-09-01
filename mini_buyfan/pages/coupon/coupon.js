@@ -40,30 +40,25 @@ Page({
     onLoad: function(options) {
 		var that = this;
 		var uid;
+		var uid = wx.getStorageSync('uid');
+		that.setData({
+			uid: uid
+		})
 		// var skey;
-		if (app.globalData.userInfo) {
+		// if (app.globalData.userInfo) {
 			// console.log("coupon.app.globalData.userInfo")
 			// console.log(app.globalData.userInfo.data)
-			uid = app.globalData.userInfo.data.uid
+			// uid = app.globalData.userInfo.data.uid
 			// skey = app.globalData.userInfo.data.skey
-			that.setData({
+			// that.setData({
 				// skey: skey
-				uid: uid
-			})
-		}
-		// 商家优惠券信息
-		that.storeCoupon()
-        // 个人优惠券信息
-		that.userCoupon()
-		// wx.createSelectorQuery().select('.none').boundingClientRect(function (rect) {
-		// 	that.setData({
-		// 		noneHeight: rect.height - 80
-		// 	})
-		// }).exec()
+				// uid: uid
+			// })
+		// }
     },
+	// 用户优惠券信息
 	userCoupon: function () {
 		var that = this;
-		// 用户优惠券信息
 		wx.request({
 			url: 'https://app.jywxkj.com/shop/baifen/request/couponmanage.php',
 			data: {
@@ -80,11 +75,7 @@ Page({
 				var used = [];
 				var cantUse = [];
                 if (res.statusCode == 200) {
-					console.log('coupon.res')
-					console.log(res)
 					var couponlist = res.data.data
-					console.log("couponlist")
-					console.log(couponlist)
 					if (couponlist.length) {
 						for (var i = 0; i < couponlist.length; i++) {
 							if (couponlist[i].usable == "0") {
@@ -104,6 +95,10 @@ Page({
 								})
 							} 
 						}
+						that.setData({
+							activeCategoryId: that.data.activeCategoryId
+						})
+						that.taborder()
 					}
 				} else {
 					app.showBox("网络出错")
@@ -183,6 +178,13 @@ Page({
 			activeCategoryId: e.currentTarget.dataset.id
 		});
 		var activeCategoryId = that.data.activeCategoryId;
+		that.taborder()
+	},
+
+	// tab判断
+	taborder: function () {
+		var that = this;
+		var activeCategoryId = that.data.activeCategoryId;
 		if (activeCategoryId == 0) {
 			that.setData({
 				statusText: "立刻获取",
@@ -224,7 +226,11 @@ Page({
      */
     onShow: function() {
 		var that = this;
-		var activeCategoryId =that.data.activeCategoryId;
+		var activeCategoryId = that.data.activeCategoryId;
+		// 商家优惠券信息
+		that.storeCoupon()
+		// 个人优惠券信息
+		that.userCoupon()
     },
 
     /**

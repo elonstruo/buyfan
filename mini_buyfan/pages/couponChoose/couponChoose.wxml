@@ -45,7 +45,7 @@
                 <!-- 最新优惠券 -->
 				<view wx:if="{{activeCategoryId==0}}" bindtap='getCoupon' data-cid="{{item.cid}}"  class='coupon-statu {{item.getstate == 0 ? "coupon-button" : ""}}'>{{item.getremark}}</view>
                 <!-- 未使用优惠券 -->
-				<view wx:if="{{activeCategoryId==1}}" bindtap='getCoupon' data-cid="{{item.cid}}"  class='coupon-statu {{item.usable==0 ? "coupon-button" : ""}}'>{{usableable[item.usable]}}</view>
+				<button wx:if="{{activeCategoryId==1}}" bindtap='useCoupon' data-coupon="{{item}}" data-cid="{{item.cid}}" disabled='{{item.usable!=0}}'  class='coupon-statu {{item.usable==0 ? "coupon-button" : ""}}'>{{usableable[item.usable]}}</button>
 			</view>
 		</view>
 		<view class='border-img-box border-img-right'></view>

@@ -48,8 +48,8 @@ Page({
 				that.setData({
 					appSlideshow: appSlideshow,
 				})
-                console.log("index.app.actionDataCallback")
-                console.log(res)
+                // console.log("index.app.actionDataCallback")
+                // console.log(res)
 			}
 		}
 

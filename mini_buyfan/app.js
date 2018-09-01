@@ -197,8 +197,9 @@ App({
                         console.log("loginsuccess")
                         console.log(res)
                         if (res.data.data.skey) {
-                            that.globalData.userInfo = res.data;
+							that.globalData.userInfo = res.data;
 							wx.setStorageSync('key', res.data.data.skey);
+							wx.setStorageSync('uid', res.data.data.uid);
 						} else {
 							// that.has_login()
                             // wx.showModal({
@@ -252,6 +253,7 @@ App({
 						})
 					} else {
 						that.globalData.userInfo = res.data;
+						wx.setStorageSync('uid', res.data.data.uid);
 					}
                 },
             })

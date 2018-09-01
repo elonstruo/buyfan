@@ -90,7 +90,9 @@
                 <image class='goods' src='{{item.img}}'></image>
                 <view class='info'>
                     <view class='top'>
-                        <view class='name'>{{item.name}}<text wx:if="{{item.spec}}"> ({{item.spec}})</text></view>
+                        <view class='name'>{{item.name}}
+                            <text wx:if="{{item.spec}}"> ({{item.spec}})</text>
+                        </view>
                         <view class='price'>{{item.numPrice}}</view>
                     </view>
                     <view class='bottom'>
@@ -108,9 +110,12 @@
             <text>备注</text>
             <input name="tips" bindinput='remark' placeholder='口味·偏好要求' class='tips-title'></input>
         </view>
-        <view class='tips coupon-choose'>
+        <view bindtap='toCoupon' class='tips coupon-choose'>
             <text>优惠券</text>
-            <image class='icon-arrow' src='../../images/in@2x.png'></image>
+            <view class='couponresult'>
+                <text wx:if="{{cut}}">-¥<text class='cut'>{{cut}}</text></text>
+                <image class='icon-arrow' src='../../images/in@2x.png'></image>
+            </view>
         </view>
         <view class='addall'>
             小计

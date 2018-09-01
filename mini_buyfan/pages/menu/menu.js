@@ -75,8 +75,8 @@ Page({
         }
         // 个人信息
         if (app.globalData.userInfo) {
-            console.log("menu.app.globalData.userInfo")
-            console.log(app.globalData.userInfo)
+            // console.log("menu.app.globalData.userInfo")
+            // console.log(app.globalData.userInfo)
             var uid = app.globalData.userInfo.data.uid;
             that.setData({
                 uid: uid
@@ -315,7 +315,7 @@ Page({
             }
             if (cartObjects.length !== 0) {
                 for (var i = 0; i < cartObjects.length; i++) {
-                    if (cartObjects[i].gid == foodId && cartObjects[i].goodsSpecDetail[0].detail == goodsSpecDetail[0].detail) {
+					if (cartObjects[i].gid == foodId && cartObjects[i].spec == goodsSpecDetail[0].detail) {
                         cartObjects[i].num = ++cartObjects[i].num;
                         cartData = cartObjects[i];
                         cartObjects.splice(i, 1);

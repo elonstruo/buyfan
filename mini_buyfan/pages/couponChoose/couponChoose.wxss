@@ -1,2 +1,9 @@
 /* pages/couponChoose/couponChoose.wxss */
 @import "../coupon/coupon.wxss";
+button.coupon-statu {
+	margin: 0;
+	margin-bottom:27rpx;
+}
+button.coupon-statu::after {
+	border: none;
+}

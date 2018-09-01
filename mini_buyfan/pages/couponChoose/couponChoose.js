@@ -1,4 +1,5 @@
 // pages/couponChoose/couponChoose.js
+// pages/coupon/coupon.js
 const app = getApp();
 const ctx = wx.createCanvasContext('tag')
 ctx.rotate(20 * Math.PI / 180)
@@ -8,15 +9,15 @@ Page({
      * 页面的初始数据
      */
 	data: {
+		activeCategoryId: 1,
 		canUse: [],
 		used: [],
 		cantUse: [],
 		tagName: "优惠券",
 		// cSort: 0,
 		isButton: true,
-		type_sort: ["最新", "未使用"],
-		usableable: ["使用"],
-		activeCategoryId: 0,
+		type_sort: ["最新", "未使用", "已使用", "已过期"],
+		usableable: ["去使用", "已使用", "已过期"],
 		statusText: "立即获取",
 		gotText: "立即获取",
 		gotCoupon: false,
@@ -40,30 +41,25 @@ Page({
 	onLoad: function (options) {
 		var that = this;
 		var uid;
+		var uid = wx.getStorageSync('uid');
+		that.setData({
+			uid: uid
+		})
 		// var skey;
-		if (app.globalData.userInfo) {
+		// if (app.globalData.userInfo) {
 			// console.log("coupon.app.globalData.userInfo")
 			// console.log(app.globalData.userInfo.data)
-			uid = app.globalData.userInfo.data.uid
+			// uid = app.globalData.userInfo.data.uid
 			// skey = app.globalData.userInfo.data.skey
-			that.setData({
+			// that.setData({
 				// skey: skey
-				uid: uid
-			})
-		}
-		// 商家优惠券信息
-		that.storeCoupon()
-		// 个人优惠券信息
-		that.userCoupon()
-		// wx.createSelectorQuery().select('.none').boundingClientRect(function (rect) {
-		// 	that.setData({
-		// 		noneHeight: rect.height - 80
-		// 	})
-		// }).exec()
+				// uid: uid
+			// })
+		// }
 	},
+	// 用户优惠券信息
 	userCoupon: function () {
 		var that = this;
-		// 用户优惠券信息
 		wx.request({
 			url: 'https://app.jywxkj.com/shop/baifen/request/couponmanage.php',
 			data: {
@@ -88,16 +84,19 @@ Page({
 								that.setData({
 									canUse: canUse
 								})
+								that.taborder()
 							} else if (couponlist[i].usable == "1") {
 								used.push(couponlist[i])
 								that.setData({
 									used: used
 								})
+								that.taborder()
 							} else if (couponlist[i].usable == "2") {
 								cantUse.push(couponlist[i])
 								that.setData({
 									cantUse: cantUse
 								})
+								that.taborder()
 							}
 						}
 					}
@@ -179,6 +178,21 @@ Page({
 			activeCategoryId: e.currentTarget.dataset.id
 		});
 		var activeCategoryId = that.data.activeCategoryId;
+		that.taborder()
+	},
+	// 使用优惠券
+	useCoupon: function (e) {
+		console.log(e)
+		var userCoupon = e.currentTarget.dataset.coupon
+		wx.setStorageSync('userCoupon', userCoupon)
+		wx.navigateBack({
+			delta: 1,
+		})
+	},
+	// tab判断
+	taborder: function () {
+		var that = this;
+		var activeCategoryId = that.data.activeCategoryId;
 		if (activeCategoryId == 0) {
 			that.setData({
 				statusText: "立刻获取",
@@ -221,6 +235,10 @@ Page({
 	onShow: function () {
 		var that = this;
 		var activeCategoryId = that.data.activeCategoryId;
+		// 商家优惠券信息
+		that.storeCoupon()
+		// 个人优惠券信息
+		that.userCoupon()
 	},
 
     /**
