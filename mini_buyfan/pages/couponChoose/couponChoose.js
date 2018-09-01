@@ -1,4 +1,4 @@
-// pages/coupon/coupon.js
+// pages/couponChoose/couponChoose.js
 const app = getApp();
 const ctx = wx.createCanvasContext('tag')
 ctx.rotate(20 * Math.PI / 180)
@@ -7,15 +7,15 @@ Page({
     /**
      * 页面的初始数据
      */
-    data: {
+	data: {
 		canUse: [],
 		used: [],
 		cantUse: [],
 		tagName: "优惠券",
 		// cSort: 0,
 		isButton: true,
-		type_sort: ["最新", "未使用", "已使用", "已过期"],
-		usableable: ["去使用", "已使用","已过期"],
+		type_sort: ["最新", "未使用"],
+		usableable: ["使用"],
 		activeCategoryId: 0,
 		statusText: "立即获取",
 		gotText: "立即获取",
@@ -32,12 +32,12 @@ Page({
 				time: "2018.05.19-2018.07.17"
 			}
 		]
-    },
+	},
 
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad: function(options) {
+	onLoad: function (options) {
 		var that = this;
 		var uid;
 		// var skey;
@@ -53,14 +53,14 @@ Page({
 		}
 		// 商家优惠券信息
 		that.storeCoupon()
-        // 个人优惠券信息
+		// 个人优惠券信息
 		that.userCoupon()
 		// wx.createSelectorQuery().select('.none').boundingClientRect(function (rect) {
 		// 	that.setData({
 		// 		noneHeight: rect.height - 80
 		// 	})
 		// }).exec()
-    },
+	},
 	userCoupon: function () {
 		var that = this;
 		// 用户优惠券信息
@@ -79,12 +79,8 @@ Page({
 				var canUse = [];
 				var used = [];
 				var cantUse = [];
-                if (res.statusCode == 200) {
-					console.log('coupon.res')
-					console.log(res)
+				if (res.statusCode == 200) {
 					var couponlist = res.data.data
-					console.log("couponlist")
-					console.log(couponlist)
 					if (couponlist.length) {
 						for (var i = 0; i < couponlist.length; i++) {
 							if (couponlist[i].usable == "0") {
@@ -102,7 +98,7 @@ Page({
 								that.setData({
 									cantUse: cantUse
 								})
-							} 
+							}
 						}
 					}
 				} else {
@@ -161,20 +157,20 @@ Page({
 				'Content-Type': 'application/x-www-form-urlencoded'
 			},
 			method: 'post',
-			success: function(res) {
-                if (res.statusCode == 200) {
+			success: function (res) {
+				if (res.statusCode == 200) {
 					that.setData({
 						// gotText:"已领取"
-                    })
-                    // 商家优惠券信息
-                    that.storeCoupon()
-                    // 个人优惠券信息
-                    that.userCoupon()
-                    app.showBox("领取成功！")
+					})
+					// 商家优惠券信息
+					that.storeCoupon()
+					// 个人优惠券信息
+					that.userCoupon()
+					app.showBox("领取成功！")
 				}
 			},
-			fail: function(res) {},
-			complete: function(res) {},
+			fail: function (res) { },
+			complete: function (res) { },
 		})
 	},
 	categoryClick: function (e) {
@@ -215,50 +211,50 @@ Page({
     /**
      * 生命周期函数--监听页面初次渲染完成
      */
-    onReady: function() {
+	onReady: function () {
 
-    },
+	},
 
     /**
      * 生命周期函数--监听页面显示
      */
-    onShow: function() {
+	onShow: function () {
 		var that = this;
-		var activeCategoryId =that.data.activeCategoryId;
-    },
+		var activeCategoryId = that.data.activeCategoryId;
+	},
 
     /**
      * 生命周期函数--监听页面隐藏
      */
-    onHide: function() {
+	onHide: function () {
 
-    },
+	},
 
     /**
      * 生命周期函数--监听页面卸载
      */
-    onUnload: function() {
+	onUnload: function () {
 
-    },
+	},
 
     /**
      * 页面相关事件处理函数--监听用户下拉动作
      */
-    onPullDownRefresh: function() {
+	onPullDownRefresh: function () {
 
-    },
+	},
 
     /**
      * 页面上拉触底事件的处理函数
      */
-    onReachBottom: function() {
+	onReachBottom: function () {
 
-    },
+	},
 
     /**
      * 用户点击右上角分享
      */
-    onShareAppMessage: function() {
+	onShareAppMessage: function () {
 
-    }
+	}
 })

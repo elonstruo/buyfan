@@ -333,3 +333,8 @@ page {
     border-radius: 50rpx;
 	font-size: 30rpx; 
 }
+.coupon-choose {
+	/* margin-top: 20rpx; */
+	display: flex;
+	justify-content: space-between
+}
