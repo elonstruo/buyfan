@@ -70,12 +70,13 @@ Page({
         var userInforArr = that.data.userInforArr;
             userInforArr.push(userInforForm)
 		console.log(userInforArr)
+        console.log(JSON.stringify(userInforArr))
 		wx.request({
 			url: 'https://app.jywxkj.com/shop/baifen/request/usermanage.php',
 			data: {
 				action: 'modifyadr',
 				skey: that.data.skey,
-				userInfor: userInforArr
+				userInfor: JSON.stringify(userInforArr)
 			},
 			header: {
 				'Content-Type': 'application/x-www-form-urlencoded'

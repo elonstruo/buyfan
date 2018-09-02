@@ -77,30 +77,28 @@ Page({
 							id: 0,
 							latitude: shoplat,
 							longitude: shoplog,
+                            // longitude: 113.3245211,
+                            // latitude: 23.10229,
 							width: 28,
 							height: 37
 						},{
 								iconPath: "../../images/icon-map-home.png",
 								id: 1,
 								latitude: homelat,
-								longitude: homelog,
+                                longitude: homelog,
+                                // latitude: 116.369463,
+                                // longitude: 23.533443,
 								width: 28,
 								height: 37
-							}
+                            }, {
+                                iconPath: "../../images/icon-map-run.png",
+                                id: 2,
+                                latitude: homelat,
+                                longitude: homelog,
+                                width: 28,
+                                height: 37
+                            }
 						], 
-						polyline: [{
-							points: [{
-								latitude: shoplat,
-								longitude: shoplog,
-							},{
-									latitude: homelat,
-									longitude: homelog,
-								}
-							],
-      						color: "#FF0000DD",
-							width: 2,
-							dottedLine: true
-						}]
 					})
 					console.log("markers")
 					console.log(that.data.markers)
@@ -178,7 +176,6 @@ Page({
 							homelat: homelat,
 							homelog: homelog,
 						})
-						
 					}
 				},
 				fail: function(res) {

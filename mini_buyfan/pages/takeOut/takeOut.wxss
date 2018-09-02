@@ -40,3 +40,50 @@ page {
 	height: 100vh;
 	min-height: 100vh;
 }
+.run-state {
+    position: fixed;
+    left: 50%;
+    margin-left: -335rpx;
+    bottom: 20rpx;
+    width:670rpx;
+    height:280rpx;
+    background:rgba(255,255,255,1);
+    border-radius:10rpx;
+    box-shadow:0rpx 2rpx 4rpx 0rpx rgba(45,30,24,0.2);
+}
+.state-text {
+    font-size: 36rpx;
+    color: #323232;
+    text-align: center;
+    margin-top: 30rpx;
+    margin-bottom: 34rpx;
+    font-weight: bold;
+    
+}
+.reminde {
+    width:200rpx;
+    height:68rpx;
+    line-height:68rpx;
+    margin: 0 auto;
+    border:2rpx solid rgba(255,104,22,1);
+    color: #FF6816;
+    text-align: center;
+    border-radius:10rpx;
+    font-size: 30rpx
+}
+.run-state .time {
+    margin-bottom: 34rpx;
+    text-align: center;
+    font-size: 28rpx;
+}
+.run-state .time .tiem-text {
+    display: inline;
+    color: #6F8CB7
+}
+.icon-map-clock {
+    display: inline-block;
+    width: 32rpx;
+    height: 32rpx;
+    vertical-align: middle;
+    margin-right: 12rpx;
+}

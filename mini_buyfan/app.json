@@ -1,18 +1,18 @@
 {
     "pages": [
-		"pages/index/index",
+        "pages/user/user",
+        "pages/address/address",
+        "pages/takeOut/takeOut",
+        "pages/index/index",
         "pages/couponChoose/couponChoose",
 		"pages/coupon/coupon",
         "pages/orders/orders",
-        "pages/user/user",
-        "pages/address/address",
         "pages/order-submit/order-submit",
         "pages/edtiAddress/edtiAddress",
         "pages/menu/menu",
         "pages/stores/stores",
         "pages/vip/vip",
         "pages/appraise/appraise",
-        "pages/takeOut/takeOut",
         "pages/order-details/order-details",
         "pages/tem/tem",
         "pages/logs/logs"

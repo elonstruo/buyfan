@@ -515,7 +515,15 @@ Page({
 							couponid: userCoupon.cid
 						})
 						that.allAmount()
-					}
+                    } else {
+                        that.setData({
+                            cut: "",
+                            couponid: ""
+                        })
+                        wx.setStorageSync('userCoupon', "")
+                        that.amount()
+                        that.allAmount()
+                    }
 				} else if (userCoupon.cSort == 1) {
 					that.amount()
 					var amount = that.data.amount;
@@ -529,7 +537,15 @@ Page({
 							couponid: userCoupon.cid
 						})
 						that.allAmount()
-					}
+                    } else {
+                        that.setData({
+                            cut: "",
+                            couponid: ""
+                        })
+                        wx.setStorageSync('userCoupon', "")
+                        that.amount()
+                        that.allAmount()
+                    }
 				} else if (userCoupon.cSort == 2) {
 					that.amount()
 					var amount = that.data.amount;
