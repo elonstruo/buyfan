@@ -302,6 +302,7 @@ Page({
                 goodsSpec: goodsSpecLength,
                 spec: chooseObjects.spec,
                 num: num,
+                
             }
             goodsSpecDetail = that.data.goodsSpecDetail;
             if (cartObjects.length !== 0) {
@@ -373,9 +374,13 @@ Page({
     cartAdd: function(e) {
         var that = this;
         var cartIndex = e.currentTarget.dataset.index;
+        var foodId = e.currentTarget.dataset.foodId;
         var cartObjects = that.data.cartObjects;
+        var cart = that.data.cart;
         cartObjects[cartIndex].num = ++cartObjects[cartIndex].num
+        cart[foodId] = cartObjects[cartIndex].num
         that.setData({
+            cart: cart,
             cartObjects: cartObjects
         })
         that.amount()
@@ -388,14 +393,18 @@ Page({
     cartMinus: function(e) {
         var that = this;
         var cartIndex = e.currentTarget.dataset.index;
+        var foodId = e.currentTarget.dataset.foodId;
+        var cart = that.data.cart;
         var cartObjects = that.data.cartObjects;
         --cartObjects[cartIndex].num
+        cart[foodId] = cartObjects[cartIndex].num
         if (cartObjects[cartIndex].num == 0) {
             // delete cartObjects[cartIndex]
             cartObjects.splice(cartIndex, 1);
-
+            cart[foodId] = ""
         }
         that.setData({
+            cart: cart,
             cartObjects: cartObjects
         })
         that.amount()
@@ -412,6 +421,7 @@ Page({
         // console.log(e)
         var that = this;
         var foodId = e.currentTarget.dataset.foodId;
+        var cartData = that.data.cartData;
         // 读取目前购物车数据
         var cart = that.data.cart;
         // 获取当前商品数量
@@ -429,93 +439,50 @@ Page({
             cart: cart
         });
         var cartObjects = that.data.cartObjects;
-        var cartData = that.data.cartData;
-        var goodsSpecDetail;
-        var chooseObjects = that.data.chooseObjects
-        var goods = that.data.goods
-        var goodsSpecLength = e.currentTarget.dataset.goodsSpec;
-        var oroginDetails;
-        var detailsArr = that.data.detailsArr;
-        if (chooseObjects.length > 0) {
-            chooseObjects = that.data.chooseObjects
-        }
-        if (goodsSpecLength !== null && goodsSpecLength !== "null" && goodsSpecLength.length >= 1) {
-            cartData = {
-                gid: chooseObjects.gid,
-                name: chooseObjects.name,
-                img: chooseObjects.img,
-                price: chooseObjects.price,
-                goodsSpec: goodsSpecLength,
-                spec: chooseObjects.spec,
-                num: num,
-            }
-            goodsSpecDetail = that.data.goodsSpecDetail;
-            if (cartObjects.length !== 0) {
-                for (var i = 0; i < cartObjects.length; i++) {
-                    if (cartObjects[i].gid == foodId) {
-                        cartObjects[i].quantity = cart[foodId];
-                    }
-                    if (cartObjects[i].gid == foodId && cartObjects[i].spec == chooseObjects.spec) {
-                        cartObjects[i].num = ++cartObjects[i].num;
-                        cartData = cartObjects[i];
+        var chooseObjects = e.currentTarget.dataset.chooseobjects;
+        if (chooseObjects) {
+            for (var i = 0; i < cartObjects.length; i++) {
+                if (cartObjects[i].gid == foodId && cartObjects[i].spec == chooseObjects.spec) {
+                    cartObjects[i].num = --cartObjects[i].num;
+                    chooseObjects.num = cartObjects[i].num;
+                    cart[foodId] = cartObjects[i].num;
+                    if (cartObjects[i].num == 0) {
                         cartObjects.splice(i, 1);
+                        chooseObjects.num = "";
                     }
                 }
+                that.setData({
+                    cartObjects: cartObjects,
+                    chooseObjects: chooseObjects
+                })
+                that.amount()
+                wx.setStorage({
+                    key: 'cartObjectsStorage',
+                    data: cartObjects,
+                })
+                app.cartStorage()
             }
-            cartObjects.push(cartData)
-            that.setData({
-                cartObjects: cartObjects,
-				chooseObjects: cartData,
-            })
-            that.amount()
-            wx.setStorage({
-                key: 'cartObjectsStorage',
-                data: cartObjects,
-            })
-            app.cartStorage()
-
         } else {
-            for (var i = 0; i < goods.length; i++) {
-                if (goods[i].gid == foodId) {
-                    var cartFood = goods[i];
-                }
-            } 
-            
-            cartData = {
-                gid: cartFood.gid,
-                name: cartFood.goodsName,
-                img: cartFood.goodsImage,
-                price: cartFood.sPrice,
-                num: num
-            }
-            
-            if (cartObjects.length !== 0) {
-                for (var i = 0; i < cartObjects.length; i++) {
-                    if (cartObjects[i].gid == foodId) {
-                        cartObjects[i].num = ++cartObjects[i].num;
-                        cartData = cartObjects[i]
+            for (var i = 0; i < cartObjects.length; i++) {
+                if (cartObjects[i].gid == foodId) {
+                    cartObjects[i].num = --cartObjects[i].num;
+                    cart[foodId] = cartObjects[i].num;
+                    if (cartObjects[i].num == 0) {
                         cartObjects.splice(i, 1);
-                        
                     }
                 }
+                that.setData({
+                    cartObjects: cartObjects,
+                })
+                that.amount()
+                wx.setStorage({
+                    key: 'cartObjectsStorage',
+                    data: cartObjects,
+                })
+                app.cartStorage()
             }
-            cartObjects.push(cartData)
-            that.setData({
-                cartObjects: cartObjects,
-                cart: cart
-            })
-            that.amount()
-            console.log("cart")
-            console.log(that.data.cart)
-            console.log("cartObjects")
-            console.log(cartObjects)
-            wx.setStorage({
-                key: 'cartObjectsStorage',
-                data: cartObjects,
-            })
-            app.cartStorage()
         }
-
+        
     },
     cascadeToggle: function() {
         var that = this;
@@ -723,8 +690,15 @@ Page({
         that.setData({
             cartObjects: cartObjects,
             amount: "0.00",
-            num: ""
+            num: "",
+            cart: ""
         });
+        that.amount()
+        wx.setStorage({
+            key: 'cartObjectsStorage',
+            data: cartObjects,
+        })
+        app.cartStorage()
     },
     amount: function(cartObjects) {
         var that = this;
