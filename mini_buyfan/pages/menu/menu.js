@@ -434,26 +434,38 @@ Page({
         var chooseObjects = that.data.chooseObjects
         var goods = that.data.goods
         var goodsSpecLength = e.currentTarget.dataset.goodsSpec;
-        var spec = e.currentTarget.dataset.spec;
         var oroginDetails;
         var detailsArr = that.data.detailsArr;
         if (chooseObjects.length > 0) {
             chooseObjects = that.data.chooseObjects
         }
         if (goodsSpecLength !== null && goodsSpecLength !== "null" && goodsSpecLength.length >= 1) {
-            for (var i = 0; i < cartObjects.length; i++) {
-                if (cartObjects[i].gid == foodId) {
-                    cartObjects[i].quantity = cart[foodId];
-                }
-                if (cartObjects[i].gid == foodId && cartObjects[i].spec == chooseObjects.spec) {
-                    cartObjects[i].num = --cartObjects[i].num;
-                    cartData = cartObjects[i];
-                    cartObjects.splice(i, 1);
+            cartData = {
+                gid: chooseObjects.gid,
+                name: chooseObjects.name,
+                img: chooseObjects.img,
+                price: chooseObjects.price,
+                goodsSpec: goodsSpecLength,
+                spec: chooseObjects.spec,
+                num: num,
+            }
+            goodsSpecDetail = that.data.goodsSpecDetail;
+            if (cartObjects.length !== 0) {
+                for (var i = 0; i < cartObjects.length; i++) {
+                    if (cartObjects[i].gid == foodId) {
+                        cartObjects[i].quantity = cart[foodId];
+                    }
+                    if (cartObjects[i].gid == foodId && cartObjects[i].spec == chooseObjects.spec) {
+                        cartObjects[i].num = ++cartObjects[i].num;
+                        cartData = cartObjects[i];
+                        cartObjects.splice(i, 1);
+                    }
                 }
             }
             cartObjects.push(cartData)
             that.setData({
                 cartObjects: cartObjects,
+				chooseObjects: cartData,
             })
             that.amount()
             wx.setStorage({
@@ -467,8 +479,8 @@ Page({
                 if (goods[i].gid == foodId) {
                     var cartFood = goods[i];
                 }
-            }
-
+            } 
+            
             cartData = {
                 gid: cartFood.gid,
                 name: cartFood.goodsName,
@@ -476,14 +488,14 @@ Page({
                 price: cartFood.sPrice,
                 num: num
             }
-
+            
             if (cartObjects.length !== 0) {
                 for (var i = 0; i < cartObjects.length; i++) {
                     if (cartObjects[i].gid == foodId) {
                         cartObjects[i].num = ++cartObjects[i].num;
                         cartData = cartObjects[i]
                         cartObjects.splice(i, 1);
-
+                        
                     }
                 }
             }
