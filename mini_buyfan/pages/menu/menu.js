@@ -30,7 +30,7 @@ Page({
         maskVisual: 'hidden',
         // cartObjects: [],
         cartData: {},
-        chooseObjects: [],
+        chooseObjects: {},
         goodsnum: 1,
         hasCart: false,
         hasAddCart: false,
@@ -190,18 +190,18 @@ Page({
     previewImage: function(e) {
         var that = this;
         var commentimg = e.currentTarget.dataset.commentimg
-		var appraisesImgsrc = that.data.appraisesImgsrc
-		wx.previewImage({
-			current: appraisesImgsrc, 
-			urls: commentimg 
-		})
+        var appraisesImgsrc = that.data.appraisesImgsrc
+        wx.previewImage({
+            current: appraisesImgsrc,
+            urls: commentimg
+        })
     },
     // 图片预览index
     getAppraisesIndex: function(e) {
         var that = this;
         var imgsrc = e.currentTarget.dataset.imgsrc
         that.setData({
-			appraisesImgsrc: imgsrc
+            appraisesImgsrc: imgsrc
         })
     },
     // 点赞
@@ -286,48 +286,29 @@ Page({
             chooseObjects = that.data.chooseObjects
         }
         if (goodsSpecLength !== null && goodsSpecLength !== "null" && goodsSpecLength.length >= 1) {
-            var goodsSpec = chooseObjects[0].cartFood.goodsSpec;
-            if (goodsSpec.length > 1) {
-                that.chooseList0();
-                that.chooseList1();
-            } else if (goodsSpec.length == 1) {
-                that.chooseList0();
+            cartData = {
+                gid: chooseObjects.gid,
+                name: chooseObjects.name,
+                img: chooseObjects.img,
+                price: chooseObjects.price,
+                goodsSpec: goodsSpecLength,
+                spec: chooseObjects.spec,
+                num: num
             }
             goodsSpecDetail = that.data.goodsSpecDetail;
-            cartData = {
-                gid: chooseObjects[0].cartFood.gid,
-                name: chooseObjects[0].cartFood.goodsName,
-                img: chooseObjects[0].cartFood.goodsImage,
-                price: chooseObjects[0].cartFood.sPrice,
-                spec: goodsSpecDetail[0].detail,
-                num: num
-            }
-            console.log("cartData")
-            console.log(cartData)
-            // cart = {
-            // 	foodId: foodId,
-            // 	goodsSpecDetail: goodsSpecDetail,
-            // 	num: num
-            // }
-            var numbox = {
-                // goodsSpecDetail: goodsSpecDetail,
-                num: num
-            }
             if (cartObjects.length !== 0) {
                 for (var i = 0; i < cartObjects.length; i++) {
-					if (cartObjects[i].gid == foodId && cartObjects[i].spec == goodsSpecDetail[0].detail) {
+                    if (cartObjects[i].gid == foodId && cartObjects[i].spec == chooseObjects.spec) {
                         cartObjects[i].num = ++cartObjects[i].num;
                         cartData = cartObjects[i];
                         cartObjects.splice(i, 1);
                     }
                 }
             }
-            // cart[foodId + cartData.goodsSpecDetail[0].detail] = cartData.num
-            // console.log("cart")
-            // console.log(cart)
             cartObjects.push(cartData)
             that.setData({
                 cartObjects: cartObjects,
+				chooseObjects: cartData,
                 cart: cart
             })
             that.amount()
@@ -513,7 +494,8 @@ Page({
         // console.log(e)
         var that = this;
         var cartData = that.data.cartData;
-        var chooseObjects = that.data.chooseObjects;
+        var chooseObjects = {};
+        var cartObjects = that.data.cartObjects;
         var goods = that.data.goods;
         var cartFood;
         var goodsSpec
@@ -523,48 +505,52 @@ Page({
         that.setData({
             isModal: true,
             chooseFoodId: chooseFoodId,
+            itemIndex0: 0,
+            itemIndex1: 0,
         })
         for (var i = 0; i < goods.length; i++) {
             if (goods[i].gid == chooseFoodId) {
                 cartFood = goods[i];
             }
         }
-        cart.cartFood = cartFood;
-        cart.num = num;
-        goodsSpec = cartFood.goodsSpec;
-        chooseObjects.push(cart);
-        that.setData({
-            chooseObjects: chooseObjects,
-            goodsSpec: goodsSpec,
-            itemIndex0: 0,
-            itemIndex1: 0,
-        });
-        console.log("choose.that.data.chooseObjects")
-        console.log(that.data.chooseObjects)
+        chooseObjects.gid = cartFood.gid;
+        chooseObjects.name = cartFood.goodsName;
+        chooseObjects.price = cartFood.sPrice;
+        chooseObjects.goodsSpec = cartFood.goodsSpec;
+		chooseObjects.spec = cartFood.goodsSpec[0].detail[that.data.itemIndex0].name;
+        if (cartObjects.length != 0) {
+        	for (var i = 0; i < cartObjects.length; i++) {
+        		if (cartObjects[i].gid == chooseFoodId && cartObjects[i].spec == chooseObjects.spec) {
+        		chooseObjects = cartObjects[i]
+        		}
+        	}
+		}
+		that.setData({
+			chooseObjects: chooseObjects,
+		});
     },
-    chooseList0: function() {
-        var that = this;
-        var goodsSpec = that.data.goodsSpec;
-        var goodsSpec0 = goodsSpec[0];
-        var goodsSpecDetail = that.data.goodsSpecDetail;
-        var itemIndex0 = that.data.itemIndex0;
-        var chooseLists = {
-            "detail": goodsSpec0.detail[itemIndex0].name
-            // "detail": []
-        }
-        // chooseLists.detail[0] = goodsSpec0.detail[itemIndex0].name
-        goodsSpecDetail.push(chooseLists)
-        if (goodsSpecDetail.length > 1) {
-            for (var i = 0; i < goodsSpecDetail.length; i++) {
-                goodsSpecDetail.splice(i, 1);
-            }
-        }
-        that.setData({
-            goodsSpecDetail: goodsSpecDetail
-        })
-        // console.log("goodsSpecDetail")
-        // console.log(that.data.goodsSpecDetail)
-    },
+    // chooseList0: function() {
+    // 	var that = this;
+    // 	var chooseFoodId = that.data.foodId;
+    // 	var cartObjects = that.data.cartObjects
+    //     var goodsSpec = that.data.goodsSpec;
+    //     var goodsSpec0 = goodsSpec[0];
+    //     var goodsSpecDetail = that.data.goodsSpecDetail;
+    //     var itemIndex0 = that.data.itemIndex0;
+    //     var chooseLists = {
+    //         "detail": goodsSpec0.detail[itemIndex0].name
+    //     }
+    //     goodsSpecDetail.push(chooseLists)
+    //     if (goodsSpecDetail.length > 1) {
+    //         for (var i = 0; i < goodsSpecDetail.length; i++) {
+    //             goodsSpecDetail.splice(i, 1);
+    //         }
+    // 	}
+    // 	that.setData({
+    // 		goodsSpecDetail: goodsSpecDetail
+    // 	})
+
+    // },
     chooseList1: function() {
         var that = this;
         var goodsSpec = that.data.goodsSpec;
@@ -573,10 +559,7 @@ Page({
         var goodsSpecDetail = that.data.goodsSpecDetail;
         var chooseLists = {
             "detail": goodsSpec0.detail[that.data.itemIndex0].name + "," + goodsSpec1.detail[that.data.itemIndex1].name
-            // "detail": []
         }
-        // chooseLists.detail[0] = goodsSpec0.detail[that.data.itemIndex0].name
-        // chooseLists.detail[1] = goodsSpec1.detail[that.data.itemIndex1].name
         goodsSpecDetail.push(chooseLists)
         if (goodsSpecDetail.length > 1) {
             for (var i = 0; i < goodsSpecDetail.length; i++) {
@@ -586,15 +569,38 @@ Page({
                 goodsSpecDetail: goodsSpecDetail
             })
         }
-        // console.log("goodsSpecDetail")
-        // console.log(that.data.goodsSpecDetail)
     },
     choosesty0: function(e) {
         var that = this;
+        var cartObjects = that.data.cartObjects
         var itemIndex = e.currentTarget.dataset.itemIndex
+        var spec = e.currentTarget.dataset.spec
         that.setData({
             itemIndex0: itemIndex
         })
+        var chooseObjects = that.data.chooseObjects
+        var foodId = chooseObjects.gid
+        chooseObjects.spec = spec;
+        console.log('chooseObjects')
+		console.log(chooseObjects)
+		console.log('chooseObjects.num')
+		console.log(chooseObjects.num)
+        if (cartObjects.length !== 0) {
+            for (var i = 0; i < cartObjects.length; i++) {
+                if (cartObjects[i].gid == foodId && cartObjects[i].spec == spec) {
+                    console.log('chooseObjects')
+                    console.log(chooseObjects.spec)
+                    console.log('cartObjects[i]')
+                    console.log(cartObjects[i])
+                    chooseObjects = cartObjects[i]
+                }
+            }
+		}
+		that.setData({
+			chooseObjects: chooseObjects
+		})
+        console.log('choosesty0.chooseObjects')
+        console.log(chooseObjects)
     },
     choosesty1: function(e) {
         var that = this;
