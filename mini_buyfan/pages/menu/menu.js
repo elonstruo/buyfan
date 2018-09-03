@@ -272,6 +272,15 @@ Page({
     addCount: function(e) {
         var that = this;
         var foodId = e.currentTarget.dataset.foodId;
+        // 读取目前购物车数据
+        var cart = that.data.cart;
+        // 获取当前商品数量
+        var foodCount = cart[foodId] ? cart[foodId] : 0;
+        // 自增1后存回
+        cart[foodId] = ++foodCount;
+        that.setData({
+            cart: cart
+        });
         var cartObjects = that.data.cartObjects;
         var cartData = that.data.cartData;
         var goodsSpecDetail;
@@ -280,7 +289,6 @@ Page({
         var goods = that.data.goods
         var goodsSpecLength = e.currentTarget.dataset.goodsSpec;
         var oroginDetails;
-        var cart = that.data.cart;
         var detailsArr = that.data.detailsArr;
         if (chooseObjects.length > 0) {
             chooseObjects = that.data.chooseObjects
@@ -293,11 +301,14 @@ Page({
                 price: chooseObjects.price,
                 goodsSpec: goodsSpecLength,
                 spec: chooseObjects.spec,
-                num: num
+                num: num,
             }
             goodsSpecDetail = that.data.goodsSpecDetail;
             if (cartObjects.length !== 0) {
                 for (var i = 0; i < cartObjects.length; i++) {
+                    if (cartObjects[i].gid == foodId) {
+                        cartObjects[i].quantity = cart[foodId];
+                    }
                     if (cartObjects[i].gid == foodId && cartObjects[i].spec == chooseObjects.spec) {
                         cartObjects[i].num = ++cartObjects[i].num;
                         cartData = cartObjects[i];
@@ -309,7 +320,6 @@ Page({
             that.setData({
                 cartObjects: cartObjects,
 				chooseObjects: cartData,
-                cart: cart
             })
             that.amount()
             wx.setStorage({
@@ -323,7 +333,8 @@ Page({
                 if (goods[i].gid == foodId) {
                     var cartFood = goods[i];
                 }
-            }
+            } 
+            
             cartData = {
                 gid: cartFood.gid,
                 name: cartFood.goodsName,
@@ -331,20 +342,25 @@ Page({
                 price: cartFood.sPrice,
                 num: num
             }
+            
             if (cartObjects.length !== 0) {
                 for (var i = 0; i < cartObjects.length; i++) {
                     if (cartObjects[i].gid == foodId) {
                         cartObjects[i].num = ++cartObjects[i].num;
                         cartData = cartObjects[i]
                         cartObjects.splice(i, 1);
+                        
                     }
                 }
             }
             cartObjects.push(cartData)
             that.setData({
                 cartObjects: cartObjects,
+                cart: cart
             })
             that.amount()
+            console.log("cart")
+            console.log(that.data.cart)
             console.log("cartObjects")
             console.log(cartObjects)
             wx.setStorage({
@@ -389,10 +405,6 @@ Page({
         })
         app.cartStorage()
     },
-    // 转换购物车数据
-    cartToArray: function(foodId, goodsSpecDetail) {
-
-    },
     /**
      * 绑定减数量事件
      */
@@ -400,6 +412,97 @@ Page({
         // console.log(e)
         var that = this;
         var foodId = e.currentTarget.dataset.foodId;
+        // 读取目前购物车数据
+        var cart = that.data.cart;
+        // 获取当前商品数量
+        var foodCount = cart[foodId];
+        // 自减1
+        --foodCount;
+        // 减到零了就直接移除
+        if (foodCount == 0) {
+            delete cart[foodId]
+        } else {
+            cart[foodId] = foodCount;
+        }
+        // 设值到data数据中
+        that.setData({
+            cart: cart
+        });
+        var cartObjects = that.data.cartObjects;
+        var cartData = that.data.cartData;
+        var goodsSpecDetail;
+        var chooseObjects = that.data.chooseObjects
+        var goods = that.data.goods
+        var goodsSpecLength = e.currentTarget.dataset.goodsSpec;
+        var spec = e.currentTarget.dataset.spec;
+        var oroginDetails;
+        var detailsArr = that.data.detailsArr;
+        if (chooseObjects.length > 0) {
+            chooseObjects = that.data.chooseObjects
+        }
+        if (goodsSpecLength !== null && goodsSpecLength !== "null" && goodsSpecLength.length >= 1) {
+            for (var i = 0; i < cartObjects.length; i++) {
+                if (cartObjects[i].gid == foodId) {
+                    cartObjects[i].quantity = cart[foodId];
+                }
+                if (cartObjects[i].gid == foodId && cartObjects[i].spec == chooseObjects.spec) {
+                    cartObjects[i].num = --cartObjects[i].num;
+                    cartData = cartObjects[i];
+                    cartObjects.splice(i, 1);
+                }
+            }
+            cartObjects.push(cartData)
+            that.setData({
+                cartObjects: cartObjects,
+            })
+            that.amount()
+            wx.setStorage({
+                key: 'cartObjectsStorage',
+                data: cartObjects,
+            })
+            app.cartStorage()
+
+        } else {
+            for (var i = 0; i < goods.length; i++) {
+                if (goods[i].gid == foodId) {
+                    var cartFood = goods[i];
+                }
+            }
+
+            cartData = {
+                gid: cartFood.gid,
+                name: cartFood.goodsName,
+                img: cartFood.goodsImage,
+                price: cartFood.sPrice,
+                num: num
+            }
+
+            if (cartObjects.length !== 0) {
+                for (var i = 0; i < cartObjects.length; i++) {
+                    if (cartObjects[i].gid == foodId) {
+                        cartObjects[i].num = ++cartObjects[i].num;
+                        cartData = cartObjects[i]
+                        cartObjects.splice(i, 1);
+
+                    }
+                }
+            }
+            cartObjects.push(cartData)
+            that.setData({
+                cartObjects: cartObjects,
+                cart: cart
+            })
+            that.amount()
+            console.log("cart")
+            console.log(that.data.cart)
+            console.log("cartObjects")
+            console.log(cartObjects)
+            wx.setStorage({
+                key: 'cartObjectsStorage',
+                data: cartObjects,
+            })
+            app.cartStorage()
+        }
 
     },
     cascadeToggle: function() {
@@ -505,8 +608,6 @@ Page({
         that.setData({
             isModal: true,
             chooseFoodId: chooseFoodId,
-            itemIndex0: 0,
-            itemIndex1: 0,
         })
         for (var i = 0; i < goods.length; i++) {
             if (goods[i].gid == chooseFoodId) {
@@ -515,98 +616,83 @@ Page({
         }
         chooseObjects.gid = cartFood.gid;
         chooseObjects.name = cartFood.goodsName;
+        chooseObjects.img = cartFood.goodsImage;
         chooseObjects.price = cartFood.sPrice;
         chooseObjects.goodsSpec = cartFood.goodsSpec;
-		chooseObjects.spec = cartFood.goodsSpec[0].detail[that.data.itemIndex0].name;
-        if (cartObjects.length != 0) {
-        	for (var i = 0; i < cartObjects.length; i++) {
-        		if (cartObjects[i].gid == chooseFoodId && cartObjects[i].spec == chooseObjects.spec) {
-        		chooseObjects = cartObjects[i]
-        		}
-        	}
-		}
-		that.setData({
-			chooseObjects: chooseObjects,
-		});
-    },
-    // chooseList0: function() {
-    // 	var that = this;
-    // 	var chooseFoodId = that.data.foodId;
-    // 	var cartObjects = that.data.cartObjects
-    //     var goodsSpec = that.data.goodsSpec;
-    //     var goodsSpec0 = goodsSpec[0];
-    //     var goodsSpecDetail = that.data.goodsSpecDetail;
-    //     var itemIndex0 = that.data.itemIndex0;
-    //     var chooseLists = {
-    //         "detail": goodsSpec0.detail[itemIndex0].name
-    //     }
-    //     goodsSpecDetail.push(chooseLists)
-    //     if (goodsSpecDetail.length > 1) {
-    //         for (var i = 0; i < goodsSpecDetail.length; i++) {
-    //             goodsSpecDetail.splice(i, 1);
-    //         }
-    // 	}
-    // 	that.setData({
-    // 		goodsSpecDetail: goodsSpecDetail
-    // 	})
-
-    // },
-    chooseList1: function() {
-        var that = this;
-        var goodsSpec = that.data.goodsSpec;
-        var goodsSpec0 = goodsSpec[0];
-        var goodsSpec1 = goodsSpec[1];
-        var goodsSpecDetail = that.data.goodsSpecDetail;
-        var chooseLists = {
-            "detail": goodsSpec0.detail[that.data.itemIndex0].name + "," + goodsSpec1.detail[that.data.itemIndex1].name
+        if (chooseObjects.goodsSpec.length > 1) {
+            chooseObjects.spec = cartFood.goodsSpec[0].detail[that.data.itemIndex0].name + "," + cartFood.goodsSpec[1].detail[that.data.itemIndex1].name;
+        } else {
+            chooseObjects.spec = cartFood.goodsSpec[0].detail[that.data.itemIndex0].name;
         }
-        goodsSpecDetail.push(chooseLists)
-        if (goodsSpecDetail.length > 1) {
-            for (var i = 0; i < goodsSpecDetail.length; i++) {
-                goodsSpecDetail.splice(i, 1);
+        if (cartObjects.length !== 0) {
+            for (var i = 0; i < cartObjects.length; i++) {
+                if (cartObjects[i].gid == chooseFoodId && cartObjects[i].spec == chooseObjects.spec) {
+                    chooseObjects = cartObjects[i]
+                }
             }
-            that.setData({
-                goodsSpecDetail: goodsSpecDetail
-            })
         }
+        that.setData({
+            chooseObjects: chooseObjects,
+            itemIndex0: 0,
+            itemIndex1: 0,
+        });
     },
     choosesty0: function(e) {
         var that = this;
         var cartObjects = that.data.cartObjects
         var itemIndex = e.currentTarget.dataset.itemIndex
-        var spec = e.currentTarget.dataset.spec
         that.setData({
-            itemIndex0: itemIndex
+            itemIndex0: itemIndex,
         })
-        var chooseObjects = that.data.chooseObjects
+        var chooseObjects = that.data.chooseObjects;
+        var chooseObj = {};
         var foodId = chooseObjects.gid
-        chooseObjects.spec = spec;
-        console.log('chooseObjects')
-		console.log(chooseObjects)
-		console.log('chooseObjects.num')
-		console.log(chooseObjects.num)
+        chooseObj.gid = chooseObjects.gid;
+        chooseObj.name = chooseObjects.name;
+        chooseObj.img = chooseObjects.img;
+        chooseObj.price = chooseObjects.price;
+        chooseObj.goodsSpec = chooseObjects.goodsSpec;
+        if (chooseObjects.goodsSpec.length > 1) {
+            chooseObj.spec = chooseObjects.goodsSpec[0].detail[itemIndex].name + ',' + chooseObjects.goodsSpec[1].detail[that.data.itemIndex1].name;
+        } else {
+            chooseObj.spec = chooseObjects.goodsSpec[0].detail[itemIndex].name;
+        }
         if (cartObjects.length !== 0) {
             for (var i = 0; i < cartObjects.length; i++) {
-                if (cartObjects[i].gid == foodId && cartObjects[i].spec == spec) {
-                    console.log('chooseObjects')
-                    console.log(chooseObjects.spec)
-                    console.log('cartObjects[i]')
-                    console.log(cartObjects[i])
-                    chooseObjects = cartObjects[i]
+                if (cartObjects[i].gid == foodId && cartObjects[i].spec == chooseObj.spec) {
+                    chooseObj = cartObjects[i]
                 }
             }
-		}
+        }
 		that.setData({
-			chooseObjects: chooseObjects
+            chooseObjects: chooseObj
 		})
-        console.log('choosesty0.chooseObjects')
-        console.log(chooseObjects)
     },
     choosesty1: function(e) {
         var that = this;
+        var cartObjects = that.data.cartObjects;
         var itemIndex = e.currentTarget.dataset.itemIndex
         that.setData({
             itemIndex1: itemIndex
+        })
+        var chooseObjects = that.data.chooseObjects;
+        var chooseObj = {};
+        var foodId = chooseObjects.gid
+        chooseObj.gid = chooseObjects.gid;
+        chooseObj.name = chooseObjects.name;
+        chooseObj.img = chooseObjects.img;
+        chooseObj.price = chooseObjects.price;
+        chooseObj.goodsSpec = chooseObjects.goodsSpec;
+        chooseObj.spec = chooseObjects.goodsSpec[0].detail[that.data.itemIndex0].name + "," + chooseObjects.goodsSpec[1].detail[that.data.itemIndex1].name;
+        if (cartObjects.length !== 0) {
+            for (var i = 0; i < cartObjects.length; i++) {
+                if (cartObjects[i].gid == foodId && cartObjects[i].spec == chooseObj.spec) {
+                    chooseObj = cartObjects[i]
+                }
+            }
+        }
+        that.setData({
+            chooseObjects: chooseObj
         })
     },
     // 关闭蒙层

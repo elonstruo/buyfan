@@ -658,6 +658,7 @@ page {
 
 .choose-box {
     padding: 30rpx;
+    padding-top: 0;
     box-sizing: border-box;
 }
 

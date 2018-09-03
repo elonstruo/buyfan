@@ -64,13 +64,13 @@
 				</view>
 				<!-- 没有规格加减 -->
 				<view class="cart-count-box" wx:if="{{item.goodsSpec.length < 1 ||!item.goodsSpec}}">
-					<text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-food-id="{{item.gid}}" wx:if="{{cartData[item.gid]}}">-</text>
-					<text class="cart-count-num">{{cartData[item.gid]}}</text>
+					<text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-food-id="{{item.gid}}" wx:if="{{cart[item.gid]}}">-</text>
+					<text class="cart-count-num">{{cart[item.gid]}}</text>
 					<text class="cart-count-wrap cart-count-add" bindtap="addCount" data-goods-spec="{{item.goodsSpec}}" data-food-id="{{item.gid}}">+</text>
 				</view>
 				<!-- 选规格 -->
 				<view class='choose' bindtap="chooseMoal" data-food-id="{{item.gid}}" wx:if="{{item.goodsSpec.length>=1}}">
-					<view class='choose-num' wx:if="{{cartData[item.gid]}}">{{cartData[item.gid]}}</view>
+					<view class='choose-num' wx:if="{{cart[item.gid]}}">{{cart[item.gid]}}</view>
 						<view>选规格</view>
 				</view>
 			</view>
@@ -94,11 +94,11 @@
                     <view class='toast-body'>
                         <view class='toast-title'>{{chooseObjects.name}}</view>
                         <view class='choose-box'>
-                            <view class='choose-list' wx:key='index' data-food-id="{{chooseObjects.gid}}" data-goodsSpec-index="{{chooseObjects.goodsSpec.index}}" bindtap='chooseList0'>
+                            <view class='choose-list' wx:key='index' data-food-id="{{chooseObjects.gid}}" data-goodsSpec-index="{{chooseObjects.goodsSpec.index}}">
                                 <view class='item-title'>{{chooseObjects.goodsSpec[0].name}}</view>
                                 <view data-spec="{{item.name}}" data-item-index="{{index}}" data-item-name="{{chooseObjects.name}}" bindtap="choosesty0" wx:key="unique" wx:for="{{chooseObjects.goodsSpec[0].detail}}" class='choosesty {{index==itemIndex0?"on":""}}'>{{item.name}}</view>
                             </view>
-                            <view wx:if="{{chooseObjects.goodsSpec[1]}}" class='choose-list' wx:key='index' data-goodsSpec-index="{{index}}" bindtap='chooseList1'>
+                            <view wx:if="{{chooseObjects.goodsSpec[1]}}" class='choose-list' wx:key='index' data-goodsSpec-index="{{index}}">
                                 <view class='item-title'>{{chooseObjects.goodsSpec[1].name}}</view>
                                 <view data-item-index="{{index}}" data-item-name="{{chooseObjects.name}}" bindtap="choosesty1" wx:key="unique" wx:for="{{chooseObjects.goodsSpec[1].detail}}" class='choosesty {{index==itemIndex1?"on":""}}'>{{item.name}}</view>
                             </view>
@@ -106,12 +106,12 @@
                         <view class='toast-footer'>
                             <view class='left'>
                                 <view data-food-id="{{chooseFoodId}}" class='price'>¥ {{chooseObjects.price}}</view>
-                                <view wx:key="unique" wx:for="{{choosestyItems}}" class='choose-text'>（
-									<text wx:key="unique" wx:for="{{item.detail}}">{{item}}</text>
+                                <view class='choose-text' wx:if="{{chooseObjects.spec}}">（
+									<text>{{chooseObjects.spec}}</text>
 								）</view>
                             </view>
                             <view class="cart-count-box">
-                                <text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-food-id="{{chooseFoodId}}" data-goods-spec="{{chooseObjects.goodsSpec}}" wx:if="{{chooseObjects.num}}">-</text>
+                                <text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-food-id="{{chooseFoodId}}" data-goods-spec="{{chooseObjects.goodsSpec}}" data-spec="{{chooseObjects.spec}}" wx:if="{{chooseObjects.num}}">-</text>
                                 <text data-food-id="{{chooseFoodId}}" class="cart-count-num">{{chooseObjects.num}}</text>
                                 <text class="cart-count-wrap cart-count-add" bindtap="addCount" data-goods-spec="{{chooseObjects.goodsSpec}}"data-food-id="{{chooseFoodId}}">+</text>
                             </view>
