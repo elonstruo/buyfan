@@ -1,7 +1,7 @@
 <!--pages/vip/vip.wxml-->
 <view class='vip-card vipno' wx:if="{{member==0}}">
 	<image class='img-vip' src='../../images/vip_no@2x.png'></image>
-	<view class='open-vip' bindtap=''>开通会员</view>
+	<view class='open-vip' bindtap='orderSubmit'>开通会员</view>
 	<view class='vipno-title'>首次充值{{charge}}元可自动激活会员卡功能</view>
 </view>
 <view class='vip-card vipno vipyes' wx:if="{{member==1}}">

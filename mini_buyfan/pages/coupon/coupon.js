@@ -47,7 +47,11 @@ Page({
     },
 	// 用户优惠券信息
 	userCoupon: function () {
-		var that = this;
+        var that = this;
+        wx.showLoading({
+            title: '加载中……',
+            mask: true,
+        })
 		wx.request({
 			url: 'https://app.jywxkj.com/shop/baifen/request/couponmanage.php',
 			data: {
@@ -84,6 +88,7 @@ Page({
 								})
 							} 
 						}
+                        wx.hideLoading()
 						that.setData({
 							activeCategoryId: that.data.activeCategoryId
 						})
@@ -99,6 +104,10 @@ Page({
 	},
 	storeCoupon: function () {
 		var that = this;
+        wx.showLoading({
+            title: '加载中……',
+            mask: true,
+        })
 		// 商家优惠券信息
 		wx.request({
 			url: 'https://app.jywxkj.com/shop/baifen/request/couponmanage.php',
@@ -119,9 +128,11 @@ Page({
 							that.setData({
 								coupon: coupon
 							})
+                            wx.hideLoading()
 						}
 					}
 				} else {
+                    wx.hideLoading()
 					app.showBox("网络出错")
 				}
 				// 卡卷类型，0为优惠券，1为折扣卷，2为兑换券
@@ -134,6 +145,10 @@ Page({
 		var that = this;
 		console.log(e)
 		var cid = e.currentTarget.dataset.cid
+        wx.showLoading({
+            title: '加载中……',
+            mask: true,
+        })
 		wx.request({
 			url: 'https://app.jywxkj.com/shop/baifen/request/couponmanage.php',
 			data: {
@@ -154,6 +169,7 @@ Page({
                     that.storeCoupon()
                     // 个人优惠券信息
                     that.userCoupon()
+                    wx.hideLoading()
                     app.showBox("领取成功！")
 				}
 			},

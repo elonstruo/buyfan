@@ -15,10 +15,10 @@ Page({
      */
     onLoad: function(options) {
 		var that = this;
-		// 充值内容
+		// 充值内容action
 		if (app.globalData.actionData) {
-			console.log("vip.app.globalData.actionData")
-			console.log(app.globalData.actionData)
+			// console.log("vip.app.globalData.actionData")
+			// console.log(app.globalData.actionData)
 			var actionData = app.globalData.actionData;
 			that.setData({
 				rights: actionData.member.rights,
@@ -27,7 +27,7 @@ Page({
 			})
 		} else {
 			app.actionDataCallback = res => {
-				console.log("vip.actionDataCallback.app.globalData.actionData")
+				// console.log("vip.actionDataCallback.app.globalData.actionData")
 				var actionData = app.globalData.actionData;
 				that.setData({
 					rights: actionData.member.rights,
@@ -36,10 +36,10 @@ Page({
 				})
 			}
 		}
-		
+		// 个人信息
 		if (app.globalData.userInfo) {
-			console.log("user.app.globalData.userInfo")
-			console.log(app.globalData.userInfo)
+			// console.log("user.app.globalData.userInfo")
+			// console.log(app.globalData.userInfo)
 			var member = app.globalData.userInfo.data.member;
 			var key = app.globalData.userInfo.data.skey;
 			that.setData({
@@ -67,22 +67,19 @@ Page({
 	orderSubmit: function () {
 		var that = this;
 		var out_trade_no = app.timedetail() + '' + app.randomnum();
-		console.log("out_trade_no")
-		console.log(out_trade_no)
+        var content = {};
+		// console.log("out_trade_no")
+		// console.log(out_trade_no)
 		wx.request({
 			url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
-			data: {
+			data:{
 				action: 'orderadd',
 				key: that.data.key,
 				ordernum: out_trade_no,
-				content: that.data.cartObjectsStorage,
-				userInfor: JSON.stringify(that.data.userInfor),
-				price: parseFloat(that.data.allAmount),
-				remark: that.data.remark,
-				pickState: that.data.pickState,
-				cshopid: parseInt(that.data.storeId),
-				cshopinfor: JSON.stringify(that.data.cshopinfor),
-				distance: parseFloat(that.data.distance)
+				content: "",
+				userInfor: "",
+				price: 100,
+				pickState: 4,
 			},
 			header: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			method: 'post',
@@ -90,7 +87,10 @@ Page({
 			responseType: 'text',
 			success: function (res) {
 				console.log("orderSubmit.success.res")
-				console.log(res)
+                console.log(res)
+                if (res.statusCode == 200) {
+                    app.wxpay(that.data.key, out_trade_no)
+                }
 			},
 			fail: function (res) {
 				console.log("orderSubmit.success.res")

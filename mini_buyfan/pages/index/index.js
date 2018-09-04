@@ -34,6 +34,10 @@ Page({
 	},
     onLoad: function() {
 		var that = this;
+        wx.showLoading({
+            title: '正在加载',
+            mask: true,
+        })
 		// banner
 		if (app.globalData.actionData) {
 			var appSlideshow = app.globalData.actionData.appSlideshow
@@ -41,6 +45,7 @@ Page({
 			that.setData({
 				appSlideshow: appSlideshow,
 			})
+            wx.hideLoading()
 		} else {
 			app.actionDataCallback = res => {
 				var appSlideshow = app.globalData.actionData.appSlideshow
@@ -48,6 +53,7 @@ Page({
 				that.setData({
 					appSlideshow: appSlideshow,
 				})
+                wx.hideLoading()
                 // console.log("index.app.actionDataCallback")
                 // console.log(res)
 			}
