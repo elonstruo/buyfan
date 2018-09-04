@@ -200,6 +200,7 @@ App({
 							that.globalData.userInfo = res.data;
 							wx.setStorageSync('key', res.data.data.skey);
 							wx.setStorageSync('uid', res.data.data.uid);
+							wx.setStorageSync('userInforAddress', res.data.data.userInfor);
 						} else {
 							// that.has_login()
                             // wx.showModal({
@@ -254,6 +255,7 @@ App({
 					} else {
 						that.globalData.userInfo = res.data;
 						wx.setStorageSync('uid', res.data.data.uid);
+						wx.setStorageSync('userInforAddress', res.data.data.userInfor);
 					}
                 },
             })
@@ -310,7 +312,7 @@ App({
 							console.log("success/pay/res")
                             console.log(res)
 							that.showBox("支付成功")
-							wx.navigateTo({
+							wx.redirectTo({
 								url: '../orders/orders',
 								success: function(res) {},
 								fail: function(res) {},

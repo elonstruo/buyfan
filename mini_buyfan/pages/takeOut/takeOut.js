@@ -7,7 +7,8 @@ Page({
      */
     data: {
 		myOrderData:"",
-		orderslist:""
+		orderslist:"",
+		remindeText: "催单"
     },
 
     /**
@@ -51,8 +52,8 @@ Page({
 							takeout.push(orderslist[i])
 						}
 					}
-					console.log("takeout")
-					console.log(takeout)
+					// console.log("takeout")
+					// console.log(takeout)
 					for (var i = 0; i < takeout.length; i++) {
 						if (takeout[i].orderState == "delivery" || takeout[i].orderState == "adopt" || takeout[i].orderState == "accept") {
 							delivery.push(takeout[i])
@@ -100,8 +101,8 @@ Page({
                             }
 						], 
 					})
-					console.log("markers")
-					console.log(that.data.markers)
+					// console.log("markers")
+					// console.log(that.data.markers)
 				}
 			},
 			fail: function (res) {
@@ -116,10 +117,6 @@ Page({
 			},
 			complete: function (res) { },
 		})
-		// that.myOrder(function (orderslist){
-		// 	console.log("orderslist")
-		// 	console.log(orderslist)
-		// })
     },
 
     // 个人订单
@@ -192,6 +189,23 @@ Page({
 			})
 		}
     },
+	// 催单
+	reminde: function () {
+		var that = this;
+		wx.showToast({
+			title: '已催单!',
+			icon: 'none',
+			duration: 2000,
+			mask: true,
+			success: function(res) {
+			},
+			fail: function(res) {},
+			complete: function(res) {},
+		})
+		that.setData({
+			remindeText: "已催单"
+		})
+	},
     /**
      * 生命周期函数--监听页面初次渲染完成
      */

@@ -19,29 +19,34 @@ Page({
         //     that.setData({
         //         userInforArrIndex : options.index
         //     })
-        // }
-		if (app.globalData.userInfo) {
-			console.log("address.app.globalData.userInfo")
-			console.log(app.globalData.userInfo)
-			var userInfor = app.globalData.userInfo.data.userInfor;
-			var skey = app.globalData.userInfo.data.skey;
-			that.setData({
-				userInforArr: userInfor,
-				skey: skey
-			})
-		}
-        if (userInforArr !== "" || userInforArr !== null || userInforArr !== "undefined") {
-            var userInforArr = that.data.userInforArr
-        } else {
-            var userInforArr = []            
-        }
-        that.setData({
-            userInforArr: userInforArr
-        })
+		// }
+		var key = wx.getStorageSync('key');
+		that.setData({
+			key: key
+		})
+		// 地址内容
+		wx.getStorage({
+			key: 'userInforAddress',
+			success: function (res) {
+				if (res.data !== "" || res.data !== null || res.data !== "undefined") {
+					var userInforArr = res.data
+					that.setData({
+						userInforArr: userInforArr
+					})
+				} else {
+					userInforArr = []
+					that.setData({
+						userInforArr: userInforArr
+					})
+				}
+			},
+			fail: function (res) { },
+			complete: function (res) { },
+		})
     },
 	edtiAddress: function (e) {
 		var that = this;
-		console.log('form发生了submit事件，携带数据为：', e.detail.value);
+		// console.log('form发生了submit事件，携带数据为：', e.detail.value);
 		var userInforForm = e.detail.value;
         userInforForm['currInfo'] = that.data.currInfo;
 		userInforForm['latitude'] = that.data.latitude;
@@ -69,37 +74,33 @@ Page({
 		}
         var userInforArr = that.data.userInforArr;
             userInforArr.push(userInforForm)
-		console.log(userInforArr)
-        console.log(JSON.stringify(userInforArr))
 		wx.request({
 			url: 'https://app.jywxkj.com/shop/baifen/request/usermanage.php',
 			data: {
 				action: 'modifyadr',
-				skey: that.data.skey,
+				key: that.data.key,
 				userInfor: JSON.stringify(userInforArr)
 			},
 			header: {
 				'Content-Type': 'application/x-www-form-urlencoded'
 			},
-			dataType: 'json',
 			method: 'POST',
 			success: function (res) {
 				console.log("添加地址");
 				console.log(res);
-				// wx.showModal({
-				// 	title: '提交成功！请等待审核结果',
-				// 	content: '返回上一页',
-				// 	showCancel: false,
-				// 	confirmText: '好的',
-				// 	confirmColor: '#333',
-				// 	success: function (res) {
-				// 		wx.navigateBack({
-				// 			delta: 1,
-				// 		})
-				// 	},
-				// 	fail: function (res) { },
-				// 	complete: function (res) { },
-				// })
+				console.log('edtiAddress.userInforArr')
+				console.log(userInforArr)
+				wx.setStorage({
+					key: 'userInforAddress',
+					data: userInforArr,
+					success: function(res) {
+						wx.navigateBack({
+							delta: 1,
+						})
+					},
+					fail: function(res) {},
+					complete: function(res) {},
+				})
 			},
 			fail: function (res) { },
 			complete: function (res) { },
@@ -146,9 +147,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function() {
-
     },
-
     /**
      * 生命周期函数--监听页面隐藏
      */

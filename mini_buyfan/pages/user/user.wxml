@@ -6,7 +6,7 @@
     <view class='user-name'>{{nickName}}</view>
 </view>
 <view class='user-info'>
-    <view class='item'>
+    <view class='item' bindtap='tocouponlist'>
         <view class='num'>{{coupons}}</view>
         <view class='title'>优惠券</view>
     </view>

@@ -3,7 +3,7 @@
     <view class='dineInBox' wx:if="{{shopfor}}">
         <view class='store' bindtap='changeshop'>
             <view class='left'>
-                <image class='icon-store' src='../../images/switch@2x.png'></image>
+                <image mode="aspectFill" class='icon-store' src='../../images/switch@2x.png'></image>
                 <view>{{shopName}}</view>
             </view>
             <image class='icon-arrow' src='../../images/in@2x.png'></image>

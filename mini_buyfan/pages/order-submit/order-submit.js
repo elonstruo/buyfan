@@ -18,18 +18,13 @@ Page({
      */
 	onLoad: function (options) {
 		var that = this;
+		console.log('options')
+		console.log(options)
 		// app.globalData.userInfo
-		if (app.globalData.userInfo) {
-			// console.log("ordersubmit.app.globalData.userInfo")
-			// console.log(app.globalData.userInfo.data)
-			var userInfo = app.globalData.userInfo.data;
-			var key = userInfo.skey;
-			that.setData({
-				userInfo: userInfo,
-				userInfoString: JSON.stringify(userInfo),
-				key: key
-			})
-		}
+		var key = wx.getStorageSync('key');
+		that.setData({
+			key: key
+		})
 		wx.setStorageSync('userCoupon', "")
 		// 下单方式
 		that.setData({
@@ -50,30 +45,11 @@ Page({
 			// addressinit
 			// 选择地址
 			wx.getStorage({
-				key: 'orderAddress',
+				key: 'orderSubmitaddress',
 				success: function (res) {
 					if (!res.data) {
-						if (app.globalData.userInfo) {
-							var address = app.globalData.userInfo.data.userInfor[0];
-							var addressString = JSON.stringify(address)
-							console.log("orderSubmitaddress")
-							console.log(address)
-							that.setData({
-								address: address,
-								addressString: addressString,
-								addressLat: address.latitude,
-								addressLon: address.longitude,
-							})
-							// 距离计算
-							that.orderDistance(that.data.addressLat, that.data.addressLon)
-						}
-					}
-				},
-				fail: function (res) {
-					console.log("fail.res")
-					console.log(res)
-					if (app.globalData.userInfo) {
-						var address = app.globalData.userInfo.data.userInfor[0];
+						var addRes = res.data;
+						var address = addRes[0];
 						var addressString = JSON.stringify(address)
 						console.log("orderSubmitaddress")
 						console.log(address)
@@ -85,7 +61,32 @@ Page({
 						})
 						// 距离计算
 						that.orderDistance(that.data.addressLat, that.data.addressLon)
+					} else {
 					}
+				},
+				fail: function (res) {
+					console.log("fail.res")
+					console.log(res)
+					wx.getStorage({
+						key: 'userInforAddress',
+						success: function (res) {
+							var addRes = res.data;
+							var address = addRes[0];
+							var addressString = JSON.stringify(address)
+							console.log("orderSubmitaddress")
+							console.log(address)
+							that.setData({
+								address: address,
+								addressString: addressString,
+								addressLat: address.latitude,
+								addressLon: address.longitude,
+							})
+							// 距离计算
+							that.orderDistance(that.data.addressLat, that.data.addressLon)
+						},
+						fail: function (res) { },
+						complete: function (res) { },
+					})
 				},
 				complete: function (res) { },
 			})
@@ -340,6 +341,8 @@ Page({
 		var cartObjectsStorage = that.data.cartObjectsStorage;
 		var addressString = that.data.addressString;
 		var address = that.data.address;
+		console.log('orderSubmit.address')
+		console.log(address)
 		var pickState = that.data.pickState;
 		var desk = that.data.desk;
 		var selfname = that.data.selfname;
@@ -386,18 +389,19 @@ Page({
 			userInforSubmit.username = selfname
 			userInforSubmit.tel = selftel
 			userInforSubmit.zttime = zttime
-		} else {
-			userInforSubmit.username = address.username
-			userInforSubmit.tel = address.tel
-			userInforSubmit.adr = address.adr
-			userInforSubmit.latitude = address.latitude
-			userInforSubmit.longitude = address.longitude
+		} else if (pickState == 1) {
+			userInforSubmit = address
+			// userInforSubmit.username = address.username
+			// userInforSubmit.tel = address.tel
+			// userInforSubmit.adr = address.adr
+			// userInforSubmit.latitude = address.latitude
+			// userInforSubmit.longitude = address.longitude
 		}
 		var content = that.data.content;
 		content.shopcar = that.data.cartObjects;
 		wx.request({
 			url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
-			data: {
+			 data:{
 				action: 'orderadd',
 				key: that.data.key,
 				ordernum: out_trade_no,
@@ -496,6 +500,9 @@ Page({
 				console.log("userCoupon")
 				console.log(userCoupon)
 				var cartObjects = that.data.cartObjects
+				that.setData({
+					couponid: ""
+				})
 				// 折扣
 				var discount;
 				// 减去金额

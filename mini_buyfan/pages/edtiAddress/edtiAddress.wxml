@@ -12,7 +12,7 @@
         <view class='input-box locaiton-box' bindtap='taplocation'>
             <view class='title'>所在地址</view>
             <view class="section">
-				<view class='label'>更换定位</view>
+				<view class='label'>定位</view>
                 <image class='right-arrow' src='../../images/in@2x.png'></image>
                 <!-- <picker name="region" mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
                     <view class="picker">{{region[0]}} {{region[1]}} {{region[2]}}
@@ -21,7 +21,7 @@
             </view>
         </view>
 		<view class='input-box'>
-			<input name="adr" placeholder='请输入详细地址' class='address-info' value='{{currInfo}}'></input>
+			<input name="adr" placeholder='请根据定位选择地址' class='address-info' value='{{currInfo}}'></input>
 		</view>
         <!-- <textarea>
 			{{currInfo}}

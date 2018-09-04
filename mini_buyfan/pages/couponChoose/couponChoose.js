@@ -21,18 +21,6 @@ Page({
 		statusText: "立即获取",
 		gotText: "立即获取",
 		gotCoupon: false,
-		coupon: [
-			{
-				fullNum: "100",
-				couponNum: "5.00",
-				time: "2018.05.19-2018.07.17"
-			},
-			{
-				fullNum: "100",
-				couponNum: "5.00",
-				time: "2018.05.19-2018.07.17"
-			}
-		]
 	},
 
     /**

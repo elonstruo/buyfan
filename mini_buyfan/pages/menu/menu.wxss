@@ -459,7 +459,11 @@ page {
 }
 
 .like-text {
-    color: #5a5c88;
+	color: #aaaaaa;
+    font-size: 24rpx;
+}
+.like-text.on {
+    color: #ff5c00;
     font-size: 24rpx;
 }
 
@@ -605,7 +609,7 @@ page {
 
 .toast-wrapper {
     position: fixed;
-    top: 20%;
+    top: 10%;
     left: 50%;
     /* margin-top: -347.5rpx; */
     margin-left: -320rpx;

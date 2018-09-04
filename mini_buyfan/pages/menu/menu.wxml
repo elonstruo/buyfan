@@ -50,31 +50,31 @@
             </view>
         </scroll-view>
         <!-- 商品列表 -->
-		<scroll-view scroll-y="true" style='height: {{mesuScrollHeight}}px' class='items'>
-			<!-- <view class='tag'>热销</view> -->
-			<view class='item' data-goodsclass="{{item.goodsclass}}" wx:if="{{item.goodsclass == categoryGoodsclass}}" hover-class='on' wx:key="unique" wx:for="{{goods}}">
-				<view class='img-shop'>
-					<image mode='aspectFill' class='img-shop' src='{{item.goodsImage}}'></image>
-				</view>
-				<view class='info-shop'>
-					<view class='name'>{{item.goodsName}}</view>
-					<view class='description'>{{item.goodsIntro}}</view>
-					<view class='sale'>月售{{item.goodsSell}}</view>
-					<view class='price'>¥{{item.sPrice}}</view>
-				</view>
-				<!-- 没有规格加减 -->
-				<view class="cart-count-box" wx:if="{{item.goodsSpec.length < 1 ||!item.goodsSpec}}">
-					<text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-food-id="{{item.gid}}" wx:if="{{cart[item.gid]}}">-</text>
-					<text class="cart-count-num">{{cart[item.gid]}}</text>
-					<text class="cart-count-wrap cart-count-add" bindtap="addCount" data-goods-spec="{{item.goodsSpec}}" data-food-id="{{item.gid}}">+</text>
-				</view>
-				<!-- 选规格 -->
-				<view class='choose' bindtap="chooseMoal" data-food-id="{{item.gid}}" wx:if="{{item.goodsSpec.length>=1}}">
-					<view class='choose-num' wx:if="{{cart[item.gid]}}">{{cart[item.gid]}}</view>
-						<view>选规格</view>
-				</view>
-			</view>
-		</scroll-view>
+        <scroll-view scroll-y="true" style='height: {{mesuScrollHeight}}px' class='items'>
+            <!-- <view class='tag'>热销</view> -->
+            <view class='item' data-goodsclass="{{item.goodsclass}}" wx:if="{{item.goodsclass == categoryGoodsclass}}" hover-class='on' wx:key="unique" wx:for="{{goods}}">
+                <view class='img-shop'>
+                    <image mode='aspectFill' class='img-shop' src='{{item.goodsImage}}'></image>
+                </view>
+                <view class='info-shop'>
+                    <view class='name'>{{item.goodsName}}</view>
+                    <view class='description'>{{item.goodsIntro}}</view>
+                    <view class='sale'>月售{{item.goodsSell}}</view>
+                    <view class='price'>¥{{item.sPrice}}</view>
+                </view>
+                <!-- 没有规格加减 -->
+                <view class="cart-count-box" wx:if="{{item.goodsSpec.length < 1 ||!item.goodsSpec}}">
+                    <text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-food-id="{{item.gid}}" wx:if="{{cart[item.gid]}}">-</text>
+                    <text class="cart-count-num">{{cart[item.gid]}}</text>
+                    <text class="cart-count-wrap cart-count-add" bindtap="addCount" data-goods-spec="{{item.goodsSpec}}" data-food-id="{{item.gid}}">+</text>
+                </view>
+                <!-- 选规格 -->
+                <view class='choose' bindtap="chooseMoal" data-food-id="{{item.gid}}" wx:if="{{item.goodsSpec.length>=1}}">
+                    <view class='choose-num' wx:if="{{cart[item.gid]}}">{{cart[item.gid]}}</view>
+                    <view>选规格</view>
+                </view>
+            </view>
+        </scroll-view>
         <!-- 购物车工具栏 -->
         <view class='carts-bar'>
             <view class='left' bindtap='cascadeToggle'>
@@ -88,7 +88,7 @@
         </view>
         <!-- 规格详情 -->
         <view class='modal' wx:if="{{isModal}}">
-			<view class="modal-mask toast-mask"></view>
+            <view class="modal-mask toast-mask"></view>
             <view class='toast'>
                 <view class='toast-wrapper'>
                     <view class='toast-body'>
@@ -107,13 +107,13 @@
                             <view class='left'>
                                 <view data-food-id="{{chooseFoodId}}" class='price'>¥ {{chooseObjects.price}}</view>
                                 <view class='choose-text' wx:if="{{chooseObjects.spec}}">（
-									<text>{{chooseObjects.spec}}</text>
-								）</view>
+                                    <text>{{chooseObjects.spec}}</text> ）
+                                </view>
                             </view>
                             <view class="cart-count-box">
                                 <text class="cart-count-wrap cart-count-down" bindtap="minusCount" data-food-id="{{chooseFoodId}}" data-goods-spec="{{chooseObjects.goodsSpec}}" data-chooseObjects="{{chooseObjects}}" wx:if="{{chooseObjects.num}}">-</text>
                                 <text data-food-id="{{chooseFoodId}}" class="cart-count-num">{{chooseObjects.num}}</text>
-                                <text class="cart-count-wrap cart-count-add" bindtap="addCount" data-goods-spec="{{chooseObjects.goodsSpec}}"data-food-id="{{chooseFoodId}}">+</text>
+                                <text class="cart-count-wrap cart-count-add" bindtap="addCount" data-goods-spec="{{chooseObjects.goodsSpec}}" data-food-id="{{chooseFoodId}}">+</text>
                             </view>
                         </view>
                     </view>
@@ -126,7 +126,7 @@
         <!-- 购物车 -->
         <view class='modal'>
             <view animation="{{animationMask}}" class="modal-mask {{maskVisual}}" bindtap="cascadeDismiss"></view>
-            <view animation="{{animationData}}" class="modal-content carts-list"  style="height: {{cartHeight}}px; bottom: -{{cartHeight}}px;">
+            <view animation="{{animationData}}" class="modal-content carts-list" style="height: {{cartHeight}}px; bottom: -{{cartHeight}}px;">
                 <view class='top' bindtap='deleteCart'>
                     <image class='icon-trash' src='../../images/icon-trash.png'></image>
                     清空购物车
@@ -134,16 +134,16 @@
                 <scroll-view class="modal-body" scroll-y="true" style="height: {{scrollHeight}}px;">
                     <view class="item" wx:key="unique" wx:for="{{cartObjects}}">
                         <view class="title">{{item.name}}
-							<text class='detail' wx:if="{{item.spec}}">（{{item.spec}}）</text>
-						</view>
+                            <text class='detail' wx:if="{{item.spec}}">（{{item.spec}}）</text>
+                        </view>
                         <view class="fee">¥{{item.price * item.num}}</view>
                         <view class="cart-count-box">
                             <!-- 减号 -->
-                            <text class="cart-count-wrap cart-count-down" data-index="{{index}}" bindtap="cartMinus" data-food-id="{{item.gid}}" wx:if="{{item.num}}">-</text>
+                            <text class="cart-count-wrap cart-count-down" data-index="{{index}}" bindtap="minusCount" data-chooseObjects="{{item}}" data-food-id="{{item.gid}}" wx:if="{{item.num}}">-</text>
                             <!-- 数量 -->
                             <text class="cart-count-num">{{item.num}}</text>
                             <!-- 加号 -->
-                            <text class="cart-count-wrap cart-count-add" data-index="{{index}}" bindtap="cartAdd" data-food-id="{{item.gid}}" data-chooseObjects="{{chooseObjects}}" data-goods-spec="{{item.goodsSpec}}">+</text>
+                            <text class="cart-count-wrap cart-count-add" data-index="{{index}}" bindtap="cartAdd" data-chooseObjects="{{item}}" data-food-id="{{item.gid}}" data-chooseObjects="{{chooseObjects}}" data-goods-spec="{{item.goodsSpec}}">+</text>
                         </view>
                     </view>
                 </scroll-view>
@@ -169,12 +169,16 @@
                         <view class='content'>{{item.comment}}</view>
                         <view class='appraises-imgList' bindtap='previewImage' data-commentImg="{{item.commentImg}}">
                             <block wx:key="unique" wx:for="{{item.commentImg}}">
-                                <image bindtap='getAppraisesIndex' data-imgsrc="{{imgsrc}}"  mode="aspectFill" src="{{item}}"></image>
+                                <image bindtap='getAppraisesIndex' data-imgsrc="{{imgsrc}}" mode="aspectFill" src="{{item}}"></image>
                             </block>
                         </view>
-                        <view bindtap='likeClick' class='like'>
-                            <image class='icon-like' src='../../images/icon-like.png'></image>
-                            <view class='like-text'>{{item.likenum}}人点赞</view>
+                        <view class='like'>
+                            <image data-cid='{{item.cid}}' bindtap='likeClick' class='icon-like' src='../../images/icon-like.png'></image>
+                            <view class='like-text {{item.likestate == 1 ? "on" : ""}}' wx:if="{{likenum}}">
+                                <text wx:if="{{likenum}}">{{likenum}}人</text>
+                                点赞
+                            </view>
+                            <!-- <view class='like-text' hidden="{{likenum}}">点赞</view> -->
                         </view>
                     </view>
                 </view>
@@ -199,7 +203,7 @@
                     <view class="page-section-spacing">
                         <scroll-view bindtap='previewImage' data-commentimg="{{item.shopImg}}" class='scroll-view_H {{item.shopImg.length == 1 ? "on" :"" }}' scroll-x="true" bindscroll="scroll" style="width: 100%" data-length="{{item.shopImg.length}}">
                             <view wx:key="unique" wx:for="{{item.shopImg}}" class='scroll-view-item_H'>
-                                <image bindtap='getAppraisesIndex' data-imgsrc="{{item}}" class='store-img' mode="aspectFill"  src='{{item}}'></image>
+                                <image bindtap='getAppraisesIndex' data-imgsrc="{{item}}" class='store-img' mode="aspectFill" src='{{item}}'></image>
                             </view>
                         </scroll-view>
                     </view>

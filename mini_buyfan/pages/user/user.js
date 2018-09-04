@@ -182,6 +182,15 @@ Page({
 			complete: function (res) { },
 		})
 	},
+	// 前往优惠券页 
+	tocouponlist: function () {
+		wx.navigateTo({
+			url: '../coupon/coupon',
+			success: function(res) {},
+			fail: function(res) {},
+			complete: function(res) {},
+		})
+	},
 	// 前往订单页
 	toOrderLs: function (e) {
 		console.log(e)
