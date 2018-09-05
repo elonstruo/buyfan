@@ -87,3 +87,6 @@ page {
     vertical-align: middle;
     margin-right: 12rpx;
 }
+.controls {
+	position: relative
+}

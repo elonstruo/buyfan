@@ -143,7 +143,7 @@
                             <!-- 数量 -->
                             <text class="cart-count-num">{{item.num}}</text>
                             <!-- 加号 -->
-                            <text class="cart-count-wrap cart-count-add" data-index="{{index}}" bindtap="cartAdd" data-chooseObjects="{{item}}" data-food-id="{{item.gid}}" data-chooseObjects="{{chooseObjects}}" data-goods-spec="{{item.goodsSpec}}">+</text>
+                            <text class="cart-count-wrap cart-count-add" data-index="{{index}}" bindtap="addCount" data-chooseObjects="{{item}}" data-food-id="{{item.gid}}" data-goods-spec="{{item.goodsSpec}}">+</text>
                         </view>
                     </view>
                 </scroll-view>

@@ -22,23 +22,23 @@
                 <view class='num'>x{{item.num}}</view>
             </view>
 			<view class='settle'>
-				<!-- 共{{item.cartFood.goodsNum}}件商品, -->
+				<!-- 共{{item.num}}件商品, -->
 				实付<text class='price'>¥{{item.orderprice}}</text>
 			</view>
         </view>
 		<view class='handle-box'>
 			<view data-index="{{item.index}}" data-order-num="{{item.orderNum}}" bindtap='deleteOrder' class='delete handle' wx:if="{{item.orderState=='finish' ||item.orderState=='refund' ||item.orderState=='allrefund' ||item.orderState=='cancel' ||item.orderState=='fail' ||item.orderState=='noaccept' ||item.orderState=='unpaid'}}">删除订单</view>
-			<view class='delete handle' bindtap='ordercancel' data-order-num="{{item.orderNum}}" wx:if="{{item.orderState=='unpaid' ||item.orderState=='payfinish' || item.orderState=='delivery' || item.orderState=='accept' || item.orderState=='adopt'}}">取消订单</view>
+			<view class='delete handle' bindtap='ordercancel' data-order-num="{{item.orderNum}}" wx:if="{{item.orderState=='unpaid' ||item.orderState=='payfinish' || item.orderState=='delivery' || item.orderState=='accept' || item.orderState=='adopt' && item.pickState!=0}}">取消订单</view>
 
 			<view class='refund handle' bindtap='orderback' data-order-num="{{item.orderNum}}" wx:if="{{item.orderState=='applycancel'}}">恢复订单</view>
 
 			<view class='refund handle' bindtap='cancelrefund' data-order-num="{{item.orderNum}}" data-remark="{{item.remark}}" wx:if="{{item.orderState=='applyrefund'}}">取消退款</view>
 
-			<view class='refund handle' bindtap='applyrefund' data-order-num="{{item.orderNum}}" data-remark="{{item.remark}}" data-price="{{item.orderprice}}" wx:if="{{item.orderState=='finish'}}">申请退款</view>
+			<view class='refund handle' bindtap='applyrefund' data-order-num="{{item.orderNum}}" data-remark="{{item.remark}}" data-price="{{item.orderprice}}" wx:if="{{item.orderState=='finish' && item.pickState!=0}}">申请退款</view>
 
 			<view class='appraise handle' wx:if="{{item.orderState=='finish'}}">评价</view>
 
-			<view class='refund handle' bindtap='sureTake' data-order-num="{{item.orderNum}}" wx:if="{{item.orderState=='delivery'}}">确认收货</view>
+			<view class='refund handle' bindtap='sureTake' data-order-num="{{item.orderNum}}" wx:if="{{item.orderState=='delivery' && item.pickState==1}}">确认收货</view>
 
 			<view class='appraise handle' bindtap='payorder' data-order-num="{{item.orderNum}}" wx:if="{{item.orderState=='unpaid'}}">支付订单</view>
 

@@ -348,26 +348,35 @@ Page({
 		var selfname = that.data.selfname;
 		var selftel = that.data.selftel;
 		var zttime = that.data.zttime;
+		var distancePrice = that.data.distancePrice;
 		var distance = that.data.distance;
 		console.log("distance")
 		console.log(distance)
-		if (!distance) {
-			distance = ""
+		var attach = [
+			{
+				name: "餐巾纸",
+				price: 1+"元"
+			},
+			{
+				name:"配送费",
+				price: distancePrice + "元"
+			}
+		];
+		// 是否有买纸巾
+		if (that.data.tisuPrice != 1) {
+			attach.splice(0,1)
+			if (!distance) {
+				attach = []
+			}
 		}
-		var attach = {};
+		// 是否有配送费（外卖）
+		if (!distance) {
+			distance = "",
+			attach.splice(1, 1)
+			console.log(attach)
+		}
 		// 手机正则
 		var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/;
-		// 是否有买纸巾
-		if (that.data.tisuPrice == 1) {
-			attach.name
-		}
-		// {
-		//     name: "餐巾纸",
-		// 	}, {
-		//     num: 1,
-		// 	}, {
-		//     price: allAmount
-		// }
 		var userInforSubmit = that.data.userInforSubmit;
 		if (pickState == 0) {
 			userInforSubmit.desk = desk
@@ -399,6 +408,7 @@ Page({
 		}
 		var content = that.data.content;
 		content.shopcar = that.data.cartObjects;
+		content.attach = attach;
 		wx.request({
 			url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
 			 data:{

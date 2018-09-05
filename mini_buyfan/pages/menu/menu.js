@@ -312,10 +312,19 @@ Page({
             categoryGoodsclass: e.currentTarget.dataset.goodsclass,
             activeCategoryId: e.currentTarget.dataset.id
         });
-    },
+	},
+    /**
+     * 绑定加数量事件
+     */
     addCount: function(e) {
         var that = this;
         var foodId = e.currentTarget.dataset.foodId;
+		var chooseObjects
+        if (e.currentTarget.dataset.chooseobjects) {
+			chooseObjects = e.currentTarget.dataset.chooseobjects
+        } else {
+            chooseObjects = that.data.chooseObjects
+        }
         // 读取目前购物车数据
         var cart = that.data.cart;
         // 获取当前商品数量
@@ -328,7 +337,6 @@ Page({
         var cartObjects = that.data.cartObjects;
         var cartData = that.data.cartData;
         var goodsSpecDetail;
-        var chooseObjects = that.data.chooseObjects
         var num = 1;
         var goods = that.data.goods
         var goodsSpecLength = e.currentTarget.dataset.goodsSpec;
@@ -337,10 +345,7 @@ Page({
         if (chooseObjects.length > 0) {
             chooseObjects = that.data.chooseObjects
 		}
-		// else if (e.currentTarget.dataset.chooseobjects) {
-		// 	chooseObjects = e.currentTarget.dataset.chooseobjects
-		// }
-        if (goodsSpecLength !== null && goodsSpecLength !== "null" && goodsSpecLength.length >= 1) {
+		if (goodsSpecLength !== null && goodsSpecLength !== undefined && goodsSpecLength !== "null" && goodsSpecLength.length >= 1) {
             cartData = {
                 gid: chooseObjects.gid,
                 name: chooseObjects.name,
@@ -418,64 +423,6 @@ Page({
             app.cartStorage()
         }
     },
-    cartAdd: function(e) {
-        var that = this;
-        var cartIndex = e.currentTarget.dataset.index;
-        var foodId = e.currentTarget.dataset.foodId;
-        var cartObjects = that.data.cartObjects;
-        var cart = that.data.cart;
-        cartObjects[cartIndex].num = ++cartObjects[cartIndex].num
-		for (var i = 0; i < cartObjects.length; i++) {
-			if (cartObjects[i].gid == foodId) {
-				cart[foodId] = cartObjects[i].num;
-			}
-		}
-        that.setData({
-            cart: cart,
-            cartObjects: cartObjects
-        })
-        that.amount()
-        wx.setStorage({
-            key: 'cartObjectsStorage',
-            data: cartObjects,
-        })
-        app.cartStorage()
-    },
-    cartMinus: function(e) {
-        var that = this;
-		var chooseObj = e.currentTarget.dataset.item;
-		console.log('cartMinus.chooseObj')
-		console.log(chooseObj)
-        var cartIndex = e.currentTarget.dataset.index;
-        var foodId = e.currentTarget.dataset.foodId;
-        var cart = that.data.cart;
-        var cartObjects = that.data.cartObjects;
-        --cartObjects[cartIndex].num
-        if (cartObjects[cartIndex].num == 0) {
-            // delete cartObjects[cartIndex]
-            cartObjects.splice(cartIndex, 1);
-        }
-
-		for (var i = 0; i < cartObjects.length; i++) {
-			if (cartObjects[i].gid == foodId) {
-				cart[foodId] = cartObjects[i].num;
-				if (cartObjects[i].num == 0) {
-					cartObjects.splice(i, 1);
-					cart = "";
-				}
-			}
-		}
-        that.setData({
-            cart: cart,
-            cartObjects: cartObjects
-        })
-        that.amount()
-        wx.setStorage({
-            key: 'cartObjectsStorage',
-            data: cartObjects,
-        })
-        app.cartStorage()
-    },
     /**
      * 绑定减数量事件
      */
@@ -547,9 +494,9 @@ Page({
         }
         
     },
+	//切换购物车开与关
     cascadeToggle: function() {
         var that = this;
-        //切换购物车开与关
         // that.cascadePopup();
         if (that.data.maskVisual == 'show') {
             that.cascadeDismiss();
@@ -558,7 +505,6 @@ Page({
         }
 
     },
-
     cascadePopup: function() {
         var that = this;
         // 购物车打开动画
@@ -635,6 +581,7 @@ Page({
             })
         }
     },
+	// 规格弹窗
     chooseMoal: function(e) {
         // console.log(e)
         var that = this;
@@ -681,6 +628,7 @@ Page({
 		// console.log('chooseMoal.chooseObjects')
 		// console.log(chooseObjects)
     },
+	// 具体规格
     choosesty0: function(e) {
         var that = this;
         var cartObjects = that.data.cartObjects
@@ -712,6 +660,7 @@ Page({
             chooseObjects: chooseObj
 		})
     },
+	// 具体规格第二种
     choosesty1: function(e) {
         var that = this;
         var cartObjects = that.data.cartObjects;
@@ -765,6 +714,7 @@ Page({
         })
         app.cartStorage()
     },
+	// 商品总数
     amount: function(cartObjects) {
         var that = this;
         var cartObjects = that.data.cartObjects;
@@ -796,32 +746,32 @@ Page({
             that.showStore(storeId)
         }
         // 实例化API核心类
-        var demo = new QQMapWX({
-            key: app.globalData.locationKey // 必填
-        });
+        // var demo = new QQMapWX({
+        //     key: app.globalData.locationKey // 必填
+        // });
         // 调用接口
-        demo.calculateDistance({
-            mode: 'driving',
-            to: [{
-                latitude: that.data.shopLatitude,
-                longitude: that.data.shopLongitude
-            }],
-            success: function(res) {
-                // console.log("demo.calculateDistance");
-                // console.log(res);
-                var distance = app.commafy(res.result.elements[0].distance);
-                that.setData({
-                    distance: distance
-                })
-            },
-            fail: function(res) {
-                console.log("demo.calculateDistance");
-                console.log(res);
-            },
-            complete: function(res) {
-                // console.log(res);
-            }
-        });
+        // demo.calculateDistance({
+        //     mode: 'driving',
+        //     to: [{
+        //         latitude: that.data.shopLatitude,
+        //         longitude: that.data.shopLongitude
+        //     }],
+        //     success: function(res) {
+        //         // console.log("demo.calculateDistance");
+        //         // console.log(res);
+        //         var distance = app.commafy(res.result.elements[0].distance);
+        //         that.setData({
+        //             distance: distance
+        //         })
+        //     },
+        //     fail: function(res) {
+        //         console.log("demo.calculateDistance");
+        //         console.log(res);
+        //     },
+        //     complete: function(res) {
+        //         // console.log(res);
+        //     }
+        // });
     },
 
     /**

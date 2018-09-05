@@ -140,8 +140,8 @@ Page({
                 if (res.statusCode == 200) {
                     var orderslist = that.data.orderslist;
                     orderslist = res.data.data;
-					// console.log("orderslist")
-					// console.log(orderslist)
+					console.log("orderslist")
+					console.log(orderslist)
                     that.setData({
                         // orders: orderslist,
                         orderslist: orderslist

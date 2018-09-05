@@ -321,7 +321,13 @@ App({
                         },
                         fail: function(res) {
 							// if (res.errMsg == "requestPayment:fail cancel") {
-								that.showBox("支付未完成")
+							that.showBox("支付未完成")
+							wx.redirectTo({
+								url: '../orders/orders',
+								success: function (res) { },
+								fail: function (res) { },
+								complete: function (res) { },
+							})
 							// }
                         },
                         complete: function(res) {},

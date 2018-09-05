@@ -64,12 +64,10 @@ Page({
 		}
 	},
 	// 提交订单
-	orderSubmit: function () {
+	orderSubmit: function (e) {
 		var that = this;
+		var topupprice = e.currentTarget.dataset.price;
 		var out_trade_no = app.timedetail() + '' + app.randomnum();
-        var content = {};
-		// console.log("out_trade_no")
-		// console.log(out_trade_no)
 		wx.request({
 			url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
 			data:{
@@ -78,13 +76,17 @@ Page({
 				ordernum: out_trade_no,
 				content: "",
 				userInfor: "",
-				price: 100,
+				price: topupprice,
+				// price: 0.01,
 				pickState: 4,
+				pickState: 4,
+				cshopid: "",
+				cshopinfor: "",
+				distance: "",
+				discount: 0
 			},
 			header: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			method: 'post',
-			dataType: 'json',
-			responseType: 'text',
 			success: function (res) {
 				console.log("orderSubmit.success.res")
                 console.log(res)
