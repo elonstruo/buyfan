@@ -8,7 +8,8 @@ Page({
     data: {
 		imgList: [],
 		imgIdList: '',
-		upLoadImgNum: 0
+		upLoadImgNum: 0,
+        imgl:[]
     },
 
     /**
@@ -31,7 +32,7 @@ Page({
 				username: username,
 				openid: openid,
 			})
-		}
+        }
     },
 
 	addimg: function (e) {
@@ -45,7 +46,7 @@ Page({
 				var tempFilePaths = res.tempFilePaths;
 				that.setData({
 					imgList: that.data.imgList.concat(tempFilePaths)
-				});
+                });
 				console.log('tempFilePaths')
 				console.log(tempFilePaths)
 			}
@@ -56,29 +57,70 @@ Page({
 		var that = this;
 		console.log('imgList')
 		console.log(that.data.imgList)
-		console.log('form发生了submit事件，携带数据为：', e.detail.value);
-		var content = e.detail.value.appraiseText;
-
-		// 评论图片上传
-		if (that.data.imgList.length) {
-			that.imgup(that.data.imgList)
-		// app.loadingBox("发布中")
-		}
+		// console.log('form发生了submit事件，携带数据为：', e.detail.value);
+        var content = e.detail.value.appraiseText;
+        that.setData({
+            content: content
+        })
+        if (that.data.imgList.length>0) {
+            that.imgup()
+        } else {
+            that.textup(content)
+        }
 	},
 	// 评论有图片上传
-	imgup: function (imgList) {
-		var that = this;
-		wx.uploadFile({
-			url: 'https://app.jywxkj.com/shop/baifen/request/commentmanage.php',
-			filePath: imgList,
-			name: 'file',
-			success: function (res) {
-				console.log('imgup.res')
-				console.log(res)
-			}
-		})
+	imgup: function () {
+        var that = this;
+        var content = that.data.content
+        var imgListdemo = that.data.imgList
+        var i = imgListdemo.length - 1;
+        console.log('imgListdemo[i]')
+        console.log(imgListdemo[i])
+        // 评论图片上传
+        wx.uploadFile({
+            url: 'https://app.jywxkj.com/shop/baifen/request/commentmanage.php',
+            filePath: imgListdemo[i],
+            formData: {
+                action: 'upimg',
+            },
+            name: 'myfile',
+            success: function (res) {
+                console.log('imgup.res')
+                console.log(res)
+                var imgData = JSON.parse(res.data)
+                var imgl = that.data.imgl;
+                imgl.push(imgData.img)
+                that.setData({
+                    imgl: imgl
+                })
+                if (imgListdemo.length) {
+                    imgListdemo.splice(i, 1)
+                    console.log('imgListdemo.splice')
+                    console.log(imgListdemo)
+                    if (imgListdemo.length>0) {
+                        that.setData({
+                            imgListdemo: imgListdemo
+                        })
+                        that.imgup()
+                    } else {
+                        console.log('0finish.imgl')
+                        console.log(imgl)
+                        that.setData({
+                            img: imgl
+                        })
+                        that.textup(content)
+                    }
+                } else {
+                    console.log('1finish.imgl')
+                    console.log(imgl)
+                    that.setData({
+                        img: imgl
+                    })
+                }
+            }
+        })
 	},
-	textup: function (text,ing) {
+	textup: function (text) {
 		var that = this;
 		wx.request({
 			url: 'https://app.jywxkj.com/shop/baifen/request/commentmanage.php',
@@ -87,7 +129,7 @@ Page({
 				userImg: that.data.userImg,
 				username: that.data.username,
 				content: text,
-				commentImg: ing,
+                commentImg: JSON.stringify(that.data.img),
 				openid: that.data.openid,
 			},
 			header: { 'Content-Type': 'application/x-www-form-urlencoded'},
@@ -97,14 +139,17 @@ Page({
 				wx.showModal({
 					content: '评价成功！',
 					showCancel: true,
-					cancelText: '返回订单页',
+					cancelText: '返回订单',
 					cancelColor: '#333',
 					confirmText: '查看评价',
 					confirmColor: '#333',
 					success: function(res) {
 
 					},
-					fail: function(res) {},
+					fail: function(res) {
+                        console.log('fail.res')
+                        console.log(res)
+                    },
 					complete: function(res) {},
 				})
 			},
