@@ -1,13 +1,13 @@
 <!--pages/appraise/appraise.wxml-->
 <form bindsubmit='appraise'>
-    <view class='title'>订单编号：78657677557</view>
+    <view class='title'>订单编号：{{ordernum}}</view>
     <view class='appraise-box'>
-        <textarea name='appraise-text' class='appraise-text' placeholder='说说你想说分享给他们吧' placeholder-class='appraise-text-hover'></textarea>
+        <textarea name='appraiseText' class='appraise-text' placeholder='说说你想说分享给他们吧' placeholder-class='appraise-text-hover'></textarea>
         <view class='img-box'>
-            <view class="img-item" wx:for="{{imgList}}" wx:if="{{index<3}}">
+            <view class="img-item" wx:key="unique" wx:for="{{imgList}}" wx:if="{{index<3}}">
                 <image mode="aspectFill" src="{{item}}"></image>
             </view>
-            <view class="add-item" bindtap="addimg" wx:if="{{imgList.length<3}}">
+            <view class="add-item" name="imgList" bindtap="addimg" wx:if="{{imgList.length<3}}">
                 <view>
                     <image class='icon-add' mode="aspectFill" src="../../images/camran@2x.png"></image>
                     <view>添加3张图片</view>

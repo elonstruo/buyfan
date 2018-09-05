@@ -148,7 +148,7 @@ Page({
 		that.amount()
 		that.allAmount()
 	},
-	// 距离计算
+	// 距离计算获取送达时间
 	orderDistance: function (lat, log) {
 		var that = this; var form = lat + "," + log
 		wx.request({

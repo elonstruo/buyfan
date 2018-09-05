@@ -69,6 +69,8 @@ Page({
 				var cantUse = [];
                 if (res.statusCode == 200) {
 					var couponlist = res.data.data
+					console.log('couponlist')
+					console.log(couponlist)
 					if (couponlist.length) {
 						for (var i = 0; i < couponlist.length; i++) {
 							if (couponlist[i].usable == "0") {
@@ -102,6 +104,7 @@ Page({
 			complete: function (res) { },
 		})
 	},
+	// 商家优惠券信息
 	storeCoupon: function () {
 		var that = this;
         wx.showLoading({
@@ -141,6 +144,7 @@ Page({
 			complete: function (res) { },
 		})
 	},
+	// 获取优惠券
 	getCoupon: function (e) {
 		var that = this;
 		console.log(e)
@@ -173,6 +177,15 @@ Page({
                     app.showBox("领取成功！")
 				}
 			},
+			fail: function(res) {},
+			complete: function(res) {},
+		})
+	},
+	// 去使用优惠券
+	touseCoupon: function () {
+		wx.navigateTo({
+			url: '../menu/menu?orderway=shopfor&id=1',
+			success: function(res) {},
 			fail: function(res) {},
 			complete: function(res) {},
 		})

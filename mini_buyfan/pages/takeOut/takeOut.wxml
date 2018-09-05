@@ -9,10 +9,10 @@
 </view> -->
 <map id="map" longitude="{{shoplog}}" latitude="{{shoplat}}" scale="14" controls="{{controls}}"  markers="{{markers}}" polyline="{{polyline}}" show-location style="width: 100%; height: 100vh;">
         <cover-view class="run-state">
-            <cover-view class='state-text'>骑手正赶往商家</cover-view>
+            <cover-view class='state-text'>{{stateText}}</cover-view>
             <cover-view class='time'>
                 <cover-image class="icon-map-clock" src="../../images/icon-map-clock.png" />预计送达
-                <cover-view class='tiem-text'>18:06</cover-view>
+                <cover-view class='tiem-text'>{{deliveryTime}}</cover-view>
             </cover-view>
             <cover-view bindtap="reminde" class='reminde'>{{remindeText}}</cover-view>
         </cover-view>

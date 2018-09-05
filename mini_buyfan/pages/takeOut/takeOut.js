@@ -24,18 +24,45 @@ Page({
                 key: key
             })
         }
-
         // 个人订单
-		// that.myOrder(function (orderslist) {
-		// 	//更新数据
-		// 	that.setData({
-		// 		orderslist: orderslist
-		// 	})
-		// 	console.log('更新数据.orderslist');
-		// 	console.log(orderslist);
-		// })
+		that.myOrder(function (orderslist) {
+			//更新数据
+			that.setData({
+				orderslist: orderslist
+			})
+			// console.log('更新数据.orderslist');
+			// console.log(orderslist);
+		})
     },
 
+	// 距离计算获取送达时间
+	orderDistance: function (lat, log, storeId) {
+		var that = this; var form = lat + "," + log
+		wx.request({
+			url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
+			data: {
+				action: 'distance',
+				from: form
+			},
+			header: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			method: 'post',
+			success: function (res) {
+				var distanceShopArr = res.data.data
+				for (var i = 0; i < distanceShopArr.length; i++) {
+					if (distanceShopArr[i].id == storeId) {
+						that.setData({
+							deliveryTime: distanceShopArr[i].deliveryTime,
+						})
+					}
+				}
+			},
+			fail: function (res) {
+				console.log("距离计算.fail")
+				console.log(res)
+			},
+			complete: function (res) { },
+		})
+	},
     // 个人订单
     myOrder: function(cb) {
         var that = this;
@@ -73,22 +100,32 @@ Page({
                                 delivery.push(takeout[i])
                             }
                         }
-                        var shopLocal = JSON.parse(delivery[0].cshopInfor.shopLocal)
-						var homeLocal = delivery[0].userInfor
-						var runLocal = delivery[0].deliveryInfor
-                        var shoplat = shopLocal.latitude
-                        var shoplog = shopLocal.longitude
-                        var homelat = homeLocal.latitude
+						var order = delivery[0]
+						var shopLocal = JSON.parse(order.cshopInfor.shopLocal)
+						var homeLocal = order.userInfor
+						var shoplat = shopLocal.latitude
+						var shoplog = shopLocal.longitude
+						var homelat = homeLocal.latitude
 						var homelog = homeLocal.longitude
-						// var runLocal = delivery[0].deliveryInfor
-						var deliveryInfor = {
-							latitude: 23.557275,
-							longitude: 116.364060,
+						// var runLocal = order.deliveryInfor
+						if (order.deliveryInfor) {
+							var runLocal = order.deliveryInfor
+							var runlat = runLocal.latitude
+						} else {
+							var runLocal = {
+								latitude: 23.557275,
+								longitude: 116.364060,
+							}
 						}
-						var runLocal = deliveryInfor
 						var runlat = runLocal.latitude
 						var runlog = runLocal.longitude
+						var operation = order.operation
+						var last = operation[operation.length-1]
+						var storeId = order.cshopInfor.id
+						that.orderDistance(homelat, homelog, storeId)
+
 						that.setData({
+							stateText: last.name,
 							delivery: delivery,
 							shopLocal: shopLocal,
 							homeLocal: homeLocal,
@@ -96,29 +133,29 @@ Page({
 							shoplog: shoplog,
 							homelat: homelat,
 							homelog: homelog,
-							polyline: [{
-								points: [{
-									iconPath: "../../images/icon-map-shop.png",
-									id: 0,
-									latitude: shoplat,
-									longitude: shoplog,
-									width: 28,
-									height: 37
-								},
-								{
-									iconPath: "../../images/icon-map-home.png",
-									id: 1,
-									latitude: homelat,
-									longitude: homelog,
-									width: 28,
-									height: 37
-								}
-								],
-								color: '#aed8a2',
-								width: 8,
-								dottedLine: false
+							// polyline: [{
+							// 	points: [{
+							// 		iconPath: "../../images/icon-map-shop.png",
+							// 		id: 0,
+							// 		latitude: shoplat,
+							// 		longitude: shoplog,
+							// 		width: 28,
+							// 		height: 37
+							// 	},
+							// 	{
+							// 		iconPath: "../../images/icon-map-home.png",
+							// 		id: 1,
+							// 		latitude: homelat,
+							// 		longitude: homelog,
+							// 		width: 28,
+							// 		height: 37
+							// 	}
+							// 	],
+							// 	color: '#aed8a2',
+							// 	width: 8,
+							// 	dottedLine: false
 
-							}],
+							// }],
 							markers: [{
 								iconPath: "../../images/icon-map-shop.png",
 								id: 0,
@@ -194,8 +231,8 @@ Page({
 			that.setData({
 				orderslist: orderslist
 			})
-			console.log('更新数据.orderslist');
-			console.log(orderslist);
+			// console.log('更新数据.orderslist');
+			// console.log(orderslist);
 		})
     },
 

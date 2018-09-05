@@ -236,6 +236,14 @@ Page({
 			complete: function (res) { },
 		})
 	},
+	// 评价订单
+	toappraise: function (e) {
+		var that = this;
+		var ordernum = e.currentTarget.dataset.ordernum
+		wx.navigateTo({
+			url: '../appraise/appraise?ordernum=' + ordernum,
+		})
+	},
 	//取消订单
 	ordercancel: function (e) {
 		var that = this;
@@ -404,7 +412,6 @@ Page({
     onReady: function() {
         var that = this;
         that.taborder(that.data.orderIndex)
-
     },
 
     /**

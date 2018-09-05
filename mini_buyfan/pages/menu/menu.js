@@ -377,7 +377,7 @@ Page({
             that.amount()
             wx.setStorage({
                 key: 'cartObjectsStorage',
-                data: cartObjects,
+				data: cartObjects,
             })
             app.cartStorage()
 

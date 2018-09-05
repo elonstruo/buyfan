@@ -95,6 +95,14 @@ App({
 			fail: function (res) { },
 			complete: function (res) { },
 		})
+		wx.getStorage({
+			key: 'cart',
+			success: function (res) {
+				that.globalData.cart = res.data
+			},
+			fail: function (res) { },
+			complete: function (res) { },
+		})
 	},
     // 商家分店
     stores: function () {

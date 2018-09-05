@@ -36,7 +36,8 @@
 
 			<view class='refund handle' bindtap='applyrefund' data-order-num="{{item.orderNum}}" data-remark="{{item.remark}}" data-price="{{item.orderprice}}" wx:if="{{item.orderState=='finish' && item.pickState!=0}}">申请退款</view>
 
-			<view class='appraise handle' wx:if="{{item.orderState=='finish'}}">评价</view>
+			<view class='appraise handle' bindtap='toappraise' data-ordernum="{{item.orderNum}}" wx:if="{{item.orderState=='finish'}}">评价</view>
+			<!-- <view bindtap='toappraise' data-ordernum="{{item.orderNum}}" class='appraise handle'>评价</view> -->
 
 			<view class='refund handle' bindtap='sureTake' data-order-num="{{item.orderNum}}" wx:if="{{item.orderState=='delivery' && item.pickState==1}}">确认收货</view>
 
