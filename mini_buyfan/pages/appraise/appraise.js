@@ -130,6 +130,7 @@ Page({
 				username: that.data.username,
 				content: text,
                 commentImg: JSON.stringify(that.data.img),
+				ordernum: that.data.ordernum,
 				openid: that.data.openid,
 			},
 			header: { 'Content-Type': 'application/x-www-form-urlencoded'},

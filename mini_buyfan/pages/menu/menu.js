@@ -241,6 +241,8 @@ Page({
 								likenum: comments[i].likenum
 							})
 						}
+						console.log('likenum')
+						console.log(that.data.likenum)
 						that.setData({
 							comments: comments
 						})

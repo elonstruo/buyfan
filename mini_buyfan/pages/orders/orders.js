@@ -315,22 +315,29 @@ Page({
 	applyrefund: function (e) {
 		var that = this;
 		var orderNum = e.currentTarget.dataset.orderNum;
+		var price = e.currentTarget.dataset.price;
 		wx.request({
 			url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
 			data: {
-				action: 'cancelordercancelapply',
+				action: 'applyrefund',
 				key: that.data.key,
 				ordernum: orderNum,
-				Remark: remark,
+				remark: that.data.remark,
 				price: price
 			},
 			header: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			method: 'post',
 			success: function (res) {
-				app.showBox("申请退款已提交")
-				that.myOrder()
+				console.log('success.res')
+				console.log(res)
+				if (res.statusCode == 200) {
+					app.showBox("申请退款已提交")
+					that.myOrder()
+				}
 			},
-			fail: function (res) { },
+			fail: function (res) {
+				console.log('fail.res')
+				console.log(res)},
 			complete: function (res) { },
 		})
 	},
@@ -344,7 +351,7 @@ Page({
 				action: 'cancelapplyrefund',
 				key: that.data.key,
 				ordernum: orderNum,
-				Remark: remark,
+				remark: that.data.remark,
 			},
 			header: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			method: 'post',

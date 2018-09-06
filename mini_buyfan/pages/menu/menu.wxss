@@ -385,7 +385,9 @@ page {
     padding-bottom: 30rpx;
     border-bottom: 1rpx solid #dcdcdc;
 }
-
+.appraisesTabDetails .item:last-of-type {
+	border-bottom: none
+}
 .appraisesTabDetails .header {
     width: 80rpx;
     height: 80rpx;
@@ -434,14 +436,22 @@ page {
     display: flex;
     margin-top: 10rpx;
 }
-
+.appraises-imgList-box {
+	width: 160rpx;
+    height: 160rpx;
+	overflow: hidden;
+}
 .appraises-imgList image {
-    width: 100%;
-    max-width: 100%;
+	width: 160rpx;
     height: 160rpx;
 }
 
-.appraises-imgList image:nth-of-type(2) {
+.appraises-imgList.on .appraises-imgList-box,
+.appraises-imgList.on .appraises-imgList-box image {
+	width: 350rpx;
+	height: 350rpx;
+}
+.appraises-imgList .appraises-imgList-box:nth-of-type(2) {
     margin-left: 20rpx;
     margin-right: 20rpx;
 }

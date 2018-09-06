@@ -167,15 +167,16 @@
                             <view class='time'>{{commentTime}}</view>
                         </view>
                         <view class='content'>{{item.comment}}</view>
-                        <view class='appraises-imgList' bindtap='previewImage' data-commentImg="{{item.commentImg}}">
-                            <block wx:key="unique" wx:for="{{item.commentImg}}">
-                                <image bindtap='getAppraisesIndex' data-imgsrc="{{imgsrc}}" mode="aspectFill" src="{{item}}"></image>
-                            </block>
+                        <view class='appraises-imgList {{item.commentImg.length==1?"on":""}}' bindtap='previewImage' data-commentImg="{{item.commentImg}}" wx:if="{{item.commentImg!='undefined'}}">
+                            <view class='appraises-imgList-box' wx:key="unique" wx:for="{{item.commentImg}}">
+                                <image bindtap='getAppraisesIndex' data-imgsrc="{{item}}" mode="aspectFill" src="{{item}}"></image>
+                            </view>
                         </view>
                         <view class='like'>
                             <image data-cid='{{item.cid}}' bindtap='likeClick' class='icon-like' src='../../images/icon-like.png'></image>
-                            <view class='like-text {{item.likestate == 1 ? "on" : ""}}' wx:if="{{likenum}}">
-                                <text wx:if="{{likenum}}">{{likenum}}人</text>
+                            <view class='like-text {{item.likestate == 1 ? "on" : ""}}'>
+                                <!-- <text wx:if="{{likenum}}">{{likenum}}人</text> -->
+                                <text>{{item.likenum}}人</text>
                                 点赞
                             </view>
                             <!-- <view class='like-text' hidden="{{likenum}}">点赞</view> -->

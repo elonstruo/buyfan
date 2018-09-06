@@ -18,9 +18,12 @@ Page({
      */
 	onLoad: function (options) {
 		var that = this;
-		console.log('options')
-		console.log(options)
 		// app.globalData.userInfo
+		if (app.globalData.userInfo) {
+			console.log("user.app.globalData.userInfo")
+			console.log(app.globalData.userInfo)
+			var userInfo = app.globalData.userInfo.data;
+		}
 		var key = wx.getStorageSync('key');
 		that.setData({
 			key: key
@@ -435,6 +438,9 @@ Page({
 				console.log("orderSubmit.success.res")
 				console.log(res)
 				if (res.statusCode == 200) {
+					// if (item) {
+					// 	expression
+					// }
 					app.wxpay(that.data.key, out_trade_no)
 					// wx.setStorageSync('cartObjectsStorage', [])
 				}
