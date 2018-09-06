@@ -13,7 +13,9 @@
                 <image class='img-goods' src='{{item.img}}'></image>
                 <view class='right'>
                     <view class='top'>
-                        <view class='name'>{{item.name}}</view>
+                        <view class='name'>{{item.name}}
+							<text wx:if="{{item.spec}}"> ({{item.spec}})</text>
+						</view>
                         <view class='price'>¥{{item.numPrice}}</view>
                     </view>
                     <view class='num'>x{{item.num}}</view>

@@ -23,6 +23,10 @@ Page({
 			console.log("user.app.globalData.userInfo")
 			console.log(app.globalData.userInfo)
 			var userInfo = app.globalData.userInfo.data;
+			var member = userInfo.member
+			that.setData({
+				member: member
+			})
 		}
 		var key = wx.getStorageSync('key');
 		that.setData({
@@ -438,10 +442,12 @@ Page({
 				console.log("orderSubmit.success.res")
 				console.log(res)
 				if (res.statusCode == 200) {
-					// if (item) {
-					// 	expression
-					// }
-					app.wxpay(that.data.key, out_trade_no)
+					if (that.data.member == 0) {
+						var payurl = 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php'
+						app.wxpay(that.data.key, out_trade_no, payurl)
+					} else if (that.data.member == 1) {
+						app.wxpay(that.data.key, out_trade_no, payurl)
+					}
 					// wx.setStorageSync('cartObjectsStorage', [])
 				}
 			},

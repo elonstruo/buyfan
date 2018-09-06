@@ -215,7 +215,7 @@ App({
                             //     title: '提示',
                             //     content: '登录失败',
                             //     success: function(res) {}
-                            // })
+                            // }) 
                         }
                     },
                     fail: function(res) {
@@ -228,10 +228,14 @@ App({
         })
     },
     //获取本地key登录
-    isLogined: function() {
+    isLogined: function(cb) {
         var that = this;
         var key = wx.getStorageSync('key');
         if (key != '' && key != null && key != undefined) {
+
+			if (that.globalData.userInfo) {
+				typeof cb == "function" && cb(that.globalData.userInfo)
+			} else {
             wx.request({
                 url: 'https://app.jywxkj.com/shop/baifen/request/usermanage.php',
                 method: 'POST',
@@ -262,11 +266,13 @@ App({
 						})
 					} else {
 						that.globalData.userInfo = res.data;
+						typeof cb == "function" && cb(that.globalData.userInfo)
 						wx.setStorageSync('uid', res.data.data.uid);
 						wx.setStorageSync('userInforAddress', res.data.data.userInfor);
 					}
                 },
             })
+			}
         } 
 		else {
 			that.has_login()
@@ -287,10 +293,11 @@ App({
         return num;
     },
     // 微信支付
-    wxpay: function(key, order_sn, funName) {
+    wxpay: function(key, order_sn, payurl) {
         var that = this;
         wx.request({
-			url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
+			// url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
+			url: payurl,
             data: {
 				action: 'encryption',
                 key: key,

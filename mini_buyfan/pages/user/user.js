@@ -75,13 +75,33 @@ Page({
     },
 	// 重新授权
     getUserInfo: function(e) {
+		var that = this;
         console.log(e)
-		app.has_login()
-        app.globalData.userInfo = e.detail.userInfo
-        this.setData({
-            userInfo: e.detail.userInfo,
-            hasUserInfo: true
-        })
+		app.isLogined(function (userInfo) {
+			console.log('app.isLogined.userInfo')
+			console.log(userInfo)
+			//更新数据
+			var avatarUrl = userInfo.data.avatarUrl;
+			var nickName = userInfo.data.nickName;
+			var coupons = userInfo.data.coupons;
+			if (coupons == null) {
+				coupons = 0
+			} else {
+				coupons = coupons.length
+			}
+			var money = userInfo.data.money;
+			var integral = userInfo.data.integral;
+			that.setData({
+				userInfo: userInfo,
+				avatarUrl: avatarUrl,
+				nickName: nickName,
+				coupons: coupons,
+				money: money,
+				integral: integral,
+			})
+		})
+		// 个人订单
+		that.myOrder()
     },
 	// 收货地址
 	toAddress: function () {
@@ -211,11 +231,34 @@ Page({
     /**
      * 生命周期函数--监听页面显示
      */
-    onShow: function() {
+	onShow: function () {
 		var that = this;
 		// 个人订单
 		that.myOrder()
-    },
+		// app.globalData.userInfo
+		// if (app.globalData.userInfo) {
+		// console.log("user.app.globalData.userInfo")
+		// console.log(app.globalData.userInfo)
+		var avatarUrl = app.globalData.userInfo.data.avatarUrl;
+		var nickName = app.globalData.userInfo.data.nickName;
+		var coupons = app.globalData.userInfo.data.coupons;
+		if (coupons == null) {
+			coupons = 0
+		} else {
+			coupons = coupons.length
+		}
+		var money = app.globalData.userInfo.data.money;
+		var integral = app.globalData.userInfo.data.integral;
+		that.setData({
+			userInfo: app.globalData.userInfo,
+			avatarUrl: avatarUrl,
+			nickName: nickName,
+			coupons: coupons,
+			money: money,
+			integral: integral,
+		})
+		// }
+	},
 
     /**
      * 生命周期函数--监听页面隐藏
