@@ -116,6 +116,9 @@ page {
 	border-top: 1rpx dashed #DCDCDC;
 	border-bottom: 1rpx dashed #DCDCDC;
 }
+.take-out .item:last-child {
+	border-bottom: none;
+}
 .take-out .address {
 	font-size: 24rpx;
 }

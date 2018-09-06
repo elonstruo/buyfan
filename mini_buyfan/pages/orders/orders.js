@@ -193,6 +193,16 @@ Page({
             complete: function (res) { },
         })
 	},
+	// 订单详情
+	toorderdetail: function (e) {
+		var order = e.currentTarget.dataset.orderdetail
+		wx.navigateTo({
+			url: '../order-details/order-details?order=' + JSON.stringify(order),
+			success: function(res) {},
+			fail: function(res) {},
+			complete: function(res) {},
+		})
+	},
 	// 支付订单
 	payorder: function (e) {
 		var that = this;

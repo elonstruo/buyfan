@@ -24,7 +24,7 @@
 <view class='order'>
     <view class='order-title'>
         <view class='title'>我的订单</view>
-        <navigator class='to-order' url='../../pages/orders/orders'>
+        <navigator class='to-order' url='../../pages/orders/orders??orderIndex=1'>
             查看全部订单
             <image class='right-arrow' src='../../images/in@2x.png'></image>
         </navigator>

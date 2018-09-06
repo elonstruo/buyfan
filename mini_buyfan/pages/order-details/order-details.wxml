@@ -4,67 +4,77 @@
         <view class='tit'>
             <view class='left'>
                 <image class='icon-store' src="../../images/store@2x.png"></image>
-                <view>佰分江南店</view>
+                <view>{{order.cshopInfor.shopName}}</view>
             </view>
-            <view class='right'>处理中</view>
+            <view class='right'>{{orderRule[order.orderState]}}</view>
         </view>
         <view class='goods-list'>
-            <view class='item'>
-                <image class='img-goods' src='../../images/shopimg.jpg'></image>
+            <view class='item' wx:for="{{order.orderContent.shopcar}}" wx:key="unique">
+                <image class='img-goods' src='{{item.img}}'></image>
                 <view class='right'>
                     <view class='top'>
-                        <view class='name'>樱花碧根果奶缇</view>
-                        <view class='price'>¥16.00</view>
+                        <view class='name'>{{item.name}}</view>
+                        <view class='price'>¥{{item.numPrice}}</view>
                     </view>
-                    <view class='num'>x1</view>
-                </view>
-            </view>
-            <view class='item'>
-                <image class='img-goods' src='../../images/shopimg.jpg'></image>
-                <view class='right'>
-                    <view class='top'>
-                        <view class='name'>樱花碧根果奶缇</view>
-                        <view class='price'>¥16.00</view>
-                    </view>
-                    <view class='num'>x1</view>
+                    <view class='num'>x{{item.num}}</view>
                 </view>
             </view>
         </view>
         <view class='tool-box'>
-            <view class='add'>
+            <view class='add' wx:if="{{order.pickState==1}}">
                 <view>配送费</view>
-                <view>¥5</view>
+                <view>¥{{distancePrice}}</view>
             </view>
             <view class='alladd'>
-                <view>共1件商品,实付
-                    <text>¥16.00</text>
+                <view>
+                    <!-- 共1件商品, -->
+                    实付
+                    <text>¥{{order.orderprice}}</text>
                 </view>
             </view>
             <view class='handle-box'>
-                <view class='delete handle'>删除订单</view>
-                <view class='refund handle'>申请退款</view>
-                <view class='appraise handle'>评价</view>
+                <view data-index="{{order.index}}" data-order-num="{{order.orderNum}}" bindtap='deleteOrder' class='delete handle' wx:if="{{order.orderState=='finish' ||order.orderState=='refund' ||order.orderState=='allrefund' ||order.orderState=='cancel' ||order.orderState=='fail' ||order.orderState=='noaccept' ||order.orderState=='unpaid'}}">删除订单</view>
+                <view class='delete handle' bindtap='ordercancel' data-order-num="{{order.orderNum}}" wx:if="{{order.orderState=='unpaid' ||order.orderState=='payfinish' || order.orderState=='delivery' || order.orderState=='accept' || order.orderState=='adopt' && order.pickState!=0}}">取消订单</view>
+
+                <view class='refund handle' bindtap='orderback' data-order-num="{{order.orderNum}}" wx:if="{{order.orderState=='applycancel'}}">恢复订单</view>
+
+                <view class='refund handle' bindtap='cancelrefund' data-order-num="{{order.orderNum}}" data-remark="{{order.remark}}" wx:if="{{order.orderState=='applyrefund'}}">取消退款</view>
+
+                <view class='refund handle' bindtap='applyrefund' data-order-num="{{order.orderNum}}" data-remark="{{order.remark}}" data-price="{{order.orderprice}}" wx:if="{{order.orderState=='finish' && order.pickState!=0}}">申请退款</view>
+
+                <view class='appraise handle' bindtap='toappraise' data-ordernum="{{order.orderNum}}" wx:if="{{order.orderState=='finish'}}">评价</view>
+                <!-- <view bindtap='toappraise' data-ordernum="{{order.orderNum}}" class='appraise handle'>评价</view> -->
+
+                <view class='refund handle' bindtap='sureTake' data-order-num="{{order.orderNum}}" wx:if="{{order.orderState=='delivery' && order.pickState==1}}">确认收货</view>
+
+                <view class='appraise handle' bindtap='payorder' data-order-num="{{order.orderNum}}" wx:if="{{order.orderState=='unpaid'}}">支付订单</view>
+
             </view>
         </view>
     </view>
     <view class='take-out'>
-        <view class='item'>
-            <view class='left'>配送地址</view>
+        <view class='item' wx:if="{{order.pickState!=0}}">
+            <view class='left' wx:if="{{order.pickState==1}}">配送地址</view>
+            <view class='left' wx:if="{{order.pickState==2}}">自提联系</view>
             <view class='right'>
                 <view class='info'>
-                    <view class='name'>王小明</view>
+                    <view class='name'>{{order.userInfor.username}}</view>
                     <view>13490880987</view>
                 </view>
-                <view class='address'>广东省揭阳市 榕城区 莲花大道 某某小区19栋</view>
+                <view class='address'>{{order.userInfor.adr}}</view>
             </view>
         </view>
         <view class='item'>
             <view class='left'>订单编号</view>
-            <view class='right'>78657677557（外卖订单）</view>
+            <view class='right'>{{order.orderNum}}
+                <text wx:if="{{order.pickState==0}}">（店内订单）</text>
+                <text wx:if="{{order.pickState==1}}">（外卖订单）</text>
+                <text wx:if="{{order.pickState==2}}">（自提订单）</text>
+            </view>
         </view>
         <view class='item'>
             <view class='left'>订单时间</view>
-            <view class='right'>2018-07-02 12:14:09</view>
+            <view class='right'>{{order.orderTimes}}</view>
         </view>
     </view>
 </view>

@@ -436,6 +436,7 @@ Page({
 				console.log(res)
 				if (res.statusCode == 200) {
 					app.wxpay(that.data.key, out_trade_no)
+					// wx.setStorageSync('cartObjectsStorage', [])
 				}
 			},
 			fail: function (res) {

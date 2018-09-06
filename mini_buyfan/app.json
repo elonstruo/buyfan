@@ -1,9 +1,9 @@
 {
     "pages": [
 		"pages/user/user",
+		"pages/index/index",
         "pages/orders/orders",
         "pages/appraise/appraise",
-		"pages/index/index",
         "pages/vip/vip",
         "pages/takeOut/takeOut",
         "pages/address/address",

@@ -36,19 +36,19 @@ Page({
         hasAddCart: false,
         hasLike: false,
         likeNum: "",
-        storesImgList: [
-            "../../images/shopimg.jpg",
-            "../../images/shopimg.jpg",
-            "../../images/shopimg.jpg",
-            "../../images/shopimg.jpg",
-            "../../images/shopimg.jpg",
-            "../../images/shopimg.jpg",
-        ],
-        appraisesImgList: [
-            "../../images/shopimg.jpg",
-            "../../images/shopimg.jpg",
-            "../../images/shopimg.jpg",
-        ],
+        // storesImgList: [
+        //     "../../images/shopimg.jpg",
+        //     "../../images/shopimg.jpg",
+        //     "../../images/shopimg.jpg",
+        //     "../../images/shopimg.jpg",
+        //     "../../images/shopimg.jpg",
+        //     "../../images/shopimg.jpg",
+        // ],
+        // appraisesImgList: [
+        //     "../../images/shopimg.jpg",
+        //     "../../images/shopimg.jpg",
+        //     "../../images/shopimg.jpg",
+        // ],
         selectA: "1",
         activeCategoryId: "0",
         selectedId: "1",
@@ -62,6 +62,8 @@ Page({
      */
     onLoad: function(options) {
         var that = this;
+		console.log('menu.options')
+		console.log(options)
         that.setData({
             orderway: options.orderway,
             storeId: options.id

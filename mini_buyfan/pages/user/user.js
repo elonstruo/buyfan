@@ -206,7 +206,6 @@ Page({
      * 生命周期函数--监听页面初次渲染完成
      */
     onReady: function() {
-
     },
 
     /**
@@ -222,7 +221,8 @@ Page({
      * 生命周期函数--监听页面隐藏
      */
     onHide: function() {
-
+		// var that = this;
+		// that.myOrder()
     },
 
     /**

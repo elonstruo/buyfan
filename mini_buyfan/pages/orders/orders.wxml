@@ -9,14 +9,14 @@
 		暂无相关订单
 	</view>
     <view class='item' data-index="{{item.index}}" data-id="{{item.oid}}" wx:for="{{orders}}" wx:key="index">
-        <view class='tit'>
+        <view class='tit' bindtap='toorderdetail' data-orderdetail="{{item}}">
             <view class='left'>
                 <image src='../../images/store@2x.png' class='icon-store'></image>
                 <view class='store-name'>{{item.cshopInfor.shopName}}</view>
             </view>
             <view class='state'>{{orderRule[item.orderState]}}</view>
         </view>
-        <view class='goods-list'>
+        <view class='goods-list' bindtap='toorderdetail' data-orderdetail="{{item}}">
             <view class='goods' wx:for="{{item.orderContent.shopcar}}" wx:key="index">
                 <view class='name'>{{item.name}}<text wx:if="{{item.spec}}"> ({{item.spec}})</text></view>
                 <view class='num'>x{{item.num}}</view>
