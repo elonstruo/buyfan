@@ -97,8 +97,8 @@ Page({
                             if (orderslist[i].pickState == "1") {
                                 takeout.push(orderslist[i])
                             }
-                            console.log('takeout')
-                            console.log(takeout)
+                            // console.log('takeout')
+                            // console.log(takeout)
                         }
                         for (var i = 0; i < takeout.length; i++) {
                             if (takeout[i].orderState == "delivery" || takeout[i].orderState == "adopt" || takeout[i].orderState == "accept") {

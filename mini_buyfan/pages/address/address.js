@@ -67,9 +67,10 @@ Page({
     // 编辑地址
     edtiAddress: function(e) {
         var that = this;
-        var userInforIndex = e.currentTarget.dataset.index;
-        wx.redirectTo({
-            url: '../edtiAddress/edtiAddress?index=' + userInforIndex,
+        var item = JSON.stringify(e.currentTarget.dataset.item);
+		var userInforIndex = e.currentTarget.dataset.index;
+		wx.navigateTo({
+			url: '../edtiAddressed/edtiAddressed?item=' + item + '&userInforIndex=' + userInforIndex,
             success: function(res) {},
             fail: function(res) {},
             complete: function(res) {},

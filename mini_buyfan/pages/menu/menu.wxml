@@ -126,12 +126,13 @@
         <!-- 购物车 -->
         <view class='modal'>
             <view animation="{{animationMask}}" class="modal-mask {{maskVisual}}" bindtap="cascadeDismiss"></view>
-            <view animation="{{animationData}}" class="modal-content carts-list" style="height: {{cartHeight}}px; bottom: -{{cartHeight}}px;">
+            <!-- <view animation="{{animationData}}" class="modal-content carts-list" style="height: {{scrollHeight}}px; bottom: -{{cartHeight}}px;"> -->
+            <view class="modal-content carts-list" animation="{{animationCart}}">
                 <view class='top' bindtap='deleteCart'>
                     <image class='icon-trash' src='../../images/icon-trash.png'></image>
                     清空购物车
                 </view>
-                <scroll-view class="modal-body" scroll-y="true" style="height: {{scrollHeight}}px;">
+                <scroll-view class="modal-body" scroll-y="true">
                     <view class="item" wx:key="unique" wx:for="{{cartObjects}}">
                         <view class="title">{{item.name}}
                             <text class='detail' wx:if="{{item.spec}}">（{{item.spec}}）</text>

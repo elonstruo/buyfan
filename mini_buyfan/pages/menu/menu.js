@@ -5,7 +5,7 @@ const app = getApp()
 // 最大行数
 var max_row_height = 5;
 // 行高
-var cart_offset = 99;
+var cart_offset = 60;
 // 底部栏偏移量
 var food_row_height = 50;
 // 招牌高度
@@ -62,8 +62,8 @@ Page({
      */
     onLoad: function(options) {
         var that = this;
-		console.log('menu.options')
-		console.log(options)
+		// console.log('menu.options')
+		// console.log(options)
         that.setData({
             orderway: options.orderway,
             storeId: options.id
@@ -100,10 +100,15 @@ Page({
             that.setData({
                 type_sort: actionData.appClass,
                 categoryGoodsclass: actionData.appClass[0],
+				screenWidth: app.screenWidth,
+				screenHeight: app.screenHeight,
+				// cartItem: app.screenHeight * 0.089788732394366,
+				// topItem: app.screenHeight * 0.051056338028169,
+				// cartBarItem: app.screenHeight * 0.073943661971831,
                 // mesuScrollHeight: app.screenHeight - signH - tabbarH - food_row_height,
                 mesuScrollHeight: app.screenHeight - signH - tabbarH,
                 appLogo: appLogo
-            })
+			})
         } else {
             app.actionDataCallback = res => {
                 var actionData = app.globalData.actionData
@@ -511,25 +516,6 @@ Page({
     },
     cascadePopup: function() {
         var that = this;
-        // 购物车打开动画
-        var animation = wx.createAnimation({
-            duration: 300,
-            timingFunction: 'ease-in-out',
-        });
-        that.animation = animation;
-        // scrollHeight为商品列表本身的高度
-        var scrollHeight = (that.data.cartObjects.length <= max_row_height ? that.data.cartObjects.length : max_row_height) * food_row_height;
-        console.log("scrollHeight")
-        console.log(scrollHeight)
-        // cartHeight为整个购物车的高度，也就是包含了标题栏与底部栏的高度
-        var cartHeight = scrollHeight + cart_offset;
-        animation.translateY(-cartHeight).step();
-        that.setData({
-            animationData: that.animation.export(),
-            maskVisual: 'show',
-            scrollHeight: scrollHeight,
-            cartHeight: cartHeight
-        });
         // 遮罩渐变动画
         var animationMask = wx.createAnimation({
             duration: 150,
@@ -539,14 +525,30 @@ Page({
         animationMask.opacity(0.5).step();
         that.setData({
             animationMask: that.animationMask.export(),
-        });
+		});
+		// 购物车动画
+		var animationCart = wx.createAnimation({
+			duration: 150,
+			timingFunction: 'linear',
+		});
+		that.animationCart = animationCart;
+		animationCart.opacity(1).step();
+		that.setData({
+			animationCart: that.animationCart.export(),
+		});
+		// 隐藏遮罩层
+		that.setData({
+			maskVisual: 'show'
+		});
     },
     cascadeDismiss: function() {
         var that = this;
         // 购物车关闭动画
-        that.animation.translateY(that.data.cartHeight).step();
+		var animationCart = that.animationCart;
+		animationCart.opacity(0).step();
+		that.animationCart = animationCart;
         that.setData({
-            animationData: that.animation.export()
+			animationCart: that.animationCart.export()
         });
         // 遮罩渐变动画
         var animationMask = that.animationMask;

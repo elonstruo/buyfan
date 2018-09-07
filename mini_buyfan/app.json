@@ -1,21 +1,22 @@
 {
     "pages": [
-		"pages/index/index",
-		"pages/user/user",
+        "pages/index/index",
+        "pages/user/user",
         "pages/orders/orders",
         "pages/appraise/appraise",
         "pages/vip/vip",
         "pages/takeOut/takeOut",
         "pages/address/address",
         "pages/couponChoose/couponChoose",
-		"pages/coupon/coupon",
+        "pages/coupon/coupon",
         "pages/order-submit/order-submit",
         "pages/edtiAddress/edtiAddress",
         "pages/menu/menu",
         "pages/stores/stores",
         "pages/order-details/order-details",
         "pages/tem/tem",
-        "pages/logs/logs"
+        "pages/logs/logs",
+        "pages/edtiAddressed/edtiAddressed"
     ],
     "window": {
         "backgroundTextStyle": "light",

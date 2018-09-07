@@ -8,6 +8,7 @@ Page({
      * 页面的初始数据
      */
     data: {
+
     },
 
     /**
@@ -15,11 +16,6 @@ Page({
      */
     onLoad: function(options) {
 		var that = this;
-        // if (options.index) {
-        //     that.setData({
-        //         userInforArrIndex : options.index
-        //     })
-		// }
 		var key = wx.getStorageSync('key');
 		that.setData({
 			key: key
@@ -66,10 +62,10 @@ Page({
 			that.showtips("请输入正确的手机号码")
 			return
 		} else if (!adr) {
-			that.showtips("请选择地图定位")
+			that.showtips("请选择正确地址")
 			return
 		} else if (!latitude) {
-			that.showtips("请选择地图定位")
+			that.showtips("请选择正确地址")
 			return
 		}
         var userInforArr = that.data.userInforArr;
