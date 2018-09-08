@@ -32,6 +32,12 @@ page {
 .sign-ln view {
     padding: 0 8rpx;
 }
+.sign-ln view.time {
+	box-sizing: border-box;
+	width: 80rpx;
+	overflow: hidden;
+	white-space: nowrap;
+}
 
 .sign-ln view:first-child {
     padding-left: 0;

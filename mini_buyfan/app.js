@@ -95,14 +95,6 @@ App({
 			fail: function (res) { },
 			complete: function (res) { },
 		})
-		wx.getStorage({
-			key: 'cart',
-			success: function (res) {
-				that.globalData.cart = res.data
-			},
-			fail: function (res) { },
-			complete: function (res) { },
-		})
 	},
     // 商家分店
     stores: function () {
@@ -209,6 +201,9 @@ App({
 							wx.setStorageSync('key', res.data.data.skey);
 							wx.setStorageSync('uid', res.data.data.uid);
 							wx.setStorageSync('userInforAddress', res.data.data.userInfor);
+							wx.setStorageSync('member', res.data.data.member);
+							wx.setStorageSync('money', res.data.data.money);
+							wx.setStorageSync('coupons', res.data.data.coupons);
 						} else {
 							// that.has_login()
                             // wx.showModal({
@@ -269,6 +264,9 @@ App({
 						typeof cb == "function" && cb(that.globalData.userInfo)
 						wx.setStorageSync('uid', res.data.data.uid);
 						wx.setStorageSync('userInforAddress', res.data.data.userInfor);
+						wx.setStorageSync('member', res.data.data.member);
+						wx.setStorageSync('money', res.data.data.money);
+						wx.setStorageSync('coupons', res.data.data.coupons);
 					}
                 },
             })
@@ -293,11 +291,11 @@ App({
         return num;
     },
     // 微信支付
-    wxpay: function(key, order_sn, payurl) {
+    wxpay: function(key, order_sn,funname) {
         var that = this;
         wx.request({
-			// url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
-			url: payurl,
+			url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
+			// url: payurl,
             data: {
 				action: 'encryption',
                 key: key,
@@ -327,22 +325,24 @@ App({
 							console.log("success/pay/res")
                             console.log(res)
 							that.showBox("支付成功")
-							wx.redirectTo({
-								url: '../orders/orders',
-								success: function(res) {},
-								fail: function(res) {},
-								complete: function(res) {},
-							})
+							return funname
+							// wx.redirectTo({
+							// 	url: '../orders/orders',
+							// 	success: function(res) {},
+							// 	fail: function(res) {},
+							// 	complete: function(res) {},
+							// })
                         },
                         fail: function(res) {
 							// if (res.errMsg == "requestPayment:fail cancel") {
 							that.showBox("支付未完成")
-							wx.redirectTo({
-								url: '../orders/orders',
-								success: function (res) { },
-								fail: function (res) { },
-								complete: function (res) { },
-							})
+							return funname
+							// wx.redirectTo({
+							// 	url: '../orders/orders',
+							// 	success: function (res) { },
+							// 	fail: function (res) { },
+							// 	complete: function (res) { },
+							// })
 							// }
                         },
                         complete: function(res) {},

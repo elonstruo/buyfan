@@ -42,23 +42,38 @@ Page({
 			// console.log(app.globalData.userInfo)
 			var avatarUrl = app.globalData.userInfo.data.avatarUrl;
 			var nickName = app.globalData.userInfo.data.nickName;
-			var coupons = app.globalData.userInfo.data.coupons;
-			if (coupons == null) {
-				coupons = 0
-			} else {
-				coupons = coupons.length
-			}
-			var money = app.globalData.userInfo.data.money;
+			// var coupons = app.globalData.userInfo.data.coupons;
+			// if (coupons == null) {
+			// 	coupons = 0
+			// } else {
+			// 	coupons = coupons.length
+			// }
+			// var money = app.globalData.userInfo.data.money;
 			var integral = app.globalData.userInfo.data.integral;
 			that.setData({
 				userInfo: app.globalData.userInfo,
 				avatarUrl: avatarUrl,
 				nickName: nickName,
-				coupons: coupons,
-				money: money,
+				// coupons: coupons,
+				// money: money,
 				integral: integral,
 			})
 		}
+		
+		var money = wx.getStorageSync("money");
+		that.setData({
+			money: money
+		})
+		var coupons = wx.getStorageSync("coupons");
+		if (coupons == null) {
+			coupons = 0
+		} else {
+			coupons = coupons.length
+		}
+		that.setData({
+			coupons: coupons
+		})
+		
 		// actionData
 		if (app.globalData.actionData) {
 			// console.log("user.app.globalData.actionData")
@@ -213,7 +228,7 @@ Page({
 	},
 	// 前往订单页
 	toOrderLs: function (e) {
-		console.log(e)
+		// console.log(e)
 		var orderIndex = e.currentTarget.dataset.orderIndex
 		wx.navigateTo({
 			url: '../../pages/orders/orders?orderIndex=' + orderIndex,

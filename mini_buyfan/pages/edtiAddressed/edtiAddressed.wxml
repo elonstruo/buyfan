@@ -17,7 +17,7 @@
             </view>
         </view>
 		<view class='input-box'>
-			<input name="adr" placeholder='门牌号' class='address-info' value='{{currInfo}}'></input>
+			<input name="adr" placeholder='门牌号' class='address-info' value='{{adr}}'></input>
 		</view>
         <!-- <textarea>
 			{{currInfo}}

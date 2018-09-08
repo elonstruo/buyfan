@@ -62,26 +62,27 @@ Page({
      */
     onLoad: function(options) {
         var that = this;
-		// console.log('menu.options')
-		// console.log(options)
+        // console.log('menu.options')
+        // console.log(options)
         that.setData({
             orderway: options.orderway,
             storeId: options.id
         })
         // 获取购物车
+		// wx.setStorageSync("cartObjectsStorage", [])
         if (app.globalData.cartObjectsStorage) {
-			var cart = that.data.cart
+            var cart = that.data.cart
             that.setData({
                 cartObjects: app.globalData.cartObjectsStorage,
             })
-			var cartObjects = that.data.cartObjects
-			var cart = that.data.cart
-			for (var i = 0; i < cartObjects.length; i++) {
+            var cartObjects = that.data.cartObjects
+            var cart = that.data.cart
+            for (var i = 0; i < cartObjects.length; i++) {
 				cart[cartObjects[i].gid] = cartObjects[i].num
-				that.setData({
-					cart: cart
-				})
-			}
+                that.setData({
+                    cart: cart
+                })
+            }
             that.amount();
         }
         // 个人信息
@@ -100,15 +101,15 @@ Page({
             that.setData({
                 type_sort: actionData.appClass,
                 categoryGoodsclass: actionData.appClass[0],
-				screenWidth: app.screenWidth,
-				screenHeight: app.screenHeight,
-				// cartItem: app.screenHeight * 0.089788732394366,
-				// topItem: app.screenHeight * 0.051056338028169,
-				// cartBarItem: app.screenHeight * 0.073943661971831,
+                screenWidth: app.screenWidth,
+                screenHeight: app.screenHeight,
+                // cartItem: app.screenHeight * 0.089788732394366,
+                // topItem: app.screenHeight * 0.051056338028169,
+                // cartBarItem: app.screenHeight * 0.073943661971831,
                 // mesuScrollHeight: app.screenHeight - signH - tabbarH - food_row_height,
                 mesuScrollHeight: app.screenHeight - signH - tabbarH,
                 appLogo: appLogo
-			})
+            })
         } else {
             app.actionDataCallback = res => {
                 var actionData = app.globalData.actionData
@@ -219,84 +220,86 @@ Page({
         that.setData({
             appraisesImgsrc: imgsrc
         })
-	},
-	// tabbar触发请求评价列表
-	tabClick: function (e) {
-		var that = this;
-		that.setData({
-			selectedId: e.currentTarget.dataset.id
-		});
-		if (that.data.selectedId == "2") {
-			wx.request({
-				url: 'https://app.jywxkj.com/shop/baifen/request/commentmanage.php',
-				data: {
-					action: 'xcxshow',
-					page: that.data.page,
-					uid: that.data.uid
-				},
-				header: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
-				method: 'post',
-				success: function (res) {
-					if (res.statusCode == "200") {
-						var comments = res.data.data
-						for (var i = 0; i < comments.length; i++) {
-							that.setData({
-								likenum: comments[i].likenum
-							})
-						}
-						console.log('likenum')
-						console.log(that.data.likenum)
-						that.setData({
-							comments: comments
-						})
-					}
-				},
-				fail: function (res) { },
-				complete: function (res) { },
-			})
-		}
-	},
-	// 评价：最新/最热
-	appraisesClick: function (e) {
-		var that = this;
-		that.setData({
-			selectA: e.currentTarget.dataset.id
-		});
-	},
+    },
+    // tabbar触发请求评价列表
+    tabClick: function(e) {
+        var that = this;
+        that.setData({
+            selectedId: e.currentTarget.dataset.id
+        });
+        if (that.data.selectedId == "2") {
+            wx.request({
+                url: 'https://app.jywxkj.com/shop/baifen/request/commentmanage.php',
+                data: {
+                    action: 'xcxshow',
+                    page: that.data.page,
+                    uid: that.data.uid
+                },
+                header: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                method: 'post',
+                success: function(res) {
+                    if (res.statusCode == "200") {
+                        var comments = res.data.data
+                        for (var i = 0; i < comments.length; i++) {
+                            that.setData({
+                                likenum: comments[i].likenum
+                            })
+                        }
+                        console.log('likenum')
+                        console.log(that.data.likenum)
+                        that.setData({
+                            comments: comments
+                        })
+                    }
+                },
+                fail: function(res) {},
+                complete: function(res) {},
+            })
+        }
+    },
+    // 评价：最新/最热
+    appraisesClick: function(e) {
+        var that = this;
+        that.setData({
+            selectA: e.currentTarget.dataset.id
+        });
+    },
     // 点赞
     likeClick: function(e) {
         var that = this;
-		var cid = e.currentTarget.dataset.cid;
-		var comments = that.data.comments;
-		wx.request({
-			url: 'https://app.jywxkj.com/shop/baifen/request/commentmanage.php',
-			data: {
-				action: 'commentlike',
-				uid: that.data.uid,
-				cid: cid
-			},
-			header: { 'Content-Type': 'application/x-www-form-urlencoded'},
-			method: 'post',
-			success: function(res) {
-				console.log('likeClick')
-				console.log(res)
-				for (var i = 0; i < comments.length; i++) {
-					if (comments[i].cid == cid) {
-						if (comments[i].likestate == 1) {
-							app.showBox("您已点赞")
-						} else {
-							that.setData({
-								likenum: ++comments[i].likenum,
-							})
-						}
-					}
-				}	
-			},
-			fail: function(res) {},
-			complete: function(res) {},
-		})
+        var cid = e.currentTarget.dataset.cid;
+        var comments = that.data.comments;
+        wx.request({
+            url: 'https://app.jywxkj.com/shop/baifen/request/commentmanage.php',
+            data: {
+                action: 'commentlike',
+                uid: that.data.uid,
+                cid: cid
+            },
+            header: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'post',
+            success: function(res) {
+                console.log('likeClick')
+                console.log(res)
+                for (var i = 0; i < comments.length; i++) {
+                    if (comments[i].cid == cid) {
+                        if (comments[i].likestate == 1) {
+                            app.showBox("您已点赞")
+                        } else {
+                            that.setData({
+                                likenum: ++comments[i].likenum,
+                            })
+                        }
+                    }
+                }
+            },
+            fail: function(res) {},
+            complete: function(res) {},
+        })
         // if (that.data.hasLike == false) {
         //     that.setData({
         //         likeNum: that.data.likeNum + 1,
@@ -321,16 +324,16 @@ Page({
             categoryGoodsclass: e.currentTarget.dataset.goodsclass,
             activeCategoryId: e.currentTarget.dataset.id
         });
-	},
+    },
     /**
      * 绑定加数量事件
      */
     addCount: function(e) {
         var that = this;
         var foodId = e.currentTarget.dataset.foodId;
-		var chooseObjects
+        var chooseObjects
         if (e.currentTarget.dataset.chooseobjects) {
-			chooseObjects = e.currentTarget.dataset.chooseobjects
+            chooseObjects = e.currentTarget.dataset.chooseobjects
         } else {
             chooseObjects = that.data.chooseObjects
         }
@@ -353,8 +356,8 @@ Page({
         var detailsArr = that.data.detailsArr;
         if (chooseObjects.length > 0) {
             chooseObjects = that.data.chooseObjects
-		}
-		if (goodsSpecLength !== null && goodsSpecLength !== undefined && goodsSpecLength !== "null" && goodsSpecLength.length >= 1) {
+        }
+        if (goodsSpecLength !== null && goodsSpecLength !== undefined && goodsSpecLength !== "null" && goodsSpecLength.length >= 1) {
             cartData = {
                 gid: chooseObjects.gid,
                 name: chooseObjects.name,
@@ -363,7 +366,7 @@ Page({
                 goodsSpec: goodsSpecLength,
                 spec: chooseObjects.spec,
                 num: num,
-                
+
             }
             goodsSpecDetail = that.data.goodsSpecDetail;
             if (cartObjects.length !== 0) {
@@ -378,25 +381,29 @@ Page({
                     }
                 }
             }
-            cartObjects.push(cartData)
+			cartObjects.push(cartData)
             that.setData({
                 cartObjects: cartObjects,
-				chooseObjects: cartData,
+                chooseObjects: cartData,
             })
-            that.amount()
-            wx.setStorage({
-                key: 'cartObjectsStorage',
+			that.amount()
+			wx.setStorage({
+				key: 'cartObjectsStorage',
 				data: cartObjects,
-            })
-            app.cartStorage()
+				success: function (res) {
+					app.cartStorage()
+				},
+				fail: function (res) { },
+				complete: function (res) { },
+			})
 
         } else {
             for (var i = 0; i < goods.length; i++) {
                 if (goods[i].gid == foodId) {
                     var cartFood = goods[i];
                 }
-            } 
-            
+            }
+
             cartData = {
                 gid: cartFood.gid,
                 name: cartFood.goodsName,
@@ -404,14 +411,14 @@ Page({
                 price: cartFood.sPrice,
                 num: num
             }
-            
+
             if (cartObjects.length !== 0) {
                 for (var i = 0; i < cartObjects.length; i++) {
                     if (cartObjects[i].gid == foodId) {
                         cartObjects[i].num = ++cartObjects[i].num;
                         cartData = cartObjects[i]
                         cartObjects.splice(i, 1);
-                        
+
                     }
                 }
             }
@@ -424,12 +431,16 @@ Page({
             // console.log("cart")
             // console.log(that.data.cart)
             // console.log("cartObjects")
-            // console.log(cartObjects)
-            wx.setStorage({
-                key: 'cartObjectsStorage',
-                data: cartObjects,
-            })
-            app.cartStorage()
+			// console.log(cartObjects)
+			wx.setStorage({
+				key: 'cartObjectsStorage',
+				data: cartObjects,
+				success: function (res) {
+					app.cartStorage()
+				},
+				fail: function (res) { },
+				complete: function (res) { },
+			})
         }
     },
     /**
@@ -458,7 +469,7 @@ Page({
         });
         var cartObjects = that.data.cartObjects;
         var chooseObjects = e.currentTarget.dataset.chooseobjects;
-		
+
         if (chooseObjects) {
             for (var i = 0; i < cartObjects.length; i++) {
                 if (cartObjects[i].gid == foodId && cartObjects[i].spec == chooseObjects.spec) {
@@ -474,12 +485,16 @@ Page({
                     cartObjects: cartObjects,
                     chooseObjects: chooseObjects
                 })
-                that.amount()
-                wx.setStorage({
-                    key: 'cartObjectsStorage',
-                    data: cartObjects,
-                })
-                app.cartStorage()
+				that.amount()
+				wx.setStorage({
+					key: 'cartObjectsStorage',
+					data: cartObjects,
+					success: function (res) {
+						app.cartStorage()
+					},
+					fail: function (res) { },
+					complete: function (res) { },
+				})
             }
         } else {
             for (var i = 0; i < cartObjects.length; i++) {
@@ -493,17 +508,21 @@ Page({
                 that.setData({
                     cartObjects: cartObjects,
                 })
-                that.amount()
-                wx.setStorage({
-                    key: 'cartObjectsStorage',
-                    data: cartObjects,
-                })
-                app.cartStorage()
+				that.amount()
+				wx.setStorage({
+					key: 'cartObjectsStorage',
+					data: cartObjects,
+					success: function (res) {
+						app.cartStorage()
+					},
+					fail: function (res) { },
+					complete: function (res) { },
+				})
             }
         }
-        
+
     },
-	//切换购物车开与关
+    //切换购物车开与关
     cascadeToggle: function() {
         var that = this;
         // that.cascadePopup();
@@ -525,30 +544,30 @@ Page({
         animationMask.opacity(0.5).step();
         that.setData({
             animationMask: that.animationMask.export(),
-		});
-		// 购物车动画
-		var animationCart = wx.createAnimation({
-			duration: 150,
-			timingFunction: 'linear',
-		});
-		that.animationCart = animationCart;
-		animationCart.opacity(1).step();
-		that.setData({
-			animationCart: that.animationCart.export(),
-		});
-		// 隐藏遮罩层
-		that.setData({
-			maskVisual: 'show'
-		});
+        });
+        // 购物车动画
+        var animationCart = wx.createAnimation({
+            duration: 150,
+            timingFunction: 'linear',
+        });
+        that.animationCart = animationCart;
+        animationCart.opacity(1).step();
+        that.setData({
+            animationCart: that.animationCart.export(),
+        });
+        // 隐藏遮罩层
+        that.setData({
+            maskVisual: 'show'
+        });
     },
     cascadeDismiss: function() {
         var that = this;
         // 购物车关闭动画
-		var animationCart = that.animationCart;
-		animationCart.opacity(0).step();
-		that.animationCart = animationCart;
+        var animationCart = that.animationCart;
+        animationCart.opacity(0).step();
+        that.animationCart = animationCart;
         that.setData({
-			animationCart: that.animationCart.export()
+            animationCart: that.animationCart.export()
         });
         // 遮罩渐变动画
         var animationMask = that.animationMask;
@@ -587,7 +606,7 @@ Page({
             })
         }
     },
-	// 规格弹窗
+    // 规格弹窗
     chooseMoal: function(e) {
         // console.log(e)
         var that = this;
@@ -603,9 +622,9 @@ Page({
         that.setData({
             isModal: true,
             chooseFoodId: chooseFoodId,
-			itemIndex0: 0,
-			itemIndex1: 0,
-		});
+            itemIndex0: 0,
+            itemIndex1: 0,
+        });
         for (var i = 0; i < goods.length; i++) {
             if (goods[i].gid == chooseFoodId) {
                 cartFood = goods[i];
@@ -624,17 +643,17 @@ Page({
         if (cartObjects.length !== 0) {
             for (var i = 0; i < cartObjects.length; i++) {
                 if (cartObjects[i].gid == chooseFoodId && cartObjects[i].spec == chooseObjects.spec) {
-					chooseObjects = cartObjects[i]
+                    chooseObjects = cartObjects[i]
                 }
             }
         }
         that.setData({
             chooseObjects: chooseObjects,
         });
-		// console.log('chooseMoal.chooseObjects')
-		// console.log(chooseObjects)
+        // console.log('chooseMoal.chooseObjects')
+        // console.log(chooseObjects)
     },
-	// 具体规格
+    // 具体规格
     choosesty0: function(e) {
         var that = this;
         var cartObjects = that.data.cartObjects
@@ -662,11 +681,11 @@ Page({
                 }
             }
         }
-		that.setData({
+        that.setData({
             chooseObjects: chooseObj
-		})
+        })
     },
-	// 具体规格第二种
+    // 具体规格第二种
     choosesty1: function(e) {
         var that = this;
         var cartObjects = that.data.cartObjects;
@@ -699,7 +718,7 @@ Page({
         var that = this;
         that.setData({
             isModal: false,
-            chooseObjects: []
+            // chooseObjects: []
         })
     },
     // 清空购物车
@@ -714,13 +733,18 @@ Page({
             cart: {}
         });
         that.amount()
-        wx.setStorage({
-            key: 'cartObjectsStorage',
-            data: cartObjects,
-        })
-        app.cartStorage()
+
+		wx.setStorage({
+			key: 'cartObjectsStorage',
+			data: cartObjects,
+			success: function (res) {
+				app.cartStorage()
+			},
+			fail: function (res) { },
+			complete: function (res) { },
+		})
     },
-	// 商品总数
+    // 商品总数
     amount: function(cartObjects) {
         var that = this;
         var cartObjects = that.data.cartObjects;
@@ -752,34 +776,58 @@ Page({
             that.showStore(storeId)
         }
         // 实例化API核心类
-        // var demo = new QQMapWX({
-        //     key: app.globalData.locationKey // 必填
-        // });
+        var demo = new QQMapWX({
+            key: app.globalData.locationKey // 必填
+        });
         // 调用接口
-        // demo.calculateDistance({
-        //     mode: 'driving',
-        //     to: [{
-        //         latitude: that.data.shopLatitude,
-        //         longitude: that.data.shopLongitude
-        //     }],
-        //     success: function(res) {
-        //         // console.log("demo.calculateDistance");
-        //         // console.log(res);
-        //         var distance = app.commafy(res.result.elements[0].distance);
-        //         that.setData({
-        //             distance: distance
-        //         })
-        //     },
-        //     fail: function(res) {
-        //         console.log("demo.calculateDistance");
-        //         console.log(res);
-        //     },
-        //     complete: function(res) {
-        //         // console.log(res);
-        //     }
-        // });
+        demo.calculateDistance({
+            mode: 'driving',
+            to: [{
+                latitude: that.data.shopLatitude,
+                longitude: that.data.shopLongitude
+            }],
+            success: function(res) {
+                // console.log("demo.calculateDistance");
+                // console.log(res);
+				var distance = app.commafy(res.result.elements[0].distance);
+				var duration = that.SecondToDate(res.result.elements[0].duration);
+                that.setData({
+                    distance: distance,
+					duration: duration
+                })
+            },
+            fail: function(res) {
+                console.log("demo.calculateDistance");
+                console.log(res);
+            },
+            complete: function(res) {
+                // console.log(res);
+            }
+        });
     },
-
+    SecondToDate: function(msd) {
+        var time = msd
+        if (null != time && "" != time) {
+            if (time > 60 && time < 60 * 60) {
+                time = parseInt(time / 60.0) + "分钟" + parseInt((parseFloat(time / 60.0) -
+                    parseInt(time / 60.0)) * 60) + "秒";
+            } else if (time >= 60 * 60 && time < 60 * 60 * 24) {
+                time = parseInt(time / 3600.0) + "小时" + parseInt((parseFloat(time / 3600.0) -
+                        parseInt(time / 3600.0)) * 60) + "分钟" +
+                    parseInt((parseFloat((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60) -
+                        parseInt((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60)) * 60) + "秒";
+            } else if (time >= 60 * 60 * 24) {
+                time = parseInt(time / 3600.0 / 24) + "天" + parseInt((parseFloat(time / 3600.0 / 24) -
+                        parseInt(time / 3600.0 / 24)) * 24) + "小时" + parseInt((parseFloat(time / 3600.0) -
+                        parseInt(time / 3600.0)) * 60) + "分钟" +
+                    parseInt((parseFloat((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60) -
+                        parseInt((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60)) * 60) + "秒";
+            } else {
+                time = parseInt(time) + "秒";
+            }
+        }
+        return time;
+    },
     /**
      * 生命周期函数--监听页面隐藏
      */

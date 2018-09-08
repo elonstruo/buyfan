@@ -64,11 +64,13 @@ Page({
 		}
         // 个人信息
         if (app.globalData.userInfo) {
-            // console.log("menu.app.globalData.userInfo")
-            // console.log(app.globalData.userInfo)
-            var key = app.globalData.userInfo.data.skey;
+            console.log("menu.app.globalData.userInfo")
+            console.log(app.globalData.userInfo)
+			var key = app.globalData.userInfo.data.skey;
+            var member = app.globalData.userInfo.data.member;
             that.setData({
-                key: key
+                key: key,
+				member: member
             })
         }
         that.taborder()
@@ -207,7 +209,20 @@ Page({
 	payorder: function (e) {
 		var that = this;
 		var orderNum = e.currentTarget.dataset.orderNum;
-		app.wxpay(that.data.key, orderNum)
+		that.setData({
+			orderNum: orderNum
+		})
+		if (that.data.member == 0) {
+			that.wxpay(that.data.key, orderNum)
+			that.myOrder()
+			
+		} else if (that.data.member == 1) {
+			that.vippay(that.data.key, orderNum)
+			that.myOrder()
+		}
+	},
+
+	funname: function () {
 		that.myOrder()
 	},
 	// 确认收货
@@ -422,6 +437,117 @@ Page({
 			complete: function(res) {},
 		})
 
+	},
+	// 微信支付
+	wxpay: function (key, order_sn) {
+		var that = this;
+		wx.request({
+			url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
+			// url: payurl,
+			data: {
+				action: 'encryption',
+				key: key,
+				ordernum: order_sn
+			},
+			header: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			method: 'POST',
+			success: function (res) {
+				console.log(res)
+				console.log(res.data)
+				// if (res.data.status == 1) {
+				var payArr = res.data.param;
+				var timeStamp = payArr.timeStamp;
+				var nonceStr = payArr.nonceStr;
+				var arrPackage = payArr.package;
+				var signType = payArr.signType;
+				var paySign = payArr.paySign;
+				wx.requestPayment({
+					timeStamp: timeStamp,
+					nonceStr: nonceStr,
+					package: arrPackage,
+					signType: 'MD5',
+					paySign: paySign,
+					success: function (res) {
+						console.log("success/pay/res")
+						console.log(res)
+						app.showBox("支付成功")
+						that.myOrder()
+
+					},
+					fail: function (res) {
+						// if (res.errMsg == "requestPayment:fail cancel") {
+						app.showBox("支付未完成")
+						that.myOrder()
+						// }
+					},
+					complete: function (res) { },
+				})
+				// }
+			},
+			fail: function (res) { },
+			complete: function (res) { },
+		})
+	},
+	// 会员支付
+	vippay: function (key, order_sn) {
+		var that = this;
+		wx.request({
+			url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
+			// url: payurl,
+			data: {
+				action: 'memberpay',
+				key: key,
+				ordernum: order_sn
+			},
+			header: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			method: 'POST',
+			success: function (res) {
+				console.log('success.vippay')
+				console.log(res)
+				if (res.data.request == "fail") {
+					wx.showModal({
+						content: res.data.errorCause,
+						showCancel: true,
+						cancelText: '立即充值',
+						cancelColor: '#333',
+						confirmText: '微信支付',
+						confirmColor: '#333',
+						success: function (res) {
+							console.log(res)
+							if (res.confirm) {
+								that.wxpay(that.data.key, that.data.orderNum)
+							} else {
+								wx.redirectTo({
+									url: '../vip/vip',
+									success: function (res) { },
+									fail: function (res) { },
+									complete: function (res) { },
+								})
+							}
+						},
+						fail: function (res) { },
+						complete: function (res) { },
+					})
+
+				} else {
+					app.showBox("支付成功！")
+					wx.redirectTo({
+						url: '../orders/orders',
+						success: function (res) { },
+						fail: function (res) { },
+						complete: function (res) { },
+					})
+				}
+			},
+			fail: function (res) {
+				console.log("fail/VIPpay/res")
+				console.log(res) },
+			complete: function (res) { },
+		})
 	},
     /**
      * 生命周期函数--监听页面初次渲染完成

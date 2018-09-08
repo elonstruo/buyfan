@@ -20,7 +20,8 @@ Page({
             addtessItem: addtessItem,
             username: addtessItem.username,
             tel: addtessItem.tel,
-            currInfo: addtessItem.currInfo,
+            // currInfo: addtessItem.currInfo,
+			adr: addtessItem.adr,
             latitude: addtessItem.latitude,
             longitude: addtessItem.longitude,
 			userInforIndex: userInforIndex
@@ -54,7 +55,7 @@ Page({
         var that = this;
         // console.log('form发生了submit事件，携带数据为：', e.detail.value);
         var userInforForm = e.detail.value;
-        userInforForm['currInfo'] = that.data.currInfo;
+        // userInforForm['adr'] = that.data.adr;
         userInforForm['latitude'] = that.data.latitude;
         userInforForm['longitude'] = that.data.longitude;
 		console.log('userInforForm')
@@ -63,7 +64,7 @@ Page({
             userInforForm.tel == that.data.addtessItem.tel &&
             userInforForm.latitude == that.data.addtessItem.latitude &&
             userInforForm.longitude == that.data.addtessItem.longitude &&
-			userInforForm.currInfo == that.data.addtessItem.currInfo) {
+			userInforForm.adr == that.data.addtessItem.adr) {
             wx.navigateBack({
                 delta: 1,
             })
@@ -138,7 +139,7 @@ Page({
                 console.log("地址定位")
                 console.log(res)
                 that.setData({
-                    currInfo: res.name,
+                    adr: res.name,
                     latitude: res.latitude,
                     longitude: res.longitude,
                 })

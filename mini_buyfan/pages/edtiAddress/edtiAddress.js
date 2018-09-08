@@ -44,7 +44,7 @@ Page({
 		var that = this;
 		// console.log('form发生了submit事件，携带数据为：', e.detail.value);
 		var userInforForm = e.detail.value;
-        userInforForm['currInfo'] = that.data.currInfo;
+        // userInforForm['adr'] = that.data.adr;
 		userInforForm['latitude'] = that.data.latitude;
 		userInforForm['longitude'] = that.data.longitude;
 		var username = userInforForm.username;
@@ -123,7 +123,7 @@ Page({
 				console.log("地址定位")
 				console.log(res)
 				that.setData({
-					currInfo: res.name,
+					adr: res.name,
 					latitude: res.latitude,
 					longitude: res.longitude,
 				})

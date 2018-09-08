@@ -67,7 +67,7 @@
                 <view class='left'>
                     <image class='icon-now' src='../../images/location@2x.png'></image>
                     <view class=''>
-                        <view class='address-top'>{{address.currInfo}}</view>
+                        <view class='address-top'>{{address.adr}}</view>
                         <view class='address-bottom'>{{address.username}} {{address.tel}}</view>
                     </view>
                 </view>

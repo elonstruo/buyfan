@@ -10,7 +10,7 @@
             <view class='sign-ln'>
                 <view class='name'>{{shopName}}</view>|
                 <view class='km'>{{distance}}km</view>|
-                <view class='time'>19分钟</view>
+                <view class='time'>{{duration}}</view>
             </view>
             <view class='mimo'>公告：{{shopIntro}}</view>
             <view class=''>近期售出1323份</view>

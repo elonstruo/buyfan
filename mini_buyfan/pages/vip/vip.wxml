@@ -10,7 +10,7 @@
 <view class='top-up'>
 	<view class='title'>会员充值</view>
 	<view class='items'>
-		<view class='item' wx:key="unique" wx:for="{{recharge}}" bindtap='topUp'>
+		<view class='item' wx:key="unique" wx:for="{{recharge}}" data-price="{{item.price}}" bindtap='topUp'>
 			<view>会员单次充值</view>
 			<view>充值<text>{{item.price}}</text>元,赠送<text>{{item.giveprice}}</text>元</view>
 			<view class='button-topup' hover-class='button-topup-hover'>充值{{item.price}}</view>

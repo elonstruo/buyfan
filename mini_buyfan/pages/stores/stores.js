@@ -12,12 +12,12 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function(options) {
-		console.log("options")
-		console.log(options)
+		// console.log("options")
+		// console.log(options)
 		var that = this;
 		var stores = JSON.parse(options.stores)
-		console.log("stores")
-		console.log(stores)
+		// console.log("stores")
+		// console.log(stores)
         if (options.ordersubmit) {
             that.setData({
                 stores: stores,

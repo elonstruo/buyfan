@@ -229,7 +229,7 @@ Page({
 	// 去点单
 	tomenu: function () {
 		wx.navigateTo({
-			url: '../menu/menu?orderway=shopfor&id=1',
+			url: '../menu/menu?orderway=takeout&id=1',
 			success: function (res) { },
 			fail: function (res) { },
 			complete: function (res) { },

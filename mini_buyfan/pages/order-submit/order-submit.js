@@ -20,8 +20,6 @@ Page({
 		var that = this;
 		// app.globalData.userInfo
 		if (app.globalData.userInfo) {
-			console.log("user.app.globalData.userInfo")
-			console.log(app.globalData.userInfo)
 			var userInfo = app.globalData.userInfo.data;
 			var member = userInfo.member
 			that.setData({
@@ -52,14 +50,12 @@ Page({
 			// addressinit
 			// 选择地址
 			wx.getStorage({
-				key: 'orderSubmitaddress',
+				key: 'orderAddress',
 				success: function (res) {
 					if (!res.data) {
 						var addRes = res.data;
 						var address = addRes[0];
 						var addressString = JSON.stringify(address)
-						console.log("orderSubmitaddress")
-						console.log(address)
 						that.setData({
 							address: address,
 							addressString: addressString,
@@ -72,16 +68,12 @@ Page({
 					}
 				},
 				fail: function (res) {
-					console.log("fail.res")
-					console.log(res)
 					wx.getStorage({
 						key: 'userInforAddress',
 						success: function (res) {
 							var addRes = res.data;
 							var address = addRes[0];
 							var addressString = JSON.stringify(address)
-							console.log("orderSubmitaddress")
-							console.log(address)
 							that.setData({
 								address: address,
 								addressString: addressString,
@@ -121,13 +113,13 @@ Page({
 				pick: pick
 			})
 			var otherItem = [{
-				name: other.name,
-				value: other.price,
+				name: other[0].name,
+				value: other[0].price,
 				checked: 'true'
 			},]
 			that.setData({
 				otherItem: otherItem,
-				tisuPrice: other.price,
+				tisuPrice: other[0].price,
 				tackoutprice: tackoutprice,
 			})
 			var pickstate = pick.state;
@@ -171,8 +163,6 @@ Page({
 				var storeId = that.data.storeId
 				for (var i = 0; i < distanceShopArr.length; i++) {
 					if (distanceShopArr[i].id == storeId) {
-						// console.log("distanceShopArr[i]")
-						// console.log(distanceShopArr[i])
 						that.setData({
 							deliveryTime: distanceShopArr[i].deliveryTime,
 							distance: distanceShopArr[i].distance
@@ -183,8 +173,6 @@ Page({
 				var distancePrice
 				var pick = that.data.pick
 				var distanceover
-				// console.log("pick")
-				// console.log(pick)
 				// 标准配送距离（公里）
 				var mindistance = parseInt(pick.mindistance)
 				// 标准配送距离收费
@@ -209,8 +197,6 @@ Page({
 				}
 			},
 			fail: function (res) {
-				console.log("距离计算.fail")
-				console.log(res)
 			},
 			complete: function (res) { },
 		})
@@ -344,12 +330,13 @@ Page({
 	orderSubmit: function () {
 		var that = this;
 		var out_trade_no = app.timedetail() + '' + app.randomnum();
+		that.setData({
+			out_trade_no: out_trade_no
+		})
 		var allAmount = that.data.allAmount;
 		var cartObjectsStorage = that.data.cartObjectsStorage;
 		var addressString = that.data.addressString;
 		var address = that.data.address;
-		console.log('orderSubmit.address')
-		console.log(address)
 		var pickState = that.data.pickState;
 		var desk = that.data.desk;
 		var selfname = that.data.selfname;
@@ -357,8 +344,6 @@ Page({
 		var zttime = that.data.zttime;
 		var distancePrice = that.data.distancePrice;
 		var distance = that.data.distance;
-		console.log("distance")
-		console.log(distance)
 		var attach = [
 			{
 				name: "餐巾纸",
@@ -380,7 +365,6 @@ Page({
 		if (!distance) {
 			distance = "",
 			attach.splice(1, 1)
-			console.log(attach)
 		}
 		// 手机正则
 		var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/;
@@ -424,8 +408,8 @@ Page({
 				ordernum: out_trade_no,
 				content: JSON.stringify(content),
 				userInfor: JSON.stringify(userInforSubmit),
-				// price: that.data.allAmount,
-				price: 0.01,
+				price: that.data.allAmount,
+				// price: 0.01,
 				remark: that.data.remarkText,
 				couponid: that.data.couponid,
 				pickState: that.data.pickState,
@@ -439,27 +423,142 @@ Page({
 			dataType: 'json',
 			responseType: 'text',
 			success: function (res) {
-				console.log("orderSubmit.success.res")
-				console.log(res)
 				if (res.statusCode == 200) {
 					if (that.data.member == 0) {
-						var payurl = 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php'
-						app.wxpay(that.data.key, out_trade_no, payurl)
+						that.wxpay(that.data.key, out_trade_no)
 					} else if (that.data.member == 1) {
-						app.wxpay(that.data.key, out_trade_no, payurl)
+						that.vippay(that.data.key, out_trade_no)
 					}
 					// wx.setStorageSync('cartObjectsStorage', [])
 				}
 			},
 			fail: function (res) {
-				console.log("orderSubmit.success.res")
-				console.log(res)
 			},
 			complete: function (res) {
 				that.setData({
 					userInforSubmit: {}
 				})
 			},
+		})
+	},
+	// 微信支付
+	wxpay: function (key, order_sn) {
+		var that = this;
+		wx.request({
+			url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
+			// url: payurl,
+			data: {
+				action: 'encryption',
+				key: key,
+				ordernum: order_sn
+			},
+			header: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			method: 'POST',
+			success: function (res) {
+				console.log(res)
+				console.log(res.data)
+				// if (res.data.status == 1) {
+				var payArr = res.data.param;
+				var timeStamp = payArr.timeStamp;
+				var nonceStr = payArr.nonceStr;
+				var arrPackage = payArr.package;
+				var signType = payArr.signType;
+				var paySign = payArr.paySign;
+				wx.requestPayment({
+					timeStamp: timeStamp,
+					nonceStr: nonceStr,
+					package: arrPackage,
+					signType: 'MD5',
+					paySign: paySign,
+					success: function (res) {
+						console.log("success/pay/res")
+						console.log(res)
+						app.showBox("支付成功")
+						wx.redirectTo({
+							url: '../orders/orders',
+							success: function(res) {},
+							fail: function(res) {},
+							complete: function(res) {},
+						})
+
+					},
+					fail: function (res) {
+						// if (res.errMsg == "requestPayment:fail cancel") {
+						app.showBox("支付未完成")
+						wx.redirectTo({
+							url: '../orders/orders',
+							success: function(res) {},
+							fail: function(res) {},
+							complete: function(res) {},
+						})
+						// }
+					},
+					complete: function (res) { },
+				})
+				// }
+			},
+			fail: function (res) { },
+			complete: function (res) { },
+		})
+	},
+	// 会员支付
+	vippay: function (key, order_sn) {
+		var that = this;
+		wx.request({
+			url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
+			// url: payurl,
+			data: {
+				action: 'memberpay',
+				key: key,
+				ordernum: order_sn
+			},
+			header: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			method: 'POST',
+			success: function (res) {
+				console.log('success.vippay')
+				console.log(res)
+				if (res.data.request == "fail") {
+					wx.showModal({
+						content: res.data.errorCause,
+						showCancel: true,
+						cancelText: '立即充值',
+						cancelColor: '#333',
+						confirmText: '微信支付',
+						confirmColor: '#333',
+						success: function(res) {
+							console.log(res)
+							if (res.confirm) {
+								that.wxpay(that.data.key, that.data.out_trade_no)
+							} else {
+								wx.redirectTo({
+									url: '../vip/vip',
+									success: function(res) {},
+									fail: function(res) {},
+									complete: function(res) {},
+								})
+							}
+						},
+						fail: function(res) {},
+						complete: function(res) {},
+					})
+
+				} else {
+					app.showBox("支付成功！")
+					wx.redirectTo({
+						url: '../orders/orders',
+						success: function (res) { },
+						fail: function (res) { },
+						complete: function (res) { },
+					})
+				}
+			},
+			fail: function (res) {
+			 },
+			complete: function (res) { },
 		})
 	},
 	// 前往订单页
@@ -494,8 +593,6 @@ Page({
 			success: function (res) {
 				var address = res.data;
 				var addressString = JSON.stringify(address)
-				console.log("onshowOrderSubmitaddress")
-				console.log(address)
 				if (res.data) {
 					that.setData({
 						address: address,
@@ -520,8 +617,6 @@ Page({
 			key: 'userCoupon',
 			success: function (res) {
 				var userCoupon = res.data;
-				console.log("userCoupon")
-				console.log(userCoupon)
 				var cartObjects = that.data.cartObjects
 				that.setData({
 					couponid: ""
