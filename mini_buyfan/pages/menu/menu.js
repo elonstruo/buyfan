@@ -28,7 +28,7 @@ Page({
         amount: 0,
         isModal: false,
         maskVisual: 'hidden',
-        isCartModal:false,
+        isCartModal: false,
         // cartObjects: [],
         cartData: {},
         chooseObjects: {},
@@ -70,22 +70,24 @@ Page({
             storeId: options.id
         })
         // 获取购物车
-		// wx.setStorageSync("cartObjectsStorage", [])
-        if (app.globalData.cartObjectsStorage) {
-            var cart = that.data.cart
+        // wx.setStorageSync("cartObjectsStorage", [])
+
+        // if (app.globalData.cartObjectsStorage) {
+        //     var cart = that.data.cart
             that.setData({
-                cartObjects: app.globalData.cartObjectsStorage,
+                cartObjects: [],
             })
-            var cartObjects = that.data.cartObjects
-            var cart = that.data.cart
-            for (var i = 0; i < cartObjects.length; i++) {
-				cart[cartObjects[i].gid] = cartObjects[i].num
-                that.setData({
-                    cart: cart
-                })
-            }
-            that.amount();
-        }
+        //     var cartObjects = that.data.cartObjects
+        //     var cart = that.data.cart
+        //     var foodId = []
+        //     for (var i = 0; i < cartObjects.length; i++) {
+        //         cart[cartObjects[i].gid] = cartObjects[i].num
+        //         that.setData({
+        //             cart: cart
+        //         })
+        //     }
+        //     that.amount();
+        // }
         // 个人信息
         if (app.globalData.userInfo) {
             // console.log("menu.app.globalData.userInfo")
@@ -382,21 +384,21 @@ Page({
                     }
                 }
             }
-			cartObjects.push(cartData)
+            cartObjects.push(cartData)
             that.setData({
                 cartObjects: cartObjects,
                 chooseObjects: cartData,
             })
-			that.amount()
-			wx.setStorage({
-				key: 'cartObjectsStorage',
-				data: cartObjects,
-				success: function (res) {
-					app.cartStorage()
-				},
-				fail: function (res) { },
-				complete: function (res) { },
-			})
+            that.amount()
+            wx.setStorage({
+                key: 'cartObjectsStorage',
+                data: cartObjects,
+                success: function(res) {
+                    app.cartStorage()
+                },
+                fail: function(res) {},
+                complete: function(res) {},
+            })
 
         } else {
             for (var i = 0; i < goods.length; i++) {
@@ -413,7 +415,7 @@ Page({
                 num: num
             }
 
-            if (cartObjects.length !== 0) {
+            if (cartObjects.length > 1) {
                 for (var i = 0; i < cartObjects.length; i++) {
                     if (cartObjects[i].gid == foodId) {
                         cartObjects[i].num = ++cartObjects[i].num;
@@ -432,16 +434,16 @@ Page({
             // console.log("cart")
             // console.log(that.data.cart)
             // console.log("cartObjects")
-			// console.log(cartObjects)
-			wx.setStorage({
-				key: 'cartObjectsStorage',
-				data: cartObjects,
-				success: function (res) {
-					app.cartStorage()
-				},
-				fail: function (res) { },
-				complete: function (res) { },
-			})
+            // console.log(cartObjects)
+            wx.setStorage({
+                key: 'cartObjectsStorage',
+                data: cartObjects,
+                success: function(res) {
+                    app.cartStorage()
+                },
+                fail: function(res) {},
+                complete: function(res) {},
+            })
         }
     },
     /**
@@ -486,16 +488,16 @@ Page({
                     cartObjects: cartObjects,
                     chooseObjects: chooseObjects
                 })
-				that.amount()
-				wx.setStorage({
-					key: 'cartObjectsStorage',
-					data: cartObjects,
-					success: function (res) {
-						app.cartStorage()
-					},
-					fail: function (res) { },
-					complete: function (res) { },
-				})
+                that.amount()
+                wx.setStorage({
+                    key: 'cartObjectsStorage',
+                    data: cartObjects,
+                    success: function(res) {
+                        app.cartStorage()
+                    },
+                    fail: function(res) {},
+                    complete: function(res) {},
+                })
             }
         } else {
             for (var i = 0; i < cartObjects.length; i++) {
@@ -509,16 +511,16 @@ Page({
                 that.setData({
                     cartObjects: cartObjects,
                 })
-				that.amount()
-				wx.setStorage({
-					key: 'cartObjectsStorage',
-					data: cartObjects,
-					success: function (res) {
-						app.cartStorage()
-					},
-					fail: function (res) { },
-					complete: function (res) { },
-				})
+                that.amount()
+                wx.setStorage({
+                    key: 'cartObjectsStorage',
+                    data: cartObjects,
+                    success: function(res) {
+                        app.cartStorage()
+                    },
+                    fail: function(res) {},
+                    complete: function(res) {},
+                })
             }
         }
 
@@ -735,15 +737,15 @@ Page({
         });
         that.amount()
 
-		wx.setStorage({
-			key: 'cartObjectsStorage',
-			data: cartObjects,
-			success: function (res) {
-				app.cartStorage()
-			},
-			fail: function (res) { },
-			complete: function (res) { },
-		})
+        wx.setStorage({
+            key: 'cartObjectsStorage',
+            data: cartObjects,
+            success: function(res) {
+                app.cartStorage()
+            },
+            fail: function(res) {},
+            complete: function(res) {},
+        })
     },
     // 商品总数
     amount: function(cartObjects) {
@@ -790,11 +792,11 @@ Page({
             success: function(res) {
                 // console.log("demo.calculateDistance");
                 // console.log(res);
-				var distance = app.commafy(res.result.elements[0].distance);
-				var duration = that.SecondToDate(res.result.elements[0].duration);
+                var distance = app.commafy(res.result.elements[0].distance);
+                var duration = that.SecondToDate(res.result.elements[0].duration);
                 that.setData({
                     distance: distance,
-					duration: duration
+                    duration: duration
                 })
             },
             fail: function(res) {

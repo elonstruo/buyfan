@@ -613,6 +613,7 @@ page {
 .modal-content {
 	opacity: 0;
 	max-height: 670rpx;
+	max-height: 550rpx;
     position: fixed;
     bottom: 100rpx;
     left: 0;
