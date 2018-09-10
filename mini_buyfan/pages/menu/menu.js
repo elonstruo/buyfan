@@ -616,7 +616,7 @@ Page({
         var goods = that.data.goods;
         var cartFood;
         var goodsSpec
-        var cart = {};
+        // var cart = {};
         var num = 0;
         var chooseFoodId = e.currentTarget.dataset.foodId;
         that.setData({
