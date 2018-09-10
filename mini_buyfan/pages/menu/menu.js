@@ -28,6 +28,7 @@ Page({
         amount: 0,
         isModal: false,
         maskVisual: 'hidden',
+        isCartModal:false,
         // cartObjects: [],
         cartData: {},
         chooseObjects: {},
@@ -526,7 +527,7 @@ Page({
     cascadeToggle: function() {
         var that = this;
         // that.cascadePopup();
-        if (that.data.maskVisual == 'show') {
+        if (that.data.isCartModal == true) {
             that.cascadeDismiss();
         } else {
             that.cascadePopup();
@@ -557,7 +558,7 @@ Page({
         });
         // 隐藏遮罩层
         that.setData({
-            maskVisual: 'show'
+            isCartModal: true
         });
     },
     cascadeDismiss: function() {
@@ -577,7 +578,7 @@ Page({
         });
         // 隐藏遮罩层
         that.setData({
-            maskVisual: 'hidden'
+            isCartModal: false
         });
     },
     // 结算

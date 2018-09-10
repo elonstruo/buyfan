@@ -124,8 +124,8 @@
             </view>
         </view>
         <!-- 购物车 -->
-        <view class='modal'>
-            <view animation="{{animationMask}}" class="modal-mask {{maskVisual}}" bindtap="cascadeDismiss"></view>
+        <view class='modal' wx:if="{{isCartModal}}">
+            <view animation="{{animationMask}}" class="modal-mask" bindtap="cascadeDismiss"></view>
             <!-- <view animation="{{animationData}}" class="modal-content carts-list" style="height: {{scrollHeight}}px; bottom: -{{cartHeight}}px;"> -->
             <view class="modal-content carts-list" animation="{{animationCart}}">
                 <view class='top' bindtap='deleteCart'>

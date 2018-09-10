@@ -408,8 +408,8 @@ Page({
 				ordernum: out_trade_no,
 				content: JSON.stringify(content),
 				userInfor: JSON.stringify(userInforSubmit),
-				price: that.data.allAmount,
-				// price: 0.01,
+				// price: that.data.allAmount,
+				price: 0.01,
 				remark: that.data.remarkText,
 				couponid: that.data.couponid,
 				pickState: that.data.pickState,
@@ -548,6 +548,7 @@ Page({
 
 				} else {
 					app.showBox("支付成功！")
+                    app.has_login()
 					wx.redirectTo({
 						url: '../orders/orders',
 						success: function (res) { },
