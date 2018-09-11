@@ -108,10 +108,10 @@ Page({
 						that.setData({
 							delivery: delivery
 						})
+						console.log('takeout.order')
+						console.log(delivery)
                         if (delivery.lenght) {
-                            var order = delivery[0]
-                            console.log('takeout.order')
-                            console.log(order)
+                            var order = that.data.delivery[0]
                             var shopLocal = JSON.parse(order.cshopInfor.shopLocal)
                             var homeLocal = order.userInfor
                             var shoplat = shopLocal.latitude
@@ -134,7 +134,8 @@ Page({
                             var last = operation[operation.length - 1]
                             var storeId = order.cshopInfor.id
                             that.orderDistance(homelat, homelog, storeId)
-
+							console.log('last.name')
+							console.log(last.name)
                             that.setData({
                                 stateText: last.name,
                                 delivery: delivery,
