@@ -161,6 +161,8 @@ Page({
                             that.setData({
                                 delivery: delivery
                             })
+							console.log('delivery')
+							console.log(delivery)
 							// 已完成
 						} else if (orderslist[i].orderState == "finish" || orderslist[i].orderState == "cancel" || orderslist[i].orderState == "fail" || orderslist[i].orderState == "noaccept") {
                             finish.push(orderslist[i])

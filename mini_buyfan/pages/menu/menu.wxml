@@ -177,8 +177,7 @@
                             <image data-cid='{{item.cid}}' bindtap='likeClick' class='icon-like' src='../../images/icon-like.png'></image>
                             <view class='like-text {{item.likestate == 1 ? "on" : ""}}'>
                                 <!-- <text wx:if="{{likenum}}">{{likenum}}人</text> -->
-                                <text>{{item.likenum}}人</text>
-                                点赞
+                                <text>{{item.likenum}}人</text> 点赞
                             </view>
                             <!-- <view class='like-text' hidden="{{likenum}}">点赞</view> -->
                         </view>

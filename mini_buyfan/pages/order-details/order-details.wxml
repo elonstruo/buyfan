@@ -10,7 +10,7 @@
         </view>
         <view class='goods-list'>
             <view class='item' wx:for="{{order.orderContent.shopcar}}" wx:key="unique">
-                <image class='img-goods' src='{{item.img}}'></image>
+                <image mode='aspectFill' class='img-goods' src='{{item.img}}'></image>
                 <view class='right'>
                     <view class='top'>
                         <view class='name'>{{item.name}}

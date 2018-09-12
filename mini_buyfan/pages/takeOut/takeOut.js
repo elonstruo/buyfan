@@ -25,14 +25,7 @@ Page({
             })
         }
         // 个人订单
-        that.myOrder(function(orderslist) {
-            //更新数据
-            that.setData({
-                orderslist: orderslist
-            })
-            // console.log('更新数据.orderslist');
-            // console.log(orderslist);
-        })
+        that.myOrder()
     },
 
     // 距离计算获取送达时间
@@ -67,149 +60,118 @@ Page({
         })
     },
     // 个人订单
-    myOrder: function(cb) {
+    myOrder: function() {
         var that = this;
-        var takeout = [];
+        var activeId = that.data.activeId;
+        var all = [];
+        var unpaid = [];
+        var unpaidi = [];
         var delivery = [];
-        if (that.data.orderslist) {
-            typeof cb == "function" && cb(that.data.orderslist)
-        } else {
-            wx.request({
-                url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
-                data: {
-                    action: 'userordershows',
-                    key: that.data.key
-                },
-                header: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                method: 'post',
-                dataType: 'json',
-                success: function(res) {
-                    if (res.statusCode == 200) {
-                        var orderslist = that.data.orderslist;
-                        orderslist = res.data.data;
-                        that.setData({
-                            orderslist: orderslist
-                        })
-                        typeof cb == "function" && cb(that.data.orderslist)
-                        for (var i = 0; i < orderslist.length; i++) {
-                            if (orderslist[i].pickState == "1") {
-                                takeout.push(orderslist[i])
-                            }
-                            // console.log('takeout')
-                            // console.log(takeout)
-                        }
-                        for (var i = 0; i < takeout.length; i++) {
-                            if (takeout[i].orderState == "delivery" || takeout[i].orderState == "adopt" || takeout[i].orderState == "accept") {
-                                delivery.push(takeout[i])
-                            }
-                        }
-						that.setData({
-							delivery: delivery
-						})
-						console.log('takeout.order')
-						console.log(delivery)
-                        if (delivery.lenght) {
-                            var order = that.data.delivery[0]
-                            var shopLocal = JSON.parse(order.cshopInfor.shopLocal)
-                            var homeLocal = order.userInfor
-                            var shoplat = shopLocal.latitude
-                            var shoplog = shopLocal.longitude
-                            var homelat = homeLocal.latitude
-                            var homelog = homeLocal.longitude
-                            // var runLocal = order.deliveryInfor
-                            if (order.deliveryInfor) {
-                                var runLocal = order.deliveryInfor
-                                var runlat = runLocal.latitude
-                            } else {
-                                var runLocal = {
-                                    latitude: 23.557275,
-                                    longitude: 116.364060,
-                                }
-                            }
-                            var runlat = runLocal.latitude
-                            var runlog = runLocal.longitude
-                            var operation = order.operation
-                            var last = operation[operation.length - 1]
-                            var storeId = order.cshopInfor.id
-                            that.orderDistance(homelat, homelog, storeId)
-							console.log('last.name')
-							console.log(last.name)
-                            that.setData({
-                                stateText: last.name,
-                                delivery: delivery,
-                                shopLocal: shopLocal,
-                                homeLocal: homeLocal,
-                                shoplat: shoplat,
-                                shoplog: shoplog,
-                                homelat: homelat,
-                                homelog: homelog,
-                                // polyline: [{
-                                // 	points: [{
-                                // 		iconPath: "../../images/icon-map-shop.png",
-                                // 		id: 0,
-                                // 		latitude: shoplat,
-                                // 		longitude: shoplog,
-                                // 		width: 28,
-                                // 		height: 37
-                                // 	},
-                                // 	{
-                                // 		iconPath: "../../images/icon-map-home.png",
-                                // 		id: 1,
-                                // 		latitude: homelat,
-                                // 		longitude: homelog,
-                                // 		width: 28,
-                                // 		height: 37
-                                // 	}
-                                // 	],
-                                // 	color: '#aed8a2',
-                                // 	width: 8,
-                                // 	dottedLine: false
-
-                                // }],
-                                markers: [{
-                                        iconPath: "../../images/icon-map-shop.png",
-                                        id: 0,
-                                        latitude: shoplat,
-                                        longitude: shoplog,
-                                        width: 28,
-                                        height: 37
-                                    },
-                                    {
-                                        iconPath: "../../images/icon-map-home.png",
-                                        id: 1,
-                                        latitude: homelat,
-                                        longitude: homelog,
-                                        width: 28,
-                                        height: 37
-                                    }, {
-                                        iconPath: "../../images/icon-map-run.png",
-                                        id: 2,
-                                        latitude: runlat,
-                                        longitude: runlog,
-                                        width: 22,
-                                        height: 22
-                                    }
-                                ],
-                            })
-                        }
-
-                    }
-                },
-                fail: function(res) {
-                    console.log(res)
-                    wx.hideLoading()
-                    wx.showToast({
-                        title: '网络出错',
-                        icon: 'none',
-                        duration: 2000,
-                        mask: true,
+        var finish = [];
+        var allrefund = [];
+        wx.request({
+            url: 'https://app.jywxkj.com/shop/baifen/request/ordermanage.php',
+            data: {
+                action: 'userordershows',
+                key: that.data.key
+            },
+            header: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'post',
+            dataType: 'json',
+            success: function(res) {
+                wx.showLoading({
+                    title: '正在加载',
+                    mask: true,
+                })
+                if (res.statusCode == 200) {
+                    that.setData({
+                        orderslist: res.data.data
                     })
-                },
-                complete: function(res) {},
-            })
-        }
+                    var orderslist = that.data.orderslist;
+                    for (var i = 0; i < orderslist.length; i++) {
+                        if (orderslist[i].pickState == 1) {
+                            if (orderslist[i].orderState == "delivery" || orderslist[i].orderState == "adopt" || orderslist[i].orderState == "accept") {
+                                delivery.push(orderslist[i])
+                                that.setData({
+                                    delivery: delivery
+                                })
+                            }
+                        }
+                    }
+                    var order = that.data.delivery[0]
+                    var shopLocal = JSON.parse(order.cshopInfor.shopLocal)
+                    var homeLocal = order.userInfor
+                    var shoplat = shopLocal.latitude
+                    var shoplog = shopLocal.longitude
+                    var homelat = homeLocal.latitude
+                    var homelog = homeLocal.longitude
+                    // var runLocal = order.deliveryInfor
+                    if (order.deliveryInfor) {
+                        var runLocal = order.deliveryInfor
+                        var runlat = runLocal.latitude
+                    } else {
+                        var runLocal = {
+                            latitude: 23.557275,
+                            longitude: 116.364060,
+                        }
+                    }
+                    var runlat = runLocal.latitude
+                    var runlog = runLocal.longitude
+                    var operation = order.operation
+                    var last = operation[operation.length - 1]
+                    var storeId = order.cshopInfor.id
+                    that.orderDistance(homelat, homelog, storeId)
+                    that.setData({
+                        stateText: last.name,
+                        delivery: delivery,
+                        shopLocal: shopLocal,
+                        homeLocal: homeLocal,
+                        shoplat: shoplat,
+                        shoplog: shoplog,
+                        homelat: homelat,
+                        homelog: homelog,
+                        markers: [{
+                                iconPath: "../../images/icon-map-shop.png",
+                                id: 0,
+                                latitude: shoplat,
+                                longitude: shoplog,
+                                width: 28,
+                                height: 37
+                            },
+                            {
+                                iconPath: "../../images/icon-map-home.png",
+                                id: 1,
+                                latitude: homelat,
+                                longitude: homelog,
+                                width: 28,
+                                height: 37
+                            }, {
+                                iconPath: "../../images/icon-map-run.png",
+                                id: 2,
+                                latitude: runlat,
+                                longitude: runlog,
+                                width: 22,
+                                height: 22
+                            }
+                        ],
+                    })
+                    wx.hideLoading()
+                }
+            },
+            fail: function(res) {
+                console.log(res)
+                wx.hideLoading()
+                wx.showToast({
+                    title: '网络出错',
+                    icon: 'none',
+                    duration: 2000,
+                    mask: true,
+                })
+            },
+            complete: function(res) {},
+        })
     },
     // 催单
     reminde: function() {
@@ -227,15 +189,15 @@ Page({
             remindeText: "已催单"
         })
     },
-	// 去点单
-	tomenu: function () {
-		wx.navigateTo({
-			url: '../menu/menu?orderway=takeout&id=1',
-			success: function (res) { },
-			fail: function (res) { },
-			complete: function (res) { },
-		})
-	},
+    // 去点单
+    tomenu: function() {
+        wx.navigateTo({
+            url: '../menu/menu?orderway=takeout&id=1',
+            success: function(res) {},
+            fail: function(res) {},
+            complete: function(res) {},
+        })
+    },
     /**
      * 生命周期函数--监听页面初次渲染完成
      */
@@ -249,14 +211,7 @@ Page({
     onShow: function() {
         var that = this;
         // 个人订单
-        that.myOrder(function(orderslist) {
-            //更新数据
-            that.setData({
-                orderslist: orderslist
-            })
-            // console.log('更新数据.orderslist');
-            // console.log(orderslist);
-        })
+        that.myOrder()
     },
 
     /**
