@@ -51,7 +51,8 @@ Page({
         //     "../../images/shopimg.jpg",
         // ],
         selectA: "1",
-        activeCategoryId: "0",
+		attachClassId: "0",
+        // activeCategoryId: "0",
         selectedId: "1",
         type_sort: [],
         goods: [],
@@ -72,22 +73,21 @@ Page({
         // 获取购物车
         // wx.setStorageSync("cartObjectsStorage", [])
 
-        // if (app.globalData.cartObjectsStorage) {
-        //     var cart = that.data.cart
+        if (app.globalData.cartObjectsStorage) {
             that.setData({
-                cartObjects: [],
+                cartObjects: app.globalData.cartObjectsStorage,
             })
-        //     var cartObjects = that.data.cartObjects
-        //     var cart = that.data.cart
-        //     var foodId = []
-        //     for (var i = 0; i < cartObjects.length; i++) {
-        //         cart[cartObjects[i].gid] = cartObjects[i].num
-        //         that.setData({
-        //             cart: cart
-        //         })
-        //     }
-        //     that.amount();
-        // }
+            var cartObjects = app.globalData.cartObjectsStorage
+            var cart = that.data.cart
+            var foodId = []
+            for (var i = 0; i < cartObjects.length; i++) {
+                cart[cartObjects[i].gid] = cartObjects[i].quantity
+                that.setData({
+                    cart: cart
+                })
+            }
+            that.amount();
+        }
         // 个人信息
         if (app.globalData.userInfo) {
             // console.log("menu.app.globalData.userInfo")
@@ -102,8 +102,10 @@ Page({
             var actionData = app.globalData.actionData
             var appLogo = app.globalData.actionData.appLogo
             that.setData({
+				attachClass: actionData.attachClass,
                 type_sort: actionData.appClass,
-                categoryGoodsclass: actionData.appClass[0],
+                // categoryGoodsclass: actionData.appClass[0],
+				attachTagClass: actionData.attachClass[0].content,
                 screenWidth: app.screenWidth,
                 screenHeight: app.screenHeight,
                 // cartItem: app.screenHeight * 0.089788732394366,
@@ -119,7 +121,8 @@ Page({
                 var appLogo = app.globalData.actionData.appLogo
                 that.setData({
                     type_sort: actionData.appClass,
-                    categoryGoodsclass: actionData.appClass[0],
+					// categoryGoodsclass: actionData.appClass[0],
+					attachTagClass: actionData.attachClass[0].content,
                     // mesuScrollHeight: app.screenHeight - signH - tabbarH - food_row_height,
                     mesuScrollHeight: app.screenHeight - signH - tabbarH,
                     appLogo: appLogo
@@ -320,14 +323,27 @@ Page({
         // console.log(e)
     },
     // 获取分类id
-    categoryClick: function(e) {
+	attachClassClick: function(e) {
         var that = this;
         // console.log(e)
         that.setData({
-            categoryGoodsclass: e.currentTarget.dataset.goodsclass,
-            activeCategoryId: e.currentTarget.dataset.id
+			attachTagClass: e.currentTarget.dataset.attachclass,
+			attachClassId: e.currentTarget.dataset.id,
+			activeCategoryId:null,
+			categoryGoodsclass:null
         });
-    },
+	},
+	// 获取分类id
+	categoryClick: function (e) {
+		var that = this;
+		// console.log(e)
+		that.setData({
+			categoryGoodsclass: e.currentTarget.dataset.goodsclass,
+			activeCategoryId: e.currentTarget.dataset.id,
+			attachClassId:null,
+			attachTagClass:null
+		});
+	},
     /**
      * 绑定加数量事件
      */
@@ -369,22 +385,24 @@ Page({
                 goodsSpec: goodsSpecLength,
                 spec: chooseObjects.spec,
                 num: num,
-
+				quantity: cart[foodId]
             }
             goodsSpecDetail = that.data.goodsSpecDetail;
-            if (cartObjects.length !== 0) {
-                for (var i = 0; i < cartObjects.length; i++) {
-                    if (cartObjects[i].gid == foodId) {
-                        cartObjects[i].quantity = cart[foodId];
-                    }
-                    if (cartObjects[i].gid == foodId && cartObjects[i].spec == chooseObjects.spec) {
-                        cartObjects[i].num = ++cartObjects[i].num;
-                        cartData = cartObjects[i];
-                        cartObjects.splice(i, 1);
-                    }
+            // if (cartObjects.length !== 0) {
+            for (var i = 0; i < cartObjects.length; i++) {
+                if (cartObjects[i].gid == foodId) {
+					cartObjects[i].quantity = cart[foodId];
+                }
+                if (cartObjects[i].gid == foodId && cartObjects[i].spec == chooseObjects.spec) {
+                    cartObjects[i].num = ++cartObjects[i].num;
+                    cartData = cartObjects[i];
+                    cartObjects.splice(i, 1);
                 }
             }
+            // }
             cartObjects.push(cartData)
+            // console.log('cartObjects')
+            // console.log(cartObjects)
             that.setData({
                 cartObjects: cartObjects,
                 chooseObjects: cartData,
@@ -412,12 +430,14 @@ Page({
                 name: cartFood.goodsName,
                 img: cartFood.goodsImage,
                 price: cartFood.sPrice,
-                num: num
+                num: num,
+                quantity: cart[foodId]
             }
 
             if (cartObjects.length > 1) {
                 for (var i = 0; i < cartObjects.length; i++) {
                     if (cartObjects[i].gid == foodId) {
+                        cartObjects[i].quantity = cart[foodId];
                         cartObjects[i].num = ++cartObjects[i].num;
                         cartData = cartObjects[i]
                         cartObjects.splice(i, 1);
@@ -472,38 +492,49 @@ Page({
         });
         var cartObjects = that.data.cartObjects;
         var chooseObjects = e.currentTarget.dataset.chooseobjects;
-
+		var carcho
         if (chooseObjects) {
-            for (var i = 0; i < cartObjects.length; i++) {
+			for (var i = 0; i < cartObjects.length; i++) {
+				if (cartObjects[i].gid == foodId) {
+					carcho = cartObjects[i]
+					carcho.quantity = cart[foodId];
+				}
                 if (cartObjects[i].gid == foodId && cartObjects[i].spec == chooseObjects.spec) {
                     cartObjects[i].num = --cartObjects[i].num;
                     chooseObjects.num = cartObjects[i].num;
-                    cart[foodId] = cartObjects[i].num;
                     if (cartObjects[i].num == 0) {
                         cartObjects.splice(i, 1);
                         chooseObjects.num = "";
                     }
-                }
-                that.setData({
-                    cartObjects: cartObjects,
-                    chooseObjects: chooseObjects
-                })
-                that.amount()
-                wx.setStorage({
-                    key: 'cartObjectsStorage',
-                    data: cartObjects,
-                    success: function(res) {
-                        app.cartStorage()
-                    },
-                    fail: function(res) {},
-                    complete: function(res) {},
-                })
-            }
+				}
+			}
+			if (cartObjects.length) {
+				for (var i = 0; i < cartObjects.length; i++) {
+					if (cartObjects[i].gid == foodId) {
+						cartObjects[i].quantity = cart[foodId];
+					}
+				}
+			}
+			that.setData({
+				cartObjects: cartObjects,
+				chooseObjects: chooseObjects
+			})
+            that.amount()
+            wx.setStorage({
+                key: 'cartObjectsStorage',
+                data: cartObjects,
+                success: function(res) {
+                    app.cartStorage()
+                },
+                fail: function(res) {},
+                complete: function(res) {},
+            })
         } else {
             for (var i = 0; i < cartObjects.length; i++) {
                 if (cartObjects[i].gid == foodId) {
+                    cartObjects[i].quantity = cart[foodId];
                     cartObjects[i].num = --cartObjects[i].num;
-                    cart[foodId] = cartObjects[i].num;
+                    // cart[foodId] = cartObjects[i].num;
                     if (cartObjects[i].num == 0) {
                         cartObjects.splice(i, 1);
                     }
@@ -671,7 +702,7 @@ Page({
         chooseObj.name = chooseObjects.name;
         chooseObj.img = chooseObjects.img;
         chooseObj.price = chooseObjects.price;
-        chooseObj.goodsSpec = chooseObjects.goodsSpec;
+		chooseObj.goodsSpec = chooseObjects.goodsSpec;
         if (chooseObjects.goodsSpec.length > 1) {
             chooseObj.spec = chooseObjects.goodsSpec[0].detail[itemIndex].name + ',' + chooseObjects.goodsSpec[1].detail[that.data.itemIndex1].name;
         } else {
@@ -812,19 +843,14 @@ Page({
         var time = msd
         if (null != time && "" != time) {
             if (time > 60 && time < 60 * 60) {
-                time = parseInt(time / 60.0) + "分钟" + parseInt((parseFloat(time / 60.0) -
-                    parseInt(time / 60.0)) * 60) + "秒";
+                time = parseInt(time / 60.0) + "分钟";
             } else if (time >= 60 * 60 && time < 60 * 60 * 24) {
                 time = parseInt(time / 3600.0) + "小时" + parseInt((parseFloat(time / 3600.0) -
-                        parseInt(time / 3600.0)) * 60) + "分钟" +
-                    parseInt((parseFloat((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60) -
-                        parseInt((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60)) * 60) + "秒";
+                        parseInt(time / 3600.0)) * 60) + "分钟";
             } else if (time >= 60 * 60 * 24) {
                 time = parseInt(time / 3600.0 / 24) + "天" + parseInt((parseFloat(time / 3600.0 / 24) -
                         parseInt(time / 3600.0 / 24)) * 24) + "小时" + parseInt((parseFloat(time / 3600.0) -
-                        parseInt(time / 3600.0)) * 60) + "分钟" +
-                    parseInt((parseFloat((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60) -
-                        parseInt((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60)) * 60) + "秒";
+                        parseInt(time / 3600.0)) * 60) + "分钟" ;
             } else {
                 time = parseInt(time) + "秒";
             }

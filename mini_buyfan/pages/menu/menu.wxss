@@ -34,7 +34,7 @@ page {
 }
 .sign-ln view.time {
 	box-sizing: border-box;
-	width: 80rpx;
+	/* width: 80rpx; */
 	overflow: hidden;
 	white-space: nowrap;
 }

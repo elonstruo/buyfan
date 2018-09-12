@@ -71,6 +71,8 @@ App({
 			method: 'POST',
 			success: function (res) {
 				that.globalData.actionData = res.data.data
+				// console.log('actionrequest')
+				// console.log(res.data.data)
 				if (that.actionDataCallback) {
 					that.actionDataCallback(res)
 				}
