@@ -86,6 +86,8 @@ Page({
                     mask: true,
                 })
                 if (res.statusCode == 200) {
+					console.log('res.data.data')
+					console.log(res.data.data)
                     that.setData({
                         orderslist: res.data.data
                     })
@@ -100,64 +102,70 @@ Page({
                             }
                         }
                     }
-                    var order = that.data.delivery[0]
-                    var shopLocal = JSON.parse(order.cshopInfor.shopLocal)
-                    var homeLocal = order.userInfor
-                    var shoplat = shopLocal.latitude
-                    var shoplog = shopLocal.longitude
-                    var homelat = homeLocal.latitude
-                    var homelog = homeLocal.longitude
-                    // var runLocal = order.deliveryInfor
-                    if (order.deliveryInfor) {
-                        var runLocal = order.deliveryInfor
-                        var runlat = runLocal.latitude
-                    } else {
-                        var runLocal = {
-                            latitude: 23.557275,
-                            longitude: 116.364060,
-                        }
-                    }
-                    var runlat = runLocal.latitude
-                    var runlog = runLocal.longitude
-                    var operation = order.operation
-                    var last = operation[operation.length - 1]
-                    var storeId = order.cshopInfor.id
-                    that.orderDistance(homelat, homelog, storeId)
-                    that.setData({
-                        stateText: last.name,
-                        delivery: delivery,
-                        shopLocal: shopLocal,
-                        homeLocal: homeLocal,
-                        shoplat: shoplat,
-                        shoplog: shoplog,
-                        homelat: homelat,
-                        homelog: homelog,
-                        markers: [{
-                                iconPath: "../../images/icon-map-shop.png",
-                                id: 0,
-                                latitude: shoplat,
-                                longitude: shoplog,
-                                width: 28,
-                                height: 37
-                            },
-                            {
-                                iconPath: "../../images/icon-map-home.png",
-                                id: 1,
-                                latitude: homelat,
-                                longitude: homelog,
-                                width: 28,
-                                height: 37
-                            }, {
-                                iconPath: "../../images/icon-map-run.png",
-                                id: 2,
-                                latitude: runlat,
-                                longitude: runlog,
-                                width: 22,
-                                height: 22
-                            }
-                        ],
-                    })
-                    wx.hideLoading()
+					console.log('that.data.delivery')
+					console.log(that.data.delivery)
+					if (that.data.delivery) {
+						var order = that.data.delivery[0]
+						var shopLocal = JSON.parse(order.cshopInfor.shopLocal)
+						var homeLocal = order.userInfor
+						var shoplat = shopLocal.latitude
+						var shoplog = shopLocal.longitude
+						var homelat = homeLocal.latitude
+						var homelog = homeLocal.longitude
+						if (order.deliveryInfor) {
+							var runLocal = order.deliveryInfor
+						} else {
+							var runLocal = {
+								latitude: 23.557275,
+								longitude: 116.364060,
+								name: '陈先生',
+								tel: 15528282828
+							}
+						}
+						var runlat = runLocal.latitude
+						var runlog = runLocal.longitude
+						var runname = runLocal.name
+						var runtel = runLocal.tel
+						var operation = order.operation
+						var last = operation[operation.length - 1]
+						var storeId = order.cshopInfor.id
+						that.orderDistance(homelat, homelog, storeId)
+						that.setData({
+							stateText: last.name,
+							delivery: delivery,
+							shopLocal: shopLocal,
+							homeLocal: homeLocal,
+							shoplat: shoplat,
+							shoplog: shoplog,
+							homelat: homelat,
+							homelog: homelog,
+							markers: [{
+									iconPath: "../../images/icon-map-shop.png",
+									id: 0,
+									latitude: shoplat,
+									longitude: shoplog,
+									width: 28,
+									height: 37
+								},
+								{
+									iconPath: "../../images/icon-map-home.png",
+									id: 1,
+									latitude: homelat,
+									longitude: homelog,
+									width: 28,
+									height: 37
+								}, {
+									iconPath: "../../images/icon-map-run.png",
+									id: 2,
+									latitude: runlat,
+									longitude: runlog,
+									width: 22,
+									height: 22
+								}
+							],
+						})
+					}
+					wx.hideLoading()
                 }
             },
             fail: function(res) {

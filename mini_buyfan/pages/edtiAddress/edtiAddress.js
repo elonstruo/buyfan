@@ -24,7 +24,7 @@ Page({
 		wx.getStorage({
 			key: 'userInforAddress',
 			success: function (res) {
-				if (res.data !== "" || res.data !== null || res.data !== "undefined") {
+				if (res.data !== "" && res.data !== null && res.data !== "undefined") {
 					var userInforArr = res.data
 					that.setData({
 						userInforArr: userInforArr
@@ -90,8 +90,19 @@ Page({
 					key: 'userInforAddress',
 					data: userInforArr,
 					success: function(res) {
-						wx.navigateBack({
-							delta: 1,
+						wx.showModal({
+							title: '添加地址成功',
+							content: '返回地址列表',
+							showCancel: false,
+							confirmText: '确定',
+							confirmColor: '#333',
+							success: function(res) {
+								wx.navigateBack({
+									delta: 1,
+								})
+							},
+							fail: function(res) {},
+							complete: function(res) {},
 						})
 					},
 					fail: function(res) {},

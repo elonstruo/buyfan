@@ -64,8 +64,8 @@ Page({
                 action: 'orderadd',
                 key: that.data.key,
                 ordernum: out_trade_no,
-                // price: topupprice,
-                price: 0.01,
+                price: topupprice,
+                // price: 0.01,
                 pickState: 4,
             },
             header: {
@@ -106,8 +106,8 @@ Page({
                     action: 'orderadd',
                     key: that.data.key,
                     ordernum: out_trade_no,
-                    // price: topupprice,
-                    price: 0.01,
+                    price: topupprice,
+                    // price: 0.01,
                     pickState: 4,
                 },
                 header: {

@@ -9,6 +9,7 @@ App({
     },
 
     globalData: {
+		userInfoan:null,
         userInfo: null,
         hostUrl: 'https://app.jywxkj.com/shop/baifen/request/shop.php',
         // actionData: null,
@@ -80,10 +81,6 @@ App({
 			fail: function (res) { },
 			complete: function (res) { },
 		})
-		
-		// if (getCurrentPages().length != 0) {
-		//     getCurrentPages()[getCurrentPages().length - 1].onLoad()
-		// }
 
     },
 	// 购物车存储

@@ -37,6 +37,7 @@ Page({
         hasAddCart: false,
         hasLike: false,
         likeNum: "",
+		canipay:true,
         // storesImgList: [
         //     "../../images/shopimg.jpg",
         //     "../../images/shopimg.jpg",
@@ -64,15 +65,15 @@ Page({
      */
     onLoad: function(options) {
         var that = this;
-        // console.log('menu.options')
-        // console.log(options)
+        console.log('menu.options')
+        console.log(options)
         that.setData({
             orderway: options.orderway,
             storeId: options.id
         })
         // 获取购物车
         // wx.setStorageSync("cartObjectsStorage", [])
-
+		
         if (app.globalData.cartObjectsStorage) {
             that.setData({
                 cartObjects: app.globalData.cartObjectsStorage,
@@ -99,19 +100,17 @@ Page({
         }
         // 分类赋值
         if (app.globalData.actionData) {
+			// console.log('app.globalData.actionData')
+			// console.log(app.globalData.actionData)
             var actionData = app.globalData.actionData
             var appLogo = app.globalData.actionData.appLogo
             that.setData({
 				attachClass: actionData.attachClass,
                 type_sort: actionData.appClass,
-                // categoryGoodsclass: actionData.appClass[0],
+				tackoutprice: actionData.orderway.tackout.pick.tackoutprice,
 				attachTagClass: actionData.attachClass[0].content,
                 screenWidth: app.screenWidth,
                 screenHeight: app.screenHeight,
-                // cartItem: app.screenHeight * 0.089788732394366,
-                // topItem: app.screenHeight * 0.051056338028169,
-                // cartBarItem: app.screenHeight * 0.073943661971831,
-                // mesuScrollHeight: app.screenHeight - signH - tabbarH - food_row_height,
                 mesuScrollHeight: app.screenHeight - signH - tabbarH,
                 appLogo: appLogo
             })
@@ -119,13 +118,15 @@ Page({
             app.actionDataCallback = res => {
                 var actionData = app.globalData.actionData
                 var appLogo = app.globalData.actionData.appLogo
-                that.setData({
-                    type_sort: actionData.appClass,
-					// categoryGoodsclass: actionData.appClass[0],
+				that.setData({
+					attachClass: actionData.attachClass,
+					type_sort: actionData.appClass,
+					tackoutprice: actionData.orderway.tackout.pick.tackoutprice,
 					attachTagClass: actionData.attachClass[0].content,
-                    // mesuScrollHeight: app.screenHeight - signH - tabbarH - food_row_height,
-                    mesuScrollHeight: app.screenHeight - signH - tabbarH,
-                    appLogo: appLogo
+					screenWidth: app.screenWidth,
+					screenHeight: app.screenHeight,
+					mesuScrollHeight: app.screenHeight - signH - tabbarH,
+					appLogo: appLogo
                 })
             }
         }
@@ -234,43 +235,58 @@ Page({
             selectedId: e.currentTarget.dataset.id
         });
         if (that.data.selectedId == "2") {
-            wx.request({
-                url: 'https://app.jywxkj.com/shop/baifen/request/commentmanage.php',
-                data: {
-                    action: 'xcxshow',
-                    page: that.data.page,
-                    uid: that.data.uid
-                },
-                header: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                method: 'post',
-                success: function(res) {
-                    if (res.statusCode == "200") {
-                        var comments = res.data.data
-                        for (var i = 0; i < comments.length; i++) {
-                            that.setData({
-                                likenum: comments[i].likenum
-                            })
-                        }
-                        console.log('likenum')
-                        console.log(that.data.likenum)
-                        that.setData({
-                            comments: comments
-                        })
-                    }
-                },
-                fail: function(res) {},
-                complete: function(res) {},
-            })
+			var action = 'newcomment'
+			that.newcomment(action)
         }
     },
+	// 最新/最热
+	newcomment: function (action) {
+		var that = this;
+		wx.request({
+			url: 'https://app.jywxkj.com/shop/baifen/request/commentmanage.php',
+			data: {
+				action: action,
+				page: that.data.page,
+				uid: that.data.uid
+			},
+			header: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			method: 'post',
+			success: function (res) {
+				if (res.statusCode == "200") {
+					console.log('res')
+					console.log(res)
+					var comments = res.data.data
+					// for (var i = 0; i < comments.length; i++) {
+					//     that.setData({
+					//         likenum: comments[i].likenum
+					//     })
+					// }
+					// console.log('likenum')
+					// console.log(that.data.likenum)
+					that.setData({
+						comments: comments
+					})
+				}
+			},
+			fail: function (res) { },
+			complete: function (res) { },
+		})
+	},
     // 评价：最新/最热
     appraisesClick: function(e) {
         var that = this;
         that.setData({
             selectA: e.currentTarget.dataset.id
         });
+		if (that.data.selectA == 1) {
+			var action = 'newcomment'
+			that.newcomment(action)
+		} else if (that.data.selectA == 2) {
+			var action = 'hotcomment'
+			that.newcomment(action)
+		}
     },
     // 点赞
     likeClick: function(e) {
@@ -291,32 +307,21 @@ Page({
             success: function(res) {
                 console.log('likeClick')
                 console.log(res)
-                for (var i = 0; i < comments.length; i++) {
-                    if (comments[i].cid == cid) {
-                        if (comments[i].likestate == 1) {
-                            app.showBox("您已点赞")
-                        } else {
-                            that.setData({
-                                likenum: ++comments[i].likenum,
-                            })
-                        }
-                    }
-                }
+				if (res.data.request=="fail") {
+					app.showBox(res.data.errorCause)
+				} else {
+					for (var i = 0; i < comments.length; i++) {
+						comments[i].likenum += 1;
+						that.setData({ 
+							comments: comments,
+							liked: true
+						})
+					}
+				}
             },
             fail: function(res) {},
             complete: function(res) {},
         })
-        // if (that.data.hasLike == false) {
-        //     that.setData({
-        //         likeNum: that.data.likeNum + 1,
-        //         hasLike: true
-        //     })
-        // } else {
-        //     that.setData({
-        //         likeNum: that.data.likeNum - 1,
-        //         hasLike: false
-        //     })
-        // }
     },
     // 商家店铺照片
     scroll: function(e) {
@@ -792,6 +797,25 @@ Page({
             amount: amount.toFixed(2),
             num: num
         });
+		// // 外卖单是否够低消
+		if (that.data.orderway == "tackout" && amount < that.data.tackoutprice) {
+			that.setData({
+				canipay: true
+			})
+		} else if(that.data.orderway == "tackout" && amount >= that.data.tackoutprice) {
+			that.setData({
+				canipay: false
+			})
+		}
+		if (that.data.orderway == "shopfor" && amount != 0) {
+			that.setData({
+				canipay: false
+			})
+		} else if (that.data.orderway == "shopfor" && amount == 0) {
+			that.setData({
+				canipay: true
+			})
+		}
     },
     /**
      * 生命周期函数--监听页面初次渲染完成
@@ -803,7 +827,36 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function() {
-        var that = this;
+		var that = this;
+		// 购物车
+		wx.getStorage({
+			key: 'cartObjectsStorage',
+			success: function(res) {
+				that.setData({
+					cartObjects: res.data
+				})
+				var cartObjects = that.data.cartObjects
+				if (cartObjects.length) {
+					var cart = that.data.cart
+					var foodId = []
+					for (var i = 0; i < cartObjects.length; i++) {
+						cart[cartObjects[i].gid] = cartObjects[i].quantity
+						that.setData({
+							cart: cart
+						})
+					}
+					that.amount();
+				} else {
+					that.setData({
+						amount: "0.00",
+						num: "",
+						cart: {}
+					})
+				}
+			},
+			fail: function(res) {},
+			complete: function(res) {},
+		})
         // 获取选择店铺
         var storeId = wx.getStorageSync('menuStoreId');
         if (storeId) {
@@ -861,7 +914,6 @@ Page({
      * 生命周期函数--监听页面隐藏
      */
     onHide: function() {
-
     },
 
     /**
@@ -888,7 +940,14 @@ Page({
     /**
      * 用户点击右上角分享
      */
-    onShareAppMessage: function() {
-
-    }
+	onShareAppMessage: function (res) {
+		if (res.from === 'button') {
+			// 来自页面内转发按钮
+			console.log(res.target)
+		}
+		return {
+			title: 'buyfan',
+			path: 'pages/menu/menu?id=1&orderway=shopfor&desk=1'
+		}
+	}
 })

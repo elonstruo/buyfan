@@ -1,9 +1,12 @@
 <!--pages/user/user.wxml-->
 <view class='user-card'>
-    <view class='header-box'>
-        <image mode="aspectFit" class='header' src='{{avatarUrl}}'></image>
-    </view>
-    <view class='user-name'>{{nickName}}</view>
+    <button class='caniuse' wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">授权登录</button>
+    <block wx:else>
+        <view class='header-box'>
+            <image mode="aspectFit" class='header' src='{{avatarUrl}}'></image>
+        </view>
+        <view class='user-name'>{{nickName}}</view>
+    </block>
 </view>
 <view class='user-info'>
     <view class='item' bindtap='tocouponlist'>
@@ -75,4 +78,4 @@
         <view class='title'>配送时间：{{appRunTime}}</view>
     </view>
 </view>
-<button class='getUserInfo' open-type='getUserInfo' bindgetuserinfo="getUserInfo">重新授权</button>
+<button class='getUserInfo' open-type="openSetting">重新授权</button>

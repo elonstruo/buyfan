@@ -27,7 +27,8 @@ Page({
 		accept: [],
 		unpaid: [],
 		orderslist: "",
-		hasUserInfo: false
+		hasUserInfo: false,
+		canIUse: wx.canIUse('button.open-type.getUserInfo')
 
     },
 
@@ -38,24 +39,11 @@ Page({
 		var that = this;
 		// app.globalData.userInfo
 		if (app.globalData.userInfo) {
-			// console.log("user.app.globalData.userInfo")
-			// console.log(app.globalData.userInfo)
-			var avatarUrl = app.globalData.userInfo.data.avatarUrl;
-			var nickName = app.globalData.userInfo.data.nickName;
-			// var coupons = app.globalData.userInfo.data.coupons;
-			// if (coupons == null) {
-			// 	coupons = 0
-			// } else {
-			// 	coupons = coupons.length
-			// }
-			// var money = app.globalData.userInfo.data.money;
+			console.log("user.app.globalData.userInfo")
+			console.log(app.globalData.userInfo)
 			var integral = app.globalData.userInfo.data.integral;
 			that.setData({
 				userInfo: app.globalData.userInfo,
-				avatarUrl: avatarUrl,
-				nickName: nickName,
-				// coupons: coupons,
-				// money: money,
 				integral: integral,
 			})
 		}
@@ -65,7 +53,9 @@ Page({
 			money: money
 		})
 		var coupons = wx.getStorageSync("coupons");
-		if (coupons == null) {
+		console.log('coupons')
+		console.log(coupons)
+		if (coupons == null || coupons == "null") {
 			coupons = 0
 		} else {
 			coupons = coupons.length
@@ -85,39 +75,83 @@ Page({
 				appRunTime: appRunTime
 			})
 		}
+		// 查看是否授权
+		wx.getSetting({
+			success(res) {
+				if (res.authSetting['scope.userInfo']) {
+					// 已经授权，可以直接调用 getUserInfo 获取头像昵称
+					wx.getUserInfo({
+						success: function (res) {
+							console.log(res.userInfo)
+							var userInfo = res.userInfo
+							var nickName = userInfo.nickName
+							var avatarUrl = userInfo.avatarUrl
+							wx.setStorageSync('nickName', nickName)
+							wx.setStorageSync('avatarUrl', avatarUrl)
+							that.setData({
+								nickName: nickName,
+								avatarUrl: avatarUrl,
+								hasUserInfo: true,
+							})
+						}
+					})
+				}
+			}
+		})
 		// 个人订单
 		that.myOrder()
     },
 	// 重新授权
     getUserInfo: function(e) {
 		var that = this;
-        console.log(e)
-		app.isLogined(function (userInfo) {
-			console.log('app.isLogined.userInfo')
-			console.log(userInfo)
-			//更新数据
-			var avatarUrl = userInfo.data.avatarUrl;
-			var nickName = userInfo.data.nickName;
-			var coupons = userInfo.data.coupons;
-			if (coupons == null) {
-				coupons = 0
-			} else {
-				coupons = coupons.length
+		console.log(e.detail.userInfo)
+		wx.getUserInfo({
+			success: function (res) {
+				var userInfo = res.userInfo
+				var nickName = userInfo.nickName
+				var avatarUrl = userInfo.avatarUrl
+				wx.setStorageSync('nickName', nickName)
+				wx.setStorageSync('avatarUrl', avatarUrl)
+				that.setData({
+					nickName: nickName,
+					avatarUrl: avatarUrl,
+					hasUserInfo: true,
+				})
 			}
-			var money = userInfo.data.money;
-			var integral = userInfo.data.integral;
-			that.setData({
-				userInfo: userInfo,
-				avatarUrl: avatarUrl,
-				nickName: nickName,
-				coupons: coupons,
-				money: money,
-				integral: integral,
-			})
 		})
+		// app.isLogined(function (userInfo) {
+		// 	console.log('app.isLogined.userInfo')
+		// 	console.log(userInfo)
+		// 	//更新数据
+		// 	var coupons = userInfo.data.coupons;
+		// 	if (coupons == null) {
+		// 		coupons = 0
+		// 	} else {
+		// 		coupons = coupons.length
+		// 	}
+		// 	var money = userInfo.data.money;
+		// 	var integral = userInfo.data.integral;
+		// 	that.setData({
+		// 		userInfo: userInfo,
+		// 		coupons: coupons,
+		// 		money: money,
+		// 		integral: integral,
+		// 	})
+		// })
 		// 个人订单
-		that.myOrder()
+		// that.myOrder()
     },
+	// 重新授权
+	bindopen: function () {
+		wx.openSetting({
+			success: function(res) {
+				console.log('res')
+				console.log(res)
+			},
+			fail: function(res) {},
+			complete: function(res) {},
+		})
+	},
 	// 收货地址
 	toAddress: function () {
 		wx.navigateTo({
@@ -250,14 +284,29 @@ Page({
 		var that = this;
 		// 个人订单
 		that.myOrder()
+		wx.getStorage({
+			key: 'nickName',
+			success: function (res) {
+				that.setData({
+					nickName: res.data
+				})
+			},
+			fail: function (res) { },
+			complete: function (res) { },
+		})
+		wx.getStorage({
+			key: 'avatarUrl',
+			success: function (res) {
+				that.setData({
+					avatarUrl: res.data
+				})
+			},
+			fail: function (res) { },
+			complete: function (res) { },
+		})
 		// app.globalData.userInfo
-		// if (app.globalData.userInfo) {
-		// console.log("user.app.globalData.userInfo")
-		// console.log(app.globalData.userInfo)
-		var avatarUrl = app.globalData.userInfo.data.avatarUrl;
-		var nickName = app.globalData.userInfo.data.nickName;
 		var coupons = app.globalData.userInfo.data.coupons;
-		if (coupons == null) {
+		if (coupons == null || coupons == "null") {
 			coupons = 0
 		} else {
 			coupons = coupons.length
@@ -266,8 +315,6 @@ Page({
 		var integral = app.globalData.userInfo.data.integral;
 		that.setData({
 			userInfo: app.globalData.userInfo,
-			avatarUrl: avatarUrl,
-			nickName: nickName,
 			coupons: coupons,
 			money: money,
 			integral: integral,

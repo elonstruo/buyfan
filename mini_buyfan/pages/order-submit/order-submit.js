@@ -10,7 +10,10 @@ Page({
 		content: {},
 		// 到店下单way
 		shopway: 'shopself',
-		storeWay: 0
+		storeWay: 0,
+		paywaytext: '微信支付',
+		hasaddress: false
+		
 	},
 
     /**
@@ -22,6 +25,15 @@ Page({
 		if (app.globalData.userInfo) {
 			var userInfo = app.globalData.userInfo.data;
 			var member = userInfo.member
+			if (member == 0) {
+				that.setData({
+					paywaytext: '微信支付'
+				})
+			} else if (member == 1) {
+				that.setData({
+					paywaytext: '余额支付'
+				})
+			}
 			that.setData({
 				member: member
 			})
@@ -52,36 +64,48 @@ Page({
 			wx.getStorage({
 				key: 'orderAddress',
 				success: function (res) {
-					if (!res.data) {
+					console.log('orderAddress')
+					console.log(res)
+					if (res.data) {
 						var addRes = res.data;
-						var address = addRes[0];
+						var address = addRes;
 						var addressString = JSON.stringify(address)
 						that.setData({
 							address: address,
 							addressString: addressString,
 							addressLat: address.latitude,
 							addressLon: address.longitude,
+							hasntaddress: false
 						})
+						console.log(address)
 						// 距离计算
 						that.orderDistance(that.data.addressLat, that.data.addressLon)
-					} else {
 					}
 				},
 				fail: function (res) {
 					wx.getStorage({
 						key: 'userInforAddress',
 						success: function (res) {
-							var addRes = res.data;
-							var address = addRes[0];
-							var addressString = JSON.stringify(address)
-							that.setData({
-								address: address,
-								addressString: addressString,
-								addressLat: address.latitude,
-								addressLon: address.longitude,
-							})
-							// 距离计算
-							that.orderDistance(that.data.addressLat, that.data.addressLon)
+							console.log('addRes')
+							console.log(res)
+							if (res.data != null && res.data != 'null'&&res.data.length>0) {
+								var addRes = res.data;
+								var address = addRes[0];
+								var addressString = JSON.stringify(address)
+								that.setData({
+									address: address,
+									addressString: addressString,
+									addressLat: address.latitude,
+									addressLon: address.longitude,
+									hasntaddress: false
+								})
+								// 距离计算
+								that.orderDistance(that.data.addressLat, that.data.addressLon)
+							} else {
+								that.setData({
+									hasntaddress: true
+								})
+							}
 						},
 						fail: function (res) { },
 						complete: function (res) { },
@@ -272,16 +296,28 @@ Page({
 		var that = this;
 		var amount = +that.data.amount;
 		var tisuPrice = +that.data.tisuPrice;
-		var distancePrice = +that.data.distancePrice;
-		var allAmount = that.data.amount;
-		if (that.data.orderway == "shopfor") {
-			allAmount = tisuPrice + amount;
+		if (that.data.distancePrice) {
+			var distancePrice = +that.data.distancePrice;
+			var allAmount = that.data.amount;
+			if (that.data.orderway == "shopfor") {
+				allAmount = tisuPrice + amount;
+			} else {
+				allAmount = tisuPrice + distancePrice + amount;
+			}
+			that.setData({
+				allAmount: allAmount
+			})
 		} else {
-			allAmount = tisuPrice + distancePrice + amount;
+			var allAmount = that.data.amount;
+			if (that.data.orderway == "shopfor") {
+				allAmount = tisuPrice + amount;
+			} else {
+				allAmount = tisuPrice + amount;
+			}
+			that.setData({
+				allAmount: allAmount
+			})
 		}
-		that.setData({
-			allAmount: allAmount
-		})
 	},
 	// 选择分店
 	changeshop: function () {
@@ -390,7 +426,12 @@ Page({
 			userInforSubmit.tel = selftel
 			userInforSubmit.zttime = zttime
 		} else if (pickState == 1) {
-			userInforSubmit = address
+			if (!address) {
+				app.showBox("请选择收货地址")
+				return false
+			} else {
+				userInforSubmit = address
+			}
 			// userInforSubmit.username = address.username
 			// userInforSubmit.tel = address.tel
 			// userInforSubmit.adr = address.adr
@@ -408,8 +449,8 @@ Page({
 				ordernum: out_trade_no,
 				content: JSON.stringify(content),
 				userInfor: JSON.stringify(userInforSubmit),
-				// price: that.data.allAmount,
-				price: 0.01,
+				price: that.data.allAmount,
+				// price: 0.01,
 				remark: that.data.remarkText,
 				couponid: that.data.couponid,
 				pickState: that.data.pickState,
@@ -476,9 +517,23 @@ Page({
 						console.log("success/pay/res")
 						console.log(res)
 						app.showBox("支付成功")
-						wx.redirectTo({
-							url: '../orders/orders',
-							success: function(res) {},
+				        wx.setStorageSync("cartObjectsStorage", [])
+						wx.showModal({
+							content: '查看订单页',
+							showCancel: false,
+							confirmText: '确定',
+							confirmColor: '#333',
+							success: function (res) {
+								if (res.confirm) {
+									wx.redirectTo({
+										url: '../orders/orders',
+										success: function (res) { },
+										fail: function (res) { },
+										complete: function (res) { },
+									})
+								}
+
+							},
 							fail: function(res) {},
 							complete: function(res) {},
 						})
@@ -487,11 +542,25 @@ Page({
 					fail: function (res) {
 						// if (res.errMsg == "requestPayment:fail cancel") {
 						app.showBox("支付未完成")
-						wx.redirectTo({
-							url: '../orders/orders',
-							success: function(res) {},
-							fail: function(res) {},
-							complete: function(res) {},
+						wx.setStorageSync("cartObjectsStorage", [])
+						wx.showModal({
+							content: '查看订单页',
+							showCancel: false,
+							confirmText: '确定',
+							confirmColor: '#333',
+							success: function (res) {
+								if (res.confirm) {
+									wx.redirectTo({
+										url: '../orders/orders',
+										success: function (res) { },
+										fail: function (res) { },
+										complete: function (res) { },
+									})
+								}
+
+							},
+							fail: function (res) { },
+							complete: function (res) { },
 						})
 						// }
 					},
@@ -548,10 +617,24 @@ Page({
 
 				} else {
 					app.showBox("支付成功！")
-                    app.has_login()
-					wx.redirectTo({
-						url: '../orders/orders',
-						success: function (res) { },
+					wx.setStorageSync("cartObjectsStorage", [])
+					app.has_login()
+					wx.showModal({
+						content: '查看订单页',
+						showCancel: false,
+						confirmText: '确定',
+						confirmColor: '#333',
+						success: function (res) {
+							if (res.confirm) {
+								wx.redirectTo({
+									url: '../orders/orders',
+									success: function (res) { },
+									fail: function (res) { },
+									complete: function (res) { },
+								})
+							}
+
+						},
 						fail: function (res) { },
 						complete: function (res) { },
 					})
@@ -699,7 +782,61 @@ Page({
 			},
 			fail: function (res) { },
 			complete: function (res) { },
-		})	
+		})
+		// addressinit
+		// 选择地址
+		wx.getStorage({
+			key: 'orderAddress',
+			success: function (res) {
+				console.log('orderAddress')
+				console.log(res)
+				if (res.data) {
+					var addRes = res.data;
+					var address = addRes;
+					var addressString = JSON.stringify(address)
+					that.setData({
+						address: address,
+						addressString: addressString,
+						addressLat: address.latitude,
+						addressLon: address.longitude,
+						hasntaddress: false
+					})
+					console.log(address)
+					// 距离计算
+					that.orderDistance(that.data.addressLat, that.data.addressLon)
+				}
+			},
+			fail: function (res) {
+				wx.getStorage({
+					key: 'userInforAddress',
+					success: function (res) {
+						console.log('addRes')
+						console.log(res)
+						if (res.data != null && res.data != 'null' && res.data.length > 0) {
+							var addRes = res.data;
+							var address = addRes[0];
+							var addressString = JSON.stringify(address)
+							that.setData({
+								address: address,
+								addressString: addressString,
+								addressLat: address.latitude,
+								addressLon: address.longitude,
+								hasntaddress: false
+							})
+							// 距离计算
+							that.orderDistance(that.data.addressLat, that.data.addressLon)
+						} else {
+							that.setData({
+								hasntaddress: true
+							})
+						}
+					},
+					fail: function (res) { },
+					complete: function (res) { },
+				})
+			},
+			complete: function (res) { },
+		})
 	},
 
     /**

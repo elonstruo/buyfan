@@ -510,6 +510,10 @@ page {
     color: #fff;
     background: rgba(255, 104, 22, 1);
     border-radius: 0;
+	padding: 0;
+}
+.carts-bar.takepay .addall {
+	width: 320rpx;
 }
 .carts-bar .addall::after{
     border: none;

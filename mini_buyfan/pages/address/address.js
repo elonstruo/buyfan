@@ -78,12 +78,12 @@ Page({
     },
     // 添加地址
     toAddress: function() {
-        wx.redirectTo({
-            url: '../edtiAddress/edtiAddress',
-            success: function(res) {},
-            fail: function(res) {},
-            complete: function(res) {},
-        })
+		wx.navigateTo({
+			url: '../edtiAddress/edtiAddress',
+			success: function(res) {},
+			fail: function(res) {},
+			complete: function(res) {},
+		})
 
     },
     // 删除地址

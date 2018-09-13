@@ -187,3 +187,11 @@ page {
     border-radius: none;
     border: none;
 }
+.caniuse {
+	width: 340rpx;
+    height: 100rpx;	
+	font-size: 38rpx;
+}
+.caniuse::after {
+	border: none
+}

@@ -58,8 +58,7 @@
         </scroll-view>
         <!-- 商品列表 -->
         <scroll-view scroll-y="true" style='height: {{mesuScrollHeight}}px' class='items'>
-            <!-- <view class='tag'>热销</view> -->
-
+			<!-- 是否新品 -->
             <view class='item' wx:if='{{item.goodshot == 1 && attachTagClass == "goodshot"}}' hover-class='on' wx:key="unique" wx:for="{{goods}}">
                 <view class='img-shop'>
                     <image mode='aspectFill' class='img-shop' src='{{item.goodsImage}}'></image>
@@ -82,6 +81,7 @@
                     <view>选规格</view>
                 </view>
             </view>
+			<!-- 是否热卖 -->
             <view class='item' wx:if='{{item.goodsrecommend == 1 && attachTagClass == "goodsrecommend"}}' hover-class='on' wx:key="unique" wx:for="{{goods}}">
                 <view class='img-shop'>
                     <image mode='aspectFill' class='img-shop' src='{{item.goodsImage}}'></image>
@@ -104,6 +104,7 @@
                     <view>选规格</view>
                 </view>
             </view>
+			<!-- 是否推荐 -->
             <view class='item' wx:if='{{item.newgoods == 1 && attachTagClass == "newgoods"}}' hover-class='on' wx:key="unique" wx:for="{{goods}}">
                 <view class='img-shop'>
                     <image mode='aspectFill' class='img-shop' src='{{item.goodsImage}}'></image>
@@ -126,7 +127,7 @@
                     <view>选规格</view>
                 </view>
             </view>
-
+			<!-- 分类产品 -->
             <view class='item' data-goodsclass="{{item.goodsclass}}" wx:if="{{item.goodsclass == categoryGoodsclass}}" hover-class='on' wx:key="unique" wx:for="{{goods}}">
                 <view class='img-shop'>
                     <image mode='aspectFill' class='img-shop' src='{{item.goodsImage}}'></image>
@@ -151,7 +152,7 @@
             </view>
         </scroll-view>
         <!-- 购物车工具栏 -->
-        <view class='carts-bar'>
+        <view class='carts-bar {{tackoutprice&&orderway=="tackout"?"takepay":""}}'>
             <view class='left' bindtap='cascadeToggle'>
                 <view class='car'>
                     <image class='icon-car' src='../../images/run@2x.png'></image>
@@ -159,7 +160,9 @@
                 </view>
                 <view class='all-price' wx:if="{{amount}}">¥{{amount}}</view>
             </view>
-            <button disabled='{{cartObjects.length<1}}' class='addall' bindtap='toTakeOut'>去结算</button>
+            <button disabled='{{canipay}}' class='addall' bindtap='toTakeOut'>
+				去结算<text wx:if='{{orderway=="tackout"}}'>(满{{tackoutprice}}起送)</text>
+			</button>
         </view>
         <!-- 规格详情 -->
         <view class='modal' wx:if="{{isModal}}">
@@ -248,10 +251,9 @@
                                 <image bindtap='getAppraisesIndex' data-imgsrc="{{item}}" mode="aspectFill" src="{{item}}"></image>
                             </view>
                         </view>
-                        <view class='like'>
-                            <image data-cid='{{item.cid}}' bindtap='likeClick' class='icon-like' src='../../images/icon-like.png'></image>
-                            <view class='like-text {{item.likestate == 1 ? "on" : ""}}'>
-                                <!-- <text wx:if="{{likenum}}">{{likenum}}人</text> -->
+                        <view class='like' data-cid='{{item.cid}}' bindtap='likeClick'>
+                            <image class='icon-like' src='../../images/icon-like.png'></image>
+                            <view data-like="{{item.likestate}}" class='like-text {{item.likestate == 1 ? "on" : ""}}'>
                                 <text>{{item.likenum}}人</text> 点赞
                             </view>
                             <!-- <view class='like-text' hidden="{{likenum}}">点赞</view> -->

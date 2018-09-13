@@ -34,7 +34,7 @@
                         <input class='name' bindinput='selfTel' value='{{tel}}' name="tel"></input>
                     </view>
                     <view class='input-box'>
-                        <picker mode="time" class='self-time' value="{{time}}" start="00:00" end="00:00" bindchange="selfTime">
+                        <picker mode="time" class='self-time' value="{{time}}" bindchange="selfTime">
                             <view class="picker">
                                 <text>预计自提时间: {{zttime}} </text>
                                 <image class='right-arrow' src='../../images/in@2x.png'></image>
@@ -57,13 +57,13 @@
             </view>
         </view>
         <view class='dine-in take-out'>
-            <!-- <view class='top'>
+            <view class='top' wx:if="{{hasntaddress}}">
                 <view class='addaddress' hover-class='addaddress-hover' bindtap='addaddress'>
                     <image class='icon-add' src='../../images/add@2x.png'></image>
                     选择收货地址
                 </view>
-            </view> -->
-            <view class='top bottom address-box' bindtap='addaddress'>
+            </view>
+            <view class='top bottom address-box' bindtap='addaddress' wx:if="{{hasntaddress==false}}">
                 <view class='left'>
                     <image class='icon-now' src='../../images/location@2x.png'></image>
                     <view class=''>
@@ -104,7 +104,7 @@
         </view>
         <view class='outPrice' wx:if="{{tackout}}">
             <view>配送费</view>
-            <view>¥ {{distancePrice}}</view>
+            <view wx:if="{{distancePrice}}">¥ {{distancePrice}}</view>
         </view>
         <view class='tips'>
             <text>备注</text>
@@ -129,6 +129,6 @@
         </checkbox-group>
     </view>
 </view>
-<view class='payButton' bindtap='orderSubmit'>微信支付
+<view class='payButton' bindtap='orderSubmit'>{{paywaytext}}
     <text>¥{{allAmount}}</text>
 </view>
